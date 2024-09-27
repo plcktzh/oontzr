@@ -1,3 +1,3 @@
-# Oontzr. A vanilla JS drum sequencer
-
-![Oontzr logo](images/logo.svg)
+<p align="center">
+    <img alt="Oontzr logo" src="images/logo.svg">
+</p>
