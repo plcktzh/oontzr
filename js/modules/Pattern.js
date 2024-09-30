@@ -158,6 +158,11 @@ class Pattern {
         });
     }
 
+    /**
+     * @method setChokesPattern
+     * @param {String} id The ID of the Pattern to be choked by this Pattern instance
+     * @returns Pattern
+     */
     setChokesPattern(id) {
         try {
             if (this.parent.patternExists(id)) this.chokesPattern = id;
