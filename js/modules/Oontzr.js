@@ -130,7 +130,7 @@ class Oontzr {
 
     /**
      * @method patternExists
-     * @param {String} id The ID of the Pattern to be cloned
+     * @param {String} id The ID of the Pattern to be checked
      * @returns Boolean
      * @see State.patternExists
      */

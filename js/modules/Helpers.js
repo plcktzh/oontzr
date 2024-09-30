@@ -49,23 +49,38 @@ class Helpers {
     /**
      * @static
      * @method isInObj
-     * @param {Object} target The Object to be tested for the presence of <property>
-     * @param {String} property The property to be looked up in <target>
+     * @param {Object} obj The Object to be tested for the presence of <property>
+     * @param {String} property The property to be looked up in <obj>
      * @returns Boolean
      */
-    static isInObj(target, property) {
-        return Object.hasOwn(target, property);
+    static isInObj(obj, property) {
+        return Object.hasOwn(obj, property);
     }
 
     /**
      * @static
      * @method isInArr
-     * @param {Array} target The Array to be tested for the presence of <value>
-     * @param {*} value The value to be looked up in <target>
+     * @param {Array} arr The Array to be tested for the presence of <value>
+     * @param {*} value The value to be looked up in <arr>
      * @returns Boolean
      */
-    static isInArr(target, value) {
-        return target.indexOf(value) > -1;
+    static isInArr(arr, value) {
+        return arr.indexOf(value) > -1;
+    }
+
+    /**
+     * @method shuffleArr
+     * @param {Array} arr The Array to be shuffled
+     * @returns Array
+     */
+    static shuffleArr(arr) {
+
+        return arr.map((a) => ({
+                sort: Math.random(),
+                value: a
+            }))
+            .sort((a, b) => a.sort - b.sort)
+            .map((a) => a.value);
     }
 
     /**

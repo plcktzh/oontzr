@@ -14,7 +14,7 @@ function _09f() {
 
     const ptn1 = oontzr.clonePattern(ptn0.id);
 
-    console.debug(ptn1);
+    console.debug(oontzr.readPattern(ptn1.id));
 
     console.debug(oontzr.updatePattern(ptn0.id, {
         chokesPattern: 'test'
@@ -23,6 +23,12 @@ function _09f() {
     console.debug(oontzr.deletePattern(ptn0.id));
 
     console.debug(oontzr.patternExists(ptn1.id));
+
+    const ptn2 = oontzr.createPattern({
+        patternLength: 12
+    });
+
+    console.debug(oontzr.readPattern(ptn2.id));
 };
 
 _09f();
