@@ -105,9 +105,7 @@ class State {
             // Transfer properties from optional arguments
             Helpers.transferProps(this.patterns[id], args);
 
-            /**
-             * @todo Add updateSteps method
-             */
+            this.patterns[id].updateSteps();
 
             return this.patterns[id];
         } catch (e) {
