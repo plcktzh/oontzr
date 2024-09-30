@@ -69,12 +69,7 @@ class State {
             };
 
             this.patterns[args.id] = new Pattern(this, args);
-
-            /**
-             * @todo Add updateSteps method
-             * @todo Initialise and append canvas
-             * @todo Draw pattern on canvas
-             */
+            this.patterns[args.id].updateSteps();
 
             return this.patterns[args.id];
         } catch (e) {
@@ -129,6 +124,7 @@ class State {
     deletePattern(id) {
 
         try {
+            Helpers.dqs(`.pattern-lane[data-oontzr-pattern-id="${id}"]`).remove();
             return (delete this.patterns[id]);
         } catch (e) {
             console.error(`Pattern could not be deleted. ${e}`);

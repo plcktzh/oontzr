@@ -1,4 +1,5 @@
 import Helpers from './Helpers.js';
+import Oontzr from './Oontzr.js';
 
 /**
  * @class Step
@@ -23,6 +24,16 @@ class Step {
         Helpers.transferProps(this, args);
 
         return this;
+    }
+
+    /**
+     * @method setVelocity
+     * @param {Number} value The (optional) velocity the Step should be set to
+     * @returns null
+     */
+    setVelocity(value) {
+        // If Step instance is active, set velocity to either the value parameter or to a random value
+        if (this.isActive) this.velocity = (value) ? value : (Math.random() * (Oontzr.PATTERN_PARAMETERS.VELOCITY_MAX - Oontzr.PATTERN_PARAMETERS.VELOCITY_MIN) + Oontzr.PATTERN_PARAMETERS.VELOCITY_MIN);
     }
 }
 

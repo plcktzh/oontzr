@@ -1,4 +1,5 @@
 import Helpers from './Helpers.js';
+import Playback from './Playback.js';
 import State from './State.js';
 
 /**
@@ -38,6 +39,30 @@ class Oontzr {
     };
 
     /**
+     * @static
+     * @property {Object} CANVAS_ATTRIBUTES An Object containing some properties for Pattern canvas elements
+     */
+    static CANVAS_ATTRIBUTES = {
+        STEP_WIDTH: 24,
+        STEP_HEIGHT: 32,
+        STEP_GAP: 2,
+        CANVAS_PADDING: 8,
+        STEP_COLOR_ACTIVE: 'rgb(102, 102, 102)',
+        STEP_COLOR_ACTIVE_CURRENT: 'rgba(153, 51, 0)',
+        STEP_COLOR_INACTIVE: 'rgb(204, 204, 204)',
+        STEP_COLOR_INACTIVE_CURRENT: 'rgba(204, 102, 0)'
+    };
+
+    /**
+     * @static
+     * @property {Object} PATTERN_PARAMETERS An Object containing some properties for Patterns and Steps
+     */
+    static PATTERN_PARAMETERS = {
+        VELOCITY_MIN: 16,
+        VELOCITY_MAX: 127
+    }
+
+    /**
      * @property {Element} parent The parent element of the Oontzr instance
      * @property {Object} _c An object containing configuration options, built from data attributes
      * @property {State} _s The Oontzr instance's State
@@ -64,7 +89,7 @@ class Oontzr {
             playback: {
                 tempo: {
                     bpm: 120,
-                    msPerStep: 125
+                    msPerStep: Playback.getMilliseconds(120)
                 },
                 swing: {
                     amount: 0,
@@ -136,6 +161,77 @@ class Oontzr {
      */
     patternExists(id) {
         return this._s.patternExists(id);
+    }
+
+    /**
+     * @method play
+     * @param {Boolean} doRewind Determines whether or not the playback head should be rewound before playing
+     * @returns Boolean
+     */
+    play(doRewind) {
+
+        if (doRewind) this.rewind();
+
+        // Step through the patterns
+        this.playNextStep();
+
+        // Enable playback
+        return this._s.isPlaying = true;
+    }
+
+    /**
+     * @method playNextStep
+     * @returns null
+     */
+    playNextStep() {
+
+        setTimeout(() => {
+            // Walk the Pattern Array
+            for (const id in this._s.patterns) {
+                // Get current Step
+                const {
+                    currentStep,
+                    step
+                } = this._s.patterns[id].getStep();
+
+                /**
+                 * @todo Implement audio playback
+                 */
+                // if (step.isActive) {
+                //     const stepAudio = new Audio();
+                //     stepAudio.src = `./samples/${this._s.samples[this._s.patterns[id].sample].filename}`;
+                //     stepAudio.play();
+                // }
+
+                // Redraw canvas
+                this._s.patterns[id].drawPattern();
+            }
+
+            // If playback hasn't been stopped, play the next Step
+            if (this._s.isPlaying) this.playNextStep();
+        }, this._s.playback.tempo.msPerStep);
+    }
+
+    /**
+     * @method rewind
+     * @returns null
+     */
+    rewind() {
+
+        // Walk through the Pattern Array
+        for (const id in this._s.patterns) {
+            // Reset the Pattern instance's currentStep
+            this._s.patterns[id].currentStep = 0;
+        }
+    }
+
+    /**
+     * @method pause
+     * @returns Boolean
+     */
+    pause() {
+        // Disable playback
+        return this._s.isPlaying = false;
     }
 }
 

@@ -1,0 +1,18 @@
+:root {
+    --oontzr-border-width: .1rem;
+    --oontzr-border-color: rgb(204, 204, 204);
+    --oontzr-border-radius: .5rem;
+
+    --oontzr-margin-base: .5rem;
+}
+
+html {
+    font-size: 16px;
+}
+
+canvas.pattern-lane {
+    border: var(--oontzr-border-width) solid var(--oontzr-border-color);
+    border-radius: var(--oontzr-border-radius);
+    display: block;
+    margin: var(--oontzr-margin-base) 0;
+}
