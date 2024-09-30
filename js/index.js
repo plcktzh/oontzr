@@ -37,7 +37,7 @@ function _09f() {
         console.debug(oontzr.patternExists(ptn1.id));
 
         const ptn2 = oontzr.createPattern({
-            patternLength: 12
+            patternLength: 64
         });
         oontzr.parent.append(ptn2.output.canvas);
 

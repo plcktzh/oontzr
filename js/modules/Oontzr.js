@@ -47,10 +47,10 @@ class Oontzr {
         STEP_HEIGHT: 32,
         STEP_GAP: 2,
         CANVAS_PADDING: 8,
-        STEP_COLOR_ACTIVE: 'rgb(102, 102, 102)',
-        STEP_COLOR_ACTIVE_CURRENT: 'rgba(153, 51, 0)',
-        STEP_COLOR_INACTIVE: 'rgb(204, 204, 204)',
-        STEP_COLOR_INACTIVE_CURRENT: 'rgba(204, 102, 0)'
+        STEP_COLOR_ACTIVE: 'rgb(11, 165, 170)',
+        STEP_COLOR_ACTIVE_CURRENT: 'rgba(218, 0, 69)',
+        STEP_COLOR_INACTIVE: 'rgb(240, 240, 240)',
+        STEP_COLOR_INACTIVE_CURRENT: 'rgba(169, 217, 218)'
     };
 
     /**
