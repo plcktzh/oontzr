@@ -127,6 +127,16 @@ class Oontzr {
     clonePattern(id) {
         return this._s.clonePattern(id);
     }
+
+    /**
+     * @method patternExists
+     * @param {String} id The ID of the Pattern to be cloned
+     * @returns Boolean
+     * @see State.patternExists
+     */
+    patternExists(id) {
+        return this._s.patternExists(id);
+    }
 }
 
 export default Oontzr;

@@ -21,6 +21,8 @@ function _09f() {
     }));
 
     console.debug(oontzr.deletePattern(ptn0.id));
+
+    console.debug(oontzr.patternExists(ptn1.id));
 };
 
 _09f();

@@ -156,6 +156,15 @@ class State {
             return null;
         }
     }
+
+    /**
+     * @method patternExists
+     * @param {String} id The ID of the Pattern to be checked
+     * @returns Boolean
+     */
+    patternExists(id) {
+        return this.patterns[id] instanceof Pattern;
+    }
 }
 
 export default State;
