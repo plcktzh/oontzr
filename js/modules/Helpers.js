@@ -106,7 +106,7 @@ class Helpers {
      * @static
      * @method buildConfigFromData
      * @param {HTMLElement} element The HTMLElement containing the data attributes to be read
-     * @param {Object} prefix An Object containing at least 2 properties: asString, asRegexp
+     * @param {Object} prefix An Object containing at least 2 properties: AS_STRING, AS_REGEXP
      * @returns Object
      */
     static buildConfigFromData(element, prefix) {
@@ -118,10 +118,10 @@ class Helpers {
         [].forEach.call(element.attributes, attribute => {
 
             // Check if <attribute>'s name matches the prefix RegExp
-            if (prefix.asRegexp.test(attribute.name)) {
+            if (prefix.AS_REGEXP.test(attribute.name)) {
 
                 // Remove the prefix String from the beginning of <attribute>'s name, then replace all hyphens/dashes (-) from the resulting String, and convert that result to camelCase.
-                const configItem = attribute.name.substr(-(attribute.name.length - prefix.asString.length)).replace(/-(.)/g, ($0, $1) => {
+                const configItem = attribute.name.substr(-(attribute.name.length - prefix.AS_STRING.length)).replace(/-(.)/g, ($0, $1) => {
                     return $1.toUpperCase();
                 });
 
@@ -143,6 +143,17 @@ class Helpers {
     static async getJson(jsonFile) {
 
         return fetch(jsonFile).then(response => response.json());
+    }
+
+    /**
+     * @static
+     * @method getRandomId
+     * @param {String} prefix The prefix for the ID to be created
+     * @returns String
+     */
+    static getRandomId(prefix) {
+
+        return `${prefix}${self.crypto.getRandomValues(new Uint32Array(1))}`;
     }
 }
 

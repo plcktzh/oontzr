@@ -7,6 +7,16 @@ function _09f() {
     const oontzr = new Oontzr('#oontzr');
 
     console.debug(oontzr._s);
+
+    const ptn0 = oontzr.createPattern();
+
+    console.debug(oontzr.readPattern(ptn0.id));
+
+    console.debug(oontzr.updatePattern(ptn0.id, {
+        chokesPattern: 'test'
+    }));
+
+    console.debug(oontzr.deletePattern(ptn0.id));
 };
 
 _09f();

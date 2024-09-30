@@ -1,4 +1,6 @@
 import Helpers from './Helpers.js';
+import Oontzr from './Oontzr.js';
+import Pattern from './Pattern.js';
 import Playback from './Playback.js';
 import SamplePool from './SamplePool.js';
 
@@ -15,7 +17,7 @@ class State {
      * @property {Array} patterns An Array containing all Patterns
      * @property {SamplePool} samples A SamplePool of all available Samples
      */
-    parent;
+    parent = null;
     language = '';
     playback = {
         tempo: {
@@ -51,6 +53,88 @@ class State {
         this.samples = new SamplePool(parent._c.samplesJson);
 
         return this;
+    }
+
+    /**
+     * @method createPattern
+     * @param {Object} args An optional initialisation Object
+     * @returns Pattern|null
+     */
+    createPattern(args) {
+
+        try {
+            args = {
+                ...args,
+                id: Helpers.getRandomId(Oontzr.PREFIXES.PATTERN)
+            };
+
+            this.patterns[args.id] = new Pattern(this, args);
+
+            /**
+             * @todo Add updateSteps method
+             * @todo Initialise and append canvas
+             * @todo Draw pattern on canvas
+             */
+
+            return this.patterns[args.id];
+        } catch (e) {
+            console.error(`Pattern could not be created. ${e}`);
+            return null;
+        }
+    }
+
+    /**
+     * @method readPattern
+     * @param {String} id The ID of the Pattern to be retrieved
+     * @returns Pattern|null
+     */
+    readPattern(id) {
+
+        try {
+            return this.patterns[id];
+        } catch (e) {
+            console.error(`Pattern could not be found. ${e}`);
+            return null;
+        }
+    }
+
+    /**
+     * @method updatePattern
+     * @param {String} id The ID of the Pattern to be updated
+     * @param {Object} args An optional initialisation Object
+     * @returns Pattern
+     */
+    updatePattern(id, args) {
+
+        try {
+            // Transfer properties from optional arguments
+            Helpers.transferProps(this.patterns[id], args);
+
+            /**
+             * @todo Add updateSteps method
+             */
+
+            return this.patterns[id];
+        } catch (e) {
+            console.error(`Pattern could not be updated. ${e}`);
+            return this.patterns[id];
+        }
+    }
+
+    /**
+     * @method deletePattern
+     * @param {String} id The ID of the Pattern to be updated
+     * @returns Boolean
+     */
+    deletePattern(id) {
+
+        try {
+            return (delete this.patterns[id]);
+        } catch (e) {
+            console.error(`Pattern could not be deleted. ${e}`);
+            return this.patterns[id];
+        }
+
     }
 }
 

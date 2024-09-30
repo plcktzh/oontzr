@@ -8,7 +8,7 @@ class Oontzr {
 
     /**
      * @static 
-     * @property {Object} PATTERN_TYPES An object containing strings for different types of pattern
+     * @property {Object} PATTERN_TYPES An Object containing strings for different types of pattern
      */
     static PATTERN_TYPES = {
         EUCLIDEAN: 'euclidean',
@@ -19,21 +19,32 @@ class Oontzr {
 
     /**
      * @static
-     * @property {Object} DATA_ATTRIBUTE_PREFIX An object containing the data attribute prefix for Oontzr as both String and RegExp
+     * @property {Object} DATA_ATTRIBUTE_PREFIX An Object containing the data attribute prefix for Oontzr as both String and RegExp
      */
     static DATA_ATTRIBUTE_PREFIX = {
-        asString: 'data-oontzr-',
-        asRegexp: /^data-oontzr-/
-    }
+        AS_STRING: 'data-oontzr-',
+        AS_REGEXP: /^data-oontzr-/
+    };
+
+    /**
+     * @static
+     * @property {Object} PREFIXES An Object containing prefixes for various items
+     */
+    static PREFIXES = {
+        PATTERN: 'ptn_',
+        STEP: 'stp_',
+        SAMPLE: 'smp_',
+        CANVAS: 'cnv_'
+    };
 
     /**
      * @property {Element} parent The parent element of the Oontzr instance
      * @property {Object} _c An object containing configuration options, built from data attributes
      * @property {State} _s The Oontzr instance's State
      */
-    parent;
+    parent = null;
     _c = {};
-    _s;
+    _s = null;
 
     /**
      * @constructor
@@ -64,6 +75,43 @@ class Oontzr {
             patterns: [],
             samples: null
         });
+    }
+
+    /**
+     * @method createPattern
+     * @param {Object} args An optional initialisaiton Object
+     * @returns Pattern
+     */
+    createPattern(args) {
+        return this._s.createPattern(args);
+    }
+
+    /**
+     * readPattern
+     * @param {String} id The ID of the Pattern to be retrieved
+     * @returns Pattern
+     */
+    readPattern(id) {
+        return this._s.readPattern(id);
+    }
+
+    /**
+     * updatePattern
+     * @param {String} id The ID of the Pattern to be updated
+     * @param {Object} args An optional initialisation Object
+     * @returns Pattern
+     */
+    updatePattern(id, args) {
+        return this._s.updatePattern(id, args);
+    }
+
+    /**
+     * @method deletePattern
+     * @param {String} id The ID of the Pattern to be deleted
+     * @returns Boolean
+     */
+    deletePattern(id) {
+        return this._s.deletePattern(id);
     }
 }
 
