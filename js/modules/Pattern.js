@@ -139,6 +139,24 @@ class Pattern {
     nudgeRight() {
         return this.shiftPattern(1);
     }
+
+    /**
+     * @async
+     * @method setSample
+     * @param {String} id The ID of the Sample to be assigned to the pattern
+     * @returns null
+     */
+    async setSample(id) {
+
+        // Wait for Promise from SamplePool.getSample to be resolved or rejected
+        this.sample = await this.parent.samples.getSample(id).then(res => {
+            // return SamplePool[id]
+            res[id];
+        }).catch(e => {
+            // Output an error message
+            console.error(e);
+        });
+    }
 }
 
 export default Pattern;
