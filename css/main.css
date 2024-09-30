@@ -1,18 +1,37 @@
 :root {
+    --oontzr-color-white: rgb(255, 255, 255);
+    --oontzr-color-black: rgb(19, 19, 19);
+    --oontzr-color-gray-dark: rgb(66, 66, 66);
+    --oontzr-color-gray-medium: rgb(170, 170, 170);
+    --oontzr-color-gray-light: rgb(204, 204, 204);
+    --oontzr-color-gray-lightest: rgb(240, 240, 240);
+    --oontzr-color-primary: rgb(11, 165, 170);
+    --oontzr-color-primary-light: rgb(169, 217, 218);
+    --oontzr-color-secondary: rgb(218, 0, 69);
+
     --oontzr-border-width: .1rem;
-    --oontzr-border-color: rgb(204, 204, 204);
+    --oontzr-border-color: var(--oontzr-color-gray-light);
     --oontzr-border-radius: .5rem;
 
     --oontzr-margin-base: .5rem;
 }
 
 html {
+    color: var(--oontzr-color-black);
     font-size: 16px;
 }
 
+body {
+    background-color: var(--oontzr-color-gray-light);
+    margin: 0;
+    padding: 0;
+}
+
 canvas.pattern-lane {
+    background-color: var(--oontzr-color-white);
     border: var(--oontzr-border-width) solid var(--oontzr-border-color);
     border-radius: var(--oontzr-border-radius);
+    box-shadow: 0 0 1rem rgba(0, 0, 0, .125);
     display: block;
     margin: var(--oontzr-margin-base) 0;
 }
