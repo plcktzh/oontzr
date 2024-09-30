@@ -1,8 +1,12 @@
+import Oontzr from './modules/Oontzr.js';
+
 function _09f() {
 
     window._09f = _09f;
 
-    console.log('Hello.');
+    const oontzr = new Oontzr('#oontzr');
+
+    console.debug(oontzr._s);
 };
 
 _09f();
