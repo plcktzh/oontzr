@@ -12,6 +12,10 @@ function _09f() {
 
     console.debug(oontzr.readPattern(ptn0.id));
 
+    const ptn1 = oontzr.clonePattern(ptn0.id);
+
+    console.debug(ptn1);
+
     console.debug(oontzr.updatePattern(ptn0.id, {
         chokesPattern: 'test'
     }));

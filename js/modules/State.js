@@ -132,9 +132,29 @@ class State {
             return (delete this.patterns[id]);
         } catch (e) {
             console.error(`Pattern could not be deleted. ${e}`);
-            return this.patterns[id];
+            return false;
         }
 
+    }
+
+    /**
+     * @method clonePattern
+     * @param {String} id The ID of the Pattern to be cloned
+     * @returns Pattern|null
+     */
+    clonePattern(id) {
+
+        try {
+            const source = this.readPattern(id);
+            const clone = this.createPattern();
+
+            Helpers.transferProps(clone, source, ['id']);
+
+            return clone;
+        } catch (e) {
+            console.error(`Pattern could not be cloned. ${e}`);
+            return null;
+        }
     }
 }
 

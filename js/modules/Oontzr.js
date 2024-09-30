@@ -80,7 +80,8 @@ class Oontzr {
     /**
      * @method createPattern
      * @param {Object} args An optional initialisaiton Object
-     * @returns Pattern
+     * @returns Pattern|null
+     * @see State.createPattern
      */
     createPattern(args) {
         return this._s.createPattern(args);
@@ -89,7 +90,8 @@ class Oontzr {
     /**
      * readPattern
      * @param {String} id The ID of the Pattern to be retrieved
-     * @returns Pattern
+     * @returns Pattern|null
+     * @see State.readPattern
      */
     readPattern(id) {
         return this._s.readPattern(id);
@@ -100,6 +102,7 @@ class Oontzr {
      * @param {String} id The ID of the Pattern to be updated
      * @param {Object} args An optional initialisation Object
      * @returns Pattern
+     * @see State.updatePattern
      */
     updatePattern(id, args) {
         return this._s.updatePattern(id, args);
@@ -109,9 +112,20 @@ class Oontzr {
      * @method deletePattern
      * @param {String} id The ID of the Pattern to be deleted
      * @returns Boolean
+     * @see State.deletePattern
      */
     deletePattern(id) {
         return this._s.deletePattern(id);
+    }
+
+    /**
+     * @method clonePattern
+     * @param {String} id The ID of the Pattern to be cloned
+     * @returns Pattern|null
+     * @see State.clonePattern
+     */
+    clonePattern(id) {
+        return this._s.clonePattern(id);
     }
 }
 
