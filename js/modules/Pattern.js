@@ -157,6 +157,17 @@ class Pattern {
             console.error(e);
         });
     }
+
+    setChokesPattern(id) {
+        try {
+            if (this.parent.patternExists(id)) this.chokesPattern = id;
+            else throw new Error(`Pattern '${id}' could not be found.`);
+        } catch (e) {
+            console.error(e);
+        }
+
+        return this;
+    }
 }
 
 export default Pattern;

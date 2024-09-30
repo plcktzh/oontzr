@@ -33,6 +33,8 @@ function _09f() {
         console.debug(oontzr.readPattern(ptn2.id));
         oontzr._s.readPattern(ptn2.id).setSample('dbi_bd');
         console.debug(oontzr.readPattern(ptn2.id));
+
+        console.debug(oontzr.readPattern(ptn2.id).setChokesPattern(ptn1.id));
     }, 2000);
 };
 
