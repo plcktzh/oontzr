@@ -1,5 +1,6 @@
 import Helpers from './Helpers.js';
 import Oontzr from './Oontzr.js';
+import Euclidean from './pattern-types/Euclidean.js';
 import Random from './pattern-types/Random.js';
 
 /**
@@ -43,6 +44,9 @@ class Pattern {
             case Oontzr.PATTERN_TYPES.CELLULAR.TYPE:
             case Oontzr.PATTERN_TYPES.TR.TYPE:
             case Oontzr.PATTERN_TYPES.EUCLIDEAN.TYPE:
+                this.parameters = new Euclidean(args);
+                this.updateSteps(this.parameters);
+                break;
             case Oontzr.PATTERN_TYPES.RANDOM.TYPE:
             default:
                 this.parameters = new Random(args);
