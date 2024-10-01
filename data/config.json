@@ -54,6 +54,7 @@
             "inactive-current": "rgb(169, 217, 218)"
         }
     },
+    "samples-directory": "samples/",
     "samples": [{
         "id": "dbi_bd",
         "name": "DrumBrute Impact Bass Drum",
