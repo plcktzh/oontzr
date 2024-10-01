@@ -1,4 +1,7 @@
 {
+    "event-types": {
+        "app-loaded": "app-loaded"
+    },
     "pattern-types": {
         "euclidean": {
             "type": "euclidean",

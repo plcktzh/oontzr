@@ -14,6 +14,9 @@
     --oontzr-border-radius: .5rem;
 
     --oontzr-margin-base: .5rem;
+
+    --oontzr-duration-base: 500ms;
+    --oontzr-duration-long: 2500ms;
 }
 
 html {
@@ -26,6 +29,47 @@ body {
     margin: 0;
     padding: 0;
 }
+
+#oontzr_loader {
+    align-items: center;
+    background-color: var(--oontzr-color-white);
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: all var(--oontzr-duration-base) ease-in-out;
+    z-index: 500;
+}
+
+.fade-out#oontzr_loader {
+    opacity: 0;
+}
+
+#oontzr_loader svg {
+    width: 10vw;
+}
+
+#oontzr_loader svg path {
+    fill: var(--oontzr-color-primary-light);
+    animation-duration: var(--oontzr-duration-long);
+    animation-name: hueRotate;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes hueRotate {
+    from {
+        fill: var(--oontzr-color-primary);
+    }
+
+    to {
+        fill: var(--oontzr-color-primary-light);
+    }
+}
+
 
 canvas.pattern-lane {
     background-color: var(--oontzr-color-white);

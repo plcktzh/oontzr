@@ -1,4 +1,5 @@
 import Helpers from './Helpers.js';
+import Loader from './Loader.js';
 import Playback from './Playback.js';
 import SamplePool from './SamplePool.js';
 import State from './State.js';
@@ -16,6 +17,12 @@ class Oontzr {
         AS_STRING: 'data-oontzr-',
         AS_REGEXP: /^data-oontzr-/
     };
+
+    /**
+     * @static 
+     * @property {Object} EVENT_TYPES An Object containing strings for different types of CustomEvent
+     */
+    static EVENT_TYPES;
 
     /**
      * @static 
@@ -49,10 +56,12 @@ class Oontzr {
 
     /**
      * @property {Element} parent The parent element of the Oontzr instance
+     * @property {Element} loader A Loader instance
      * @property {Object} _c An object containing configuration options, built from data attributes
      * @property {State} _s The Oontzr instance's State
      */
     parent = null;
+    loader = null;
     _s = null;
 
     /**
@@ -66,6 +75,9 @@ class Oontzr {
 
         // Build config object
         Helpers.buildConfigFromDataAttribute(this, this.parent, Oontzr.DATA_ATTRIBUTE_PREFIX);
+
+        this.loader = new Loader();
+        this.parent.append(this.loader.loader);
 
         this.initialiseOontzr();
     }
@@ -109,6 +121,10 @@ class Oontzr {
 
             // Initialise and assign SamplePool
             this._s.samples = new SamplePool(Oontzr.SAMPLES);
+        }).finally(() => {
+
+            this.loader.detach();
+            document.dispatchEvent(new CustomEvent(Oontzr.EVENT_TYPES.APP_LOADED));
         });
     }
 
@@ -204,14 +220,16 @@ class Oontzr {
                     step
                 } = this._s.patterns[id].getStep();
 
-                /**
-                 * @todo Implement audio playback
-                 */
-                // if (step.isActive) {
-                //     const stepAudio = new Audio();
-                //     stepAudio.src = `./samples/${this._s.samples[this._s.patterns[id].sample].filename}`;
-                //     stepAudio.play();
-                // }
+                if (this._s.patterns[id].sample !== null) {
+
+                    const stepAudio = new Audio();
+                    stepAudio.src = `${ Oontzr.SAMPLES_DIRECTORY }${ this._s.patterns[id].sample.filename }`;
+
+                    if (step.isActive) {
+                        stepAudio.volume = step.velocity / Oontzr.PATTERN_PARAMETERS.VELOCITY_MAX;
+                        stepAudio.play();
+                    } else stepAudio.volume = 0;
+                }
 
                 // Redraw canvas
                 this._s.patterns[id].drawPattern();
