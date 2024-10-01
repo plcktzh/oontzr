@@ -182,6 +182,8 @@ class Pattern {
         this.steps.forEach(step => {
             step.setVelocity();
         });
+
+        if (this.output.canvas) this.drawPattern();
     }
 
     /**
