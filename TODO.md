@@ -2,8 +2,8 @@
 
 ## Patterns
 
-- Add more Pattern Types (Euclidean, Cellular, TR)
-- Add Randomise on Pattern repeat
+- Add more Pattern Types (Euclidean :heavy_check_mark:, Cellular :heavy_check_mark:, TR)
+- Add Randomise on Pattern repeat :heavy_check_mark:
 
 ## Playback
 

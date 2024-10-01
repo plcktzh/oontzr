@@ -14,6 +14,12 @@
             }, {
                 "name": "patternOffset",
                 "initialValue": 0
+            }, {
+                "name": "doRandomizeVelocities",
+                "initialValue": false
+            }, {
+                "name": "doRandomize",
+                "initialValue": false
             }]
         },
         "random": {
@@ -24,13 +30,38 @@
             }, {
                 "name": "patternOffset",
                 "initialValue": 0
+            }, {
+                "name": "doRandomizeVelocities",
+                "initialValue": false
+            }, {
+                "name": "doRandomize",
+                "initialValue": false
             }]
         },
         "tr": {
             "type": "tr"
         },
         "cellular": {
-            "type": "cellular"
+            "type": "cellular",
+            "parameters": [{
+                "name": "patternLength",
+                "initialValue": 64
+            }, {
+                "name": "numSeeds",
+                "initialValue": 1
+            }, {
+                "name": "doCenterSeeds",
+                "initialValue": true
+            }, {
+                "name": "doRandomizeVelocities",
+                "initialValue": false
+            }, {
+                "name": "wrapAround",
+                "initialValue": false
+            }, {
+                "name": "doRandomize",
+                "initialValue": true
+            }]
         }
     },
     "pattern-parameters": {

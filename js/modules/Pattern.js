@@ -1,5 +1,6 @@
 import Helpers from './Helpers.js';
 import Oontzr from './Oontzr.js';
+import Cellular from './pattern-types/Cellular.js';
 import Euclidean from './pattern-types/Euclidean.js';
 import Random from './pattern-types/Random.js';
 
@@ -42,14 +43,17 @@ class Pattern {
         switch (args.type) {
 
             case Oontzr.PATTERN_TYPES.CELLULAR.TYPE:
+                this.parameters = new Cellular(this, args);
+                this.updateSteps(this.parameters);
+                break;
             case Oontzr.PATTERN_TYPES.TR.TYPE:
             case Oontzr.PATTERN_TYPES.EUCLIDEAN.TYPE:
-                this.parameters = new Euclidean(args);
+                this.parameters = new Euclidean(this, args);
                 this.updateSteps(this.parameters);
                 break;
             case Oontzr.PATTERN_TYPES.RANDOM.TYPE:
             default:
-                this.parameters = new Random(args);
+                this.parameters = new Random(this, args);
                 this.updateSteps(this.parameters);
                 break;
         }
@@ -75,6 +79,9 @@ class Pattern {
         // (Re)build steps Array and shift it
         this.steps = this.parameters.buildPattern(args);
         this.steps = this.shiftPattern(this.parameters.patternOffset);
+
+        // Randomize Step velocities if parameter is set
+        if (this.parameters.doRandomizeVelocities) this.randomizeStepVelocities();
 
         // If canvas exists, (re)draw the Pattern
         if (this.output.canvas) this.drawPattern();

@@ -11,7 +11,13 @@ async function _09f() {
 
     document.addEventListener('app-loaded', (e) => {
 
-        const ptn0 = oontzr.createPattern();
+        const ptn0 = oontzr.createPattern({
+            type: 'cellular',
+            doCenterSeeds: false,
+            numSeeds: 3,
+            doRandomize: true,
+            doRandomizeVelocities: true
+        });
         oontzr.parent.append(ptn0.output.canvas);
 
         const ptn1 = oontzr.clonePattern(ptn0.id);
@@ -21,7 +27,8 @@ async function _09f() {
         });
 
         const ptn2 = oontzr.createPattern({
-            patternLength: 24
+            type: 'euclidean',
+            doRandomizeVelocities: true
         });
         oontzr.parent.append(ptn2.output.canvas);
 

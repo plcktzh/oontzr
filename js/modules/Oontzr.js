@@ -79,10 +79,10 @@ class Oontzr {
         this.loader = new Loader();
         this.parent.append(this.loader.loader);
 
-        this.initialiseOontzr();
+        this.initializeOontzr();
     }
 
-    async initialiseOontzr() {
+    async initializeOontzr() {
 
         // Get config file
         Helpers.getJson(this['configJson']).then(response => response.json()).then(data => {
@@ -216,7 +216,7 @@ class Oontzr {
             for (const id in this._s.patterns) {
                 // Get current Step
                 const {
-                    currentStep,
+                    index,
                     step
                 } = this._s.patterns[id].getStep();
 
@@ -229,6 +229,16 @@ class Oontzr {
                         stepAudio.volume = step.velocity / Oontzr.PATTERN_PARAMETERS.VELOCITY_MAX;
                         stepAudio.play();
                     } else stepAudio.volume = 0;
+                }
+
+                if (index === Object.keys(this._s.patterns[id].steps).length - 1) {
+                    // If "playback head" is on the last step in the pattern, check whether the pattern should be randomized on each repeat
+                    if (this._s.patterns[id].parameters.doRandomize) {
+                        // Randomize pattern steps
+                        this._s.patterns[id].steps = this._s.patterns[id].parameters.randomizePattern(this._s.patterns[id].steps);
+                        // If velocities should also be randomized on each repeat, call Pattern.randomizeStepVelocities
+                        if (this._s.patterns[id].parameters.doRandomizeVelocities) this._s.patterns[id].randomizeStepVelocities();
+                    }
                 }
 
                 // Redraw canvas

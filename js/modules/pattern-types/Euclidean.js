@@ -1,5 +1,6 @@
 import Helpers from '../Helpers.js';
 import Oontzr from '../Oontzr.js';
+import Pattern from '../Pattern.js';
 import PatternType from '../PatternType.js';
 import Step from '../Step.js';
 
@@ -11,18 +12,23 @@ class Euclidean extends PatternType {
 
     /**
      * @property {String} type The Pattern type
-     * @property {Number} patternLength The length of the Pattern
-     * @property {Number} patternOffset The offset of the Pattern
+     * @property {Boolean} doRandomize Randomize the Pattern on loop
+     * @property {Pattern} parent The parent Pattern
      */
     type = 'euclidean';
+    doRandomize = false;
+    parent = null;
 
     /**
      * @constructor
+     * @param {Pattern} parent The parent Pattern
      * @param {Object} args An optional initialisation Object
      * @returns PatternType
      */
-    constructor(args) {
+    constructor(parent, args) {
         super(args);
+
+        this.parent = parent;
 
         Oontzr.PATTERN_TYPES.EUCLIDEAN.PARAMETERS.forEach(parameter => {
             this[parameter.name] = parameter.initialValue;
@@ -121,6 +127,16 @@ class Euclidean extends PatternType {
         });
 
         return steps_out;
+    }
+
+    /**
+     * @method randomizePattern
+     * @returns Array
+     */
+    randomizePattern() {
+
+        // Return the Steps Array, shifted by a random offset between -this.patternLength and this.patternLength
+        return this.parent.shiftPattern(Math.round(Math.random() * this.patternLength * 2) - this.patternLength);
     }
 }
 
