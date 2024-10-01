@@ -1,3 +1,5 @@
+import Oontzr from './Oontzr.js';
+
 /**
  * @class Helpers
  */
@@ -214,6 +216,51 @@ class Helpers {
     static getRandomId(prefix) {
 
         return `${prefix}${self.crypto.getRandomValues(new Uint32Array(1))}`;
+    }
+
+    /**
+     * @static
+     * @method checkCollision
+     * @param {*} mouseCoordinates
+     * @param {*} stepCoordinates
+     * @returns Boolean
+     */
+    static checkCollision(mouseCoordinates, stepCoordinates) {
+
+        return (mouseCoordinates.x <= stepCoordinates.x + stepCoordinates.w && mouseCoordinates.x >= stepCoordinates.x && mouseCoordinates.y <= stepCoordinates.y + stepCoordinates.h && mouseCoordinates.y >= stepCoordinates.y);
+    }
+
+    /**
+     * @static
+     * @method checkClickedStep
+     * @param {Object} mouseCoordinates The position of the mouse pointer on click
+     * @param {Array} steps The Pattern's steps Array
+     */
+    static checkClickedStep(mouseCoordinates, steps) {
+
+        let output = {};
+
+        steps.forEach((step, index) => {
+
+            // The number of gaps between steps is 0..index-1
+            const numGaps = (index === 0) ? 0 : index - 1;
+
+            // Calculate the current <step>'s coordinates
+            const stepCoordinates = {
+                x: Oontzr.CANVAS_ATTRIBUTES.CANVAS_PADDING + index * Oontzr.CANVAS_ATTRIBUTES.STEP_WIDTH + numGaps * Oontzr.CANVAS_ATTRIBUTES.STEP_GAP,
+                y: Oontzr.CANVAS_ATTRIBUTES.CANVAS_PADDING,
+                w: Oontzr.CANVAS_ATTRIBUTES.STEP_WIDTH,
+                h: Oontzr.CANVAS_ATTRIBUTES.STEP_HEIGHT
+            };
+
+            // On collision between mouse and <step>, return an object containing both the index and step
+            if (Helpers.checkCollision(mouseCoordinates, stepCoordinates)) output = {
+                index: index,
+                step: step
+            };
+        });
+
+        return output;
     }
 }
 

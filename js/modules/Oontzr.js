@@ -172,11 +172,12 @@ class Oontzr {
     /**
      * @method clonePattern
      * @param {String} id The ID of the Pattern to be cloned
+     * @param {Object} args An optional initialisation Object
      * @returns Pattern|null
      * @see State.clonePattern
      */
-    clonePattern(id) {
-        return this._s.clonePattern(id);
+    clonePattern(id, args) {
+        return this._s.clonePattern(id, args);
     }
 
     /**

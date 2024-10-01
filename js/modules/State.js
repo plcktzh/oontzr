@@ -131,15 +131,19 @@ class State {
     /**
      * @method clonePattern
      * @param {String} id The ID of the Pattern to be cloned
+     * @param {Object} args An optional initialisation Object
      * @returns Pattern|null
      */
-    clonePattern(id) {
+    clonePattern(id, args) {
 
         try {
             const source = this.readPattern(id);
-            const clone = this.createPattern();
+            const clone = this.createPattern({
+                type: source.parameters.type
+            });
 
             Helpers.transferProps(clone, source, ['id']);
+            if (args) Helpers.transferProps(clone, args);
 
             return clone;
         } catch (e) {

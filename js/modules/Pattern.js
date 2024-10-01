@@ -3,6 +3,8 @@ import Oontzr from './Oontzr.js';
 import Cellular from './pattern-types/Cellular.js';
 import Euclidean from './pattern-types/Euclidean.js';
 import Random from './pattern-types/Random.js';
+import TR from './pattern-types/TR.js';
+import Step from './Step.js';
 
 /**
  * @class Pattern
@@ -47,6 +49,9 @@ class Pattern {
                 this.updateSteps(this.parameters);
                 break;
             case Oontzr.PATTERN_TYPES.TR.TYPE:
+                this.parameters = new TR(this, args);
+                this.updateSteps(this.parameters);
+                break;
             case Oontzr.PATTERN_TYPES.EUCLIDEAN.TYPE:
                 this.parameters = new Euclidean(this, args);
                 this.updateSteps(this.parameters);
@@ -61,7 +66,37 @@ class Pattern {
         // Transfer properties from optional arguments
         Helpers.transferProps(this, args, ['parameters']);
 
+        // Initialize canvas and append it to Oontzr's container
         this.initCanvas();
+        this.parent.parent.parent.append(this.output.canvas);
+
+        // For TR style Patterns, add an event listener for mouse clicks
+        if (this.parameters.type === Oontzr.PATTERN_TYPES.TR.TYPE) this.output.canvas.addEventListener('click', (e) => {
+
+            // Get mouse's coordinates in relation to the canvas' position in the browser window
+            const mouseCoordinates = {
+                x: e.clientX - this.output.canvas.getBoundingClientRect().x,
+                y: e.clientY - this.output.canvas.getBoundingClientRect().y
+            };
+
+            // Check which Step has been clicked
+            const {
+                index,
+                step
+            } = Helpers.checkClickedStep(mouseCoordinates, this.steps);
+
+            // "Invert" the Step that was clicked
+            if (step) {
+
+                this.steps[index] = new Step({
+                    isActive: !step.isActive,
+                    velocity: (step.isActive) ? 0 : 127
+                });
+
+                // Update canvas
+                this.drawPattern();
+            }
+        });
 
         return this;
     }

@@ -39,7 +39,20 @@
             }]
         },
         "tr": {
-            "type": "tr"
+            "type": "tr",
+            "parameters": [{
+                "name": "patternLength",
+                "initialValue": 16
+            }, {
+                "name": "patternOffset",
+                "initialValue": 0
+            }, {
+                "name": "doRandomizeVelocities",
+                "initialValue": false
+            }, {
+                "name": "doRandomize",
+                "initialValue": false
+            }]
         },
         "cellular": {
             "type": "cellular",
