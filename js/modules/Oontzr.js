@@ -53,7 +53,6 @@ class Oontzr {
      * @property {State} _s The Oontzr instance's State
      */
     parent = null;
-    _c = {};
     _s = null;
 
     /**
@@ -66,7 +65,7 @@ class Oontzr {
         this.parent = Helpers.dqs(containerSelector);
 
         // Build config object
-        this._c = Helpers.buildConfigFromDataAttribute(this.parent, Oontzr.DATA_ATTRIBUTE_PREFIX);
+        Helpers.buildConfigFromDataAttribute(this, this.parent, Oontzr.DATA_ATTRIBUTE_PREFIX);
 
         this.initialiseOontzr();
     }
@@ -74,7 +73,7 @@ class Oontzr {
     async initialiseOontzr() {
 
         // Get config file
-        Helpers.getJson(this._c['configJson']).then(response => response.json()).then(data => {
+        Helpers.getJson(this['configJson']).then(response => response.json()).then(data => {
 
             let configObject = {};
 

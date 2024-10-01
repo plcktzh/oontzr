@@ -130,14 +130,12 @@ class Helpers {
     /**
      * @static
      * @method buildConfigFromDataAttribute
+     * @param {Object} target The target Object to assign the new properties to
      * @param {HTMLElement} element The HTMLElement containing the data attributes to be read
      * @param {Object} prefix An Object containing at least 2 properties: AS_STRING, AS_REGEXP
-     * @returns Object
+     * @returns null
      */
-    static buildConfigFromDataAttribute(element, prefix) {
-
-        // Create an empty Object
-        let output = {};
+    static buildConfigFromDataAttribute(target, element, prefix) {
 
         // Call an empty Array's forEach method on <element>'s attributes Array
         [].forEach.call(element.attributes, attribute => {
@@ -150,12 +148,10 @@ class Helpers {
                     return $1.toUpperCase();
                 });
 
-                // Add a new property to <output> and assign <attribute>'s value
-                output[configItem] = attribute.value;
+                // Add a new property to <target> and assign <attribute>'s value
+                target[configItem] = attribute.value;
             }
         });
-
-        return output;
     }
 
     /**
