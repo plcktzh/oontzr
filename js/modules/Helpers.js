@@ -48,6 +48,16 @@ class Helpers {
 
     /**
      * @static
+     * @method isArr
+     * @param {*} variable The item to be tested
+     * @returns Boolean
+     */
+    static isArr(variable) {
+        return Array.isArray(variable);
+    }
+
+    /**
+     * @static
      * @method isInObj
      * @param {Object} obj The Object to be tested for the presence of <property>
      * @param {String} property The property to be looked up in <obj>
@@ -97,7 +107,7 @@ class Helpers {
         // Add 'parent' property by default if it's not already contained in <exceptions>
         if (!Helpers.isInArr(exceptions, 'parent')) exceptions = ['parent', ...exceptions];
 
-        // If <properties> is not an Object, there's no point continuing.
+        // If <properties> is not an Object, there's no point in continuing.
         if (!Helpers.isObj(properties)) return;
 
         // Walk the <properties> Object
@@ -119,12 +129,12 @@ class Helpers {
 
     /**
      * @static
-     * @method buildConfigFromData
+     * @method buildConfigFromDataAttribute
      * @param {HTMLElement} element The HTMLElement containing the data attributes to be read
      * @param {Object} prefix An Object containing at least 2 properties: AS_STRING, AS_REGEXP
      * @returns Object
      */
-    static buildConfigFromData(element, prefix) {
+    static buildConfigFromDataAttribute(element, prefix) {
 
         // Create an empty Object
         let output = {};
@@ -150,14 +160,53 @@ class Helpers {
 
     /**
      * @static
-     * @async
+     * @method transformJSONData
+     * @param {Object} target The Object to be populated with <properties>
+     * @param {Object} properties The Object containing properties to be renamed and transferred onto <target>
+     * @returns null
+     */
+    static transformJSONData(target, properties) {
+
+        // If <properties> is not an Object, there's no point in continuing.
+        if (!Helpers.isObj(properties)) return;
+
+        // Walk the <properties> Object
+        for (const property in properties) {
+
+            // Transfer <properties>[abc-def] to <target>[ABC_DEF]
+            target[Helpers.transformStringToConstantName(property)] = properties[property];
+
+            // Check if <properties>[property] is an Object and not an Array
+            if (Helpers.isObj(properties[property]) && !Helpers.isArr(properties[property])) {
+                // If so, recursively call this method
+                Helpers.transformJSONData(target[Helpers.transformStringToConstantName(property)], properties[property]);
+            }
+
+            // Delete <target>[abc-def], since its content is now in <target>[ABC_DEF]
+            delete target[property];
+        }
+    }
+
+    /**
+     * @static
+     * @method transformStringToConstantName
+     * @param {String} inputString The String to be transformed from aBc-dEf to ABC_DEF
+     * @returns String
+     */
+    static transformStringToConstantName(inputString) {
+
+        return inputString.replace('-', '_').toUpperCase();
+    }
+
+    /**
+     * @static
      * @method getJson
      * @param {String} jsonFile The JSON file to be read
-     * @returns Object
+     * @returns Promise
      */
-    static async getJson(jsonFile) {
+    static getJson(jsonFile) {
 
-        return fetch(jsonFile).then(response => response.json());
+        return fetch(jsonFile);
     }
 
     /**

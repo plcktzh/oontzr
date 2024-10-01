@@ -49,9 +49,6 @@ class State {
         // Get tempo in milliseconds
         this.playback.tempo.msPerStep = Playback.getMilliseconds(this.playback.tempo.bpm);
 
-        // Initialise and assign SamplePool
-        this.samples = new SamplePool(parent._c.samplesJson);
-
         return this;
     }
 
@@ -81,15 +78,15 @@ class State {
     /**
      * @method readPattern
      * @param {String} id The ID of the Pattern to be retrieved
-     * @returns Pattern|null
+     * @returns Pattern
      */
     readPattern(id) {
 
         try {
-            return this.patterns[id];
+            if (this.patterns[id] !== null) return this.patterns[id];
+            else throw new Error(`Pattern could not be found.`);
         } catch (e) {
-            console.error(`Pattern could not be found. ${e}`);
-            return null;
+            console.error(e);
         }
     }
 
@@ -157,7 +154,7 @@ class State {
      * @returns Boolean
      */
     patternExists(id) {
-        return this.patterns[id] instanceof Pattern;
+        return (this.readPattern(id) !== undefined);
     }
 }
 

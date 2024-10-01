@@ -1,4 +1,5 @@
 import Helpers from '../Helpers.js';
+import Oontzr from '../Oontzr.js';
 import PatternType from '../PatternType.js';
 import Step from '../Step.js';
 
@@ -14,8 +15,6 @@ class Random extends PatternType {
      * @property {Number} patternOffset The offset of the Pattern
      */
     type = 'random';
-    patternLength = 0;
-    patternOffset = 0;
 
     /**
      * @constructor
@@ -24,6 +23,10 @@ class Random extends PatternType {
      */
     constructor(args) {
         super(args);
+
+        Oontzr.PATTERN_TYPES.RANDOM.PARAMETERS.forEach(parameter => {
+            this[parameter.name] = parameter.initialValue;
+        });
 
         // Transfer properties from optional arguments
         Helpers.transferProps(this, args);

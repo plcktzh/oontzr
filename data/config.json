@@ -1,0 +1,94 @@
+{
+    "pattern-types": {
+        "euclidean": {
+            "type": "euclidean",
+            "parameters": [{
+                "name": "patternLength",
+                "initialValue": 16
+            }, {
+                "name": "numEvents",
+                "initialValue": 4
+            }, {
+                "name": "patternOffset",
+                "initialValue": 0
+            }]
+        },
+        "random": {
+            "type": "random",
+            "parameters": [{
+                "name": "patternLength",
+                "initialValue": 16
+            }, {
+                "name": "patternOffset",
+                "initialValue": 0
+            }]
+        },
+        "tr": {
+            "type": "tr"
+        },
+        "cellular": {
+            "type": "cellular"
+        }
+    },
+    "pattern-parameters": {
+        "velocity-min": 16,
+        "velocity-max": 127,
+        "length-min": 1,
+        "length-max": 64
+    },
+    "prefixes": {
+        "pattern": "ptn_",
+        "step": "stp_",
+        "sample": "smp_",
+        "canvas": "cnv_"
+    },
+    "canvas-attributes": {
+        "step-width": 24,
+        "step-height": 32,
+        "step-gap": 2,
+        "canvas-padding": 8,
+        "step-color": {
+            "active": "rgb(11, 165, 178)",
+            "active-current": "rgb(218, 0, 69)",
+            "inactive": "rgb(240, 240, 240)",
+            "inactive-current": "rgb(169, 217, 218)"
+        }
+    },
+    "samples": [{
+        "id": "dbi_bd",
+        "name": "DrumBrute Impact Bass Drum",
+        "filename": "dbi_bd.wav"
+    }, {
+        "id": "dbi_sd",
+        "name": "DrumBrute Impact Snare",
+        "filename": "dbi_sd.wav"
+    }, {
+        "id": "dbi_cp",
+        "name": "DrumBrute Impact Clap",
+        "filename": "dbi_cp.wav"
+    }, {
+        "id": "dbi_th",
+        "name": "DrumBrute Impact Tom High",
+        "filename": "dbi_th.wav"
+    }, {
+        "id": "dbi_tl",
+        "name": "DrumBrute Impact Tom Low",
+        "filename": "dbi_tl.wav"
+    }, {
+        "id": "dbi_rc",
+        "name": "DrumBrute Impact Ride Cymbal",
+        "filename": "dbi_rc.wav"
+    }, {
+        "id": "dbi_cb",
+        "name": "DrumBrute Impact Cowbell",
+        "filename": "dbi_cb.wav"
+    }, {
+        "id": "dbi_ch",
+        "name": "DrumBrute Impact Closed Hihat",
+        "filename": "dbi_ch.wav"
+    }, {
+        "id": "dbi_oh",
+        "name": "DrumBrute Impact Open Hihat",
+        "filename": "dbi_oh.wav"
+    }]
+}

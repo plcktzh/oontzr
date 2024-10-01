@@ -6,8 +6,6 @@ function _09f() {
 
     const oontzr = new Oontzr('#oontzr');
 
-    console.debug(oontzr._s);
-
     setTimeout(() => {
 
         const ptn0 = oontzr.createPattern();
@@ -28,9 +26,7 @@ function _09f() {
 
         console.debug(oontzr.readPattern(ptn1.id));
 
-        console.debug(oontzr.updatePattern(ptn0.id, {
-            chokesPattern: 'test'
-        }));
+        console.debug(oontzr.readPattern(ptn0.id).setChokesPattern('test'));
 
         console.debug(oontzr.deletePattern(ptn0.id));
 

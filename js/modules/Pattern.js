@@ -40,15 +40,12 @@ class Pattern {
 
         switch (args.type) {
 
-            case Oontzr.PATTERN_TYPES.CELLULAR:
-            case Oontzr.PATTERN_TYPES.TR:
-            case Oontzr.PATTERN_TYPES.EUCLIDEAN:
-            case Oontzr.PATTERN_TYPES.RANDOM:
+            case Oontzr.PATTERN_TYPES.CELLULAR.TYPE:
+            case Oontzr.PATTERN_TYPES.TR.TYPE:
+            case Oontzr.PATTERN_TYPES.EUCLIDEAN.TYPE:
+            case Oontzr.PATTERN_TYPES.RANDOM.TYPE:
             default:
-                this.parameters = new Random({
-                    patternLength: args.patternLength || 16,
-                    patternOffset: args.patternOffset || 0
-                });
+                this.parameters = new Random(args);
                 this.updateSteps(this.parameters);
                 break;
         }
@@ -150,21 +147,13 @@ class Pattern {
     }
 
     /**
-     * @async
      * @method setSample
      * @param {String} id The ID of the Sample to be assigned to the pattern
      * @returns null
      */
-    async setSample(id) {
+    setSample(id) {
 
-        // Wait for Promise from SamplePool.getSample to be resolved or rejected
-        this.sample = await this.parent.samples.getSample(id).then(res => {
-            // return SamplePool[id]
-            res[id];
-        }).catch(e => {
-            // Output an error message
-            console.error(e);
-        });
+        this.sample = this.parent.samples.getSample(id);
     }
 
     /**
@@ -273,15 +262,15 @@ class Pattern {
             let stepBgFillStyle, stepFillStyle;
 
             // Set fillStyle for background
-            stepBgFillStyle = `${Oontzr.CANVAS_ATTRIBUTES.STEP_COLOR_INACTIVE}`;
-            if (index === this.currentStep) stepBgFillStyle = `${Oontzr.CANVAS_ATTRIBUTES.STEP_COLOR_INACTIVE_CURRENT}`;
+            stepBgFillStyle = `${Oontzr.CANVAS_ATTRIBUTES.STEP_COLOR.INACTIVE}`;
+            if (index === this.currentStep) stepBgFillStyle = `${Oontzr.CANVAS_ATTRIBUTES.STEP_COLOR.INACTIVE_CURRENT}`;
 
             // Set fillStyle for active/inactive Step
             if (step.isActive) {
-                stepFillStyle = `${Oontzr.CANVAS_ATTRIBUTES.STEP_COLOR_ACTIVE}`;
-                if (index === this.currentStep) stepFillStyle = `${Oontzr.CANVAS_ATTRIBUTES.STEP_COLOR_ACTIVE_CURRENT}`;
+                stepFillStyle = `${Oontzr.CANVAS_ATTRIBUTES.STEP_COLOR.ACTIVE}`;
+                if (index === this.currentStep) stepFillStyle = `${Oontzr.CANVAS_ATTRIBUTES.STEP_COLOR.ACTIVE_CURRENT}`;
             } else {
-                stepFillStyle = `${Oontzr.CANVAS_ATTRIBUTES.STEP_COLOR_INACTIVE}`;
+                stepFillStyle = `${Oontzr.CANVAS_ATTRIBUTES.STEP_COLOR.INACTIVE}`;
             }
 
             // Calculate x, y, width, height of Step rectangle

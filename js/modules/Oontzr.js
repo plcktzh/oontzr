@@ -1,22 +1,12 @@
 import Helpers from './Helpers.js';
 import Playback from './Playback.js';
+import SamplePool from './SamplePool.js';
 import State from './State.js';
 
 /**
  * @class Oontzr
  */
 class Oontzr {
-
-    /**
-     * @static 
-     * @property {Object} PATTERN_TYPES An Object containing strings for different types of pattern
-     */
-    static PATTERN_TYPES = {
-        EUCLIDEAN: 'euclidean',
-        RANDOM: 'random',
-        TR: 'tr',
-        CELLULAR: 'cellular'
-    };
 
     /**
      * @static
@@ -28,39 +18,34 @@ class Oontzr {
     };
 
     /**
-     * @static
-     * @property {Object} PREFIXES An Object containing prefixes for various items
+     * @static 
+     * @property {Object} PATTERN_TYPES An Object containing strings for different types of pattern
      */
-    static PREFIXES = {
-        PATTERN: 'ptn_',
-        STEP: 'stp_',
-        SAMPLE: 'smp_',
-        CANVAS: 'cnv_'
-    };
-
-    /**
-     * @static
-     * @property {Object} CANVAS_ATTRIBUTES An Object containing some properties for Pattern canvas elements
-     */
-    static CANVAS_ATTRIBUTES = {
-        STEP_WIDTH: 24,
-        STEP_HEIGHT: 32,
-        STEP_GAP: 2,
-        CANVAS_PADDING: 8,
-        STEP_COLOR_ACTIVE: 'rgb(11, 165, 170)',
-        STEP_COLOR_ACTIVE_CURRENT: 'rgba(218, 0, 69)',
-        STEP_COLOR_INACTIVE: 'rgb(240, 240, 240)',
-        STEP_COLOR_INACTIVE_CURRENT: 'rgba(169, 217, 218)'
-    };
+    static PATTERN_TYPES;
 
     /**
      * @static
      * @property {Object} PATTERN_PARAMETERS An Object containing some properties for Patterns and Steps
      */
-    static PATTERN_PARAMETERS = {
-        VELOCITY_MIN: 16,
-        VELOCITY_MAX: 127
-    }
+    static PATTERN_PARAMETERS;
+
+    /**
+     * @static
+     * @property {Object} PREFIXES An Object containing prefixes for various items
+     */
+    static PREFIXES;
+
+    /**
+     * @static
+     * @property {Object} CANVAS_ATTRIBUTES An Object containing some properties for Pattern canvas elements
+     */
+    static CANVAS_ATTRIBUTES;
+
+    /**
+     * @static
+     * @property {Array} SAMPLES An Array containing all the samples for building the SamplePool
+     */
+    static SAMPLES;
 
     /**
      * @property {Element} parent The parent element of the Oontzr instance
@@ -81,24 +66,50 @@ class Oontzr {
         this.parent = Helpers.dqs(containerSelector);
 
         // Build config object
-        this._c = Helpers.buildConfigFromData(this.parent, Oontzr.DATA_ATTRIBUTE_PREFIX);
+        this._c = Helpers.buildConfigFromDataAttribute(this.parent, Oontzr.DATA_ATTRIBUTE_PREFIX);
 
-        // Create new State with some basic properties
-        this._s = new State(this, {
-            language: 'en',
-            playback: {
-                tempo: {
-                    bpm: 120,
-                    msPerStep: Playback.getMilliseconds(120)
+        this.initialiseOontzr();
+    }
+
+    async initialiseOontzr() {
+
+        // Get config file
+        Helpers.getJson(this._c['configJson']).then(response => response.json()).then(data => {
+
+            let configObject = {};
+
+            // Transform property names from abc-def to ABC_DEF
+            Helpers.transformJSONData(configObject, data);
+
+            // Walk the configObject
+            for (const configItem in configObject) {
+
+                // Assign configItems to static properties in Oontzr
+                Oontzr[configItem] = configObject[configItem];
+            }
+        }).then(() => {
+
+            // Create new State with some basic properties
+            this._s = new State(this, {
+                language: 'en',
+                playback: {
+                    tempo: {
+                        bpm: 120,
+                        msPerStep: Playback.getMilliseconds(120)
+                    },
+                    swing: {
+                        amount: 0,
+                        resolution: 16
+                    },
+                    isPlaying: false
                 },
-                swing: {
-                    amount: 0,
-                    resolution: 16
-                },
-                isPlaying: false
-            },
-            patterns: [],
-            samples: null
+                patterns: [],
+                samples: null
+            });
+        }).then(() => {
+
+            // Initialise and assign SamplePool
+            this._s.samples = new SamplePool(Oontzr.SAMPLES);
         });
     }
 
