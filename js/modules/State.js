@@ -2,7 +2,6 @@ import Helpers from './Helpers.js';
 import Oontzr from './Oontzr.js';
 import Pattern from './Pattern.js';
 import Playback from './Playback.js';
-import SamplePool from './SamplePool.js';
 
 /**
  * @class State
@@ -18,7 +17,7 @@ class State {
      * @property {SamplePool} samples A SamplePool of all available Samples
      */
     parent = null;
-    language = '';
+    language = 'EN';
     playback = {
         tempo: {
             bpm: 0,

@@ -6,6 +6,12 @@ import Oontzr from './Oontzr.js';
 class Helpers {
 
     /**
+     * @static
+     * @property {String} NS_SVG The namespace definition for SVG elements; used for setAttributeNS, createElementNS etc.
+     */
+    static NS_SVG = 'http://www.w3.org/2000/svg';
+
+    /**
      * dqs = Shorthand for document.querySelector
      * @static
      * @method dqs
@@ -36,6 +42,29 @@ class Helpers {
      */
     static dce(htmlTag) {
         return document.createElement(htmlTag);
+    }
+
+    /**
+     * dcens = Shorthand for document.createElementNS
+     * @static
+     * @method dcens
+     * @param {String} htmlTag The HTML tag name for the HTMLElement to be created
+     * @param {String} namespace The namespace definition for the new HTMLElement
+     * @returns HTMLElement
+     */
+    static dcens(htmlTag, namespace) {
+        return document.createElement(namespace, htmlTag);
+    }
+
+    /**
+     * dcesvg = Shorthand for document.createElementNS with namespace = http://www.w3.org/svg/2000
+     * @static
+     * @method dcesvg
+     * @param {String} svgTag The SVG tag name for the SVGElement to be created
+     * @returns SVGElement
+     */
+    static dcesvg(svgTag) {
+        return Helpers.dcens(Helpers.NS_SVG, svgTag);
     }
 
     /**
@@ -193,7 +222,7 @@ class Helpers {
      */
     static transformStringToConstantName(inputString) {
 
-        return inputString.replace('-', '_').toUpperCase();
+        return inputString.replaceAll('-', '_').toUpperCase();
     }
 
     /**

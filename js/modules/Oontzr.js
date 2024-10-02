@@ -25,6 +25,12 @@ class Oontzr {
     static EVENT_TYPES;
 
     /**
+     * @static
+     * @property {Object} STRINGS An Object containing strings for the UI in different languages
+     */
+    static STRINGS;
+
+    /**
      * @static 
      * @property {Object} PATTERN_TYPES An Object containing strings for different types of pattern
      */
@@ -102,7 +108,7 @@ class Oontzr {
 
             // Create new State with some basic properties
             this._s = new State(this, {
-                language: 'en',
+                language: 'EN',
                 playback: {
                     tempo: {
                         bpm: 120,
