@@ -6,78 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Components Test</title>
     <script type="module" src="js/index.js"></script>
-    <style type="text/css">
-        oontzr-app {
-            display: inline-block;
-            position: relative;
-        }
-
-        #outputLabel {
-            align-items: center;
-            display: flex;
-            font-family: inherit;
-            height: 50%;
-            justify-content: center;
-            left: 25%;
-            position: absolute;
-            top: 25%;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            width: 50%;
-        }
-
-        #outputLabel::selection {
-            background: none;
-        }
-
-        label {
-            font-family: inherit;
-            position: absolute;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            bottom: -1.5rem;
-            font-family: inherit;
-        }
-
-        input[type="number"] {
-            display: none;
-        }
-
-        svg {
-            display: block;
-        }
-
-        svg #background {
-            fill: #e0e0e0;
-        }
-
-        svg #outputPath {
-            fill: #0ba5aa;
-        }
-    </style>
 </head>
 
 <body>
-    <oontzr-app data-oontzr-config-json="data/config.json">
-        <label for="numberInput">Pattern length</label>
-        <input type="number" id="numberInput" min="1" max="64">
-        <div id="outputLabel"></div>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
-            <defs>
-                <clipPath id="donut">
-                    <path clip-rule="evenodd" fill="#00f" d="M 50 0 A 50 50, 0, 0, 1, 100 50 A 50 50, 0, 0, 1, 0 50 A 50 50, 0, 0, 1, 50 0 Z M 50 25 A 25 25, 0, 0, 1, 75 50 A 25 25, 0, 0, 1, 25 50 A 25 25, 0, 0, 1, 50 25 Z" />
-                </clipPath>
-            </defs>
-            <g clip-path="url(#donut)">
-                <circle id="background" cx="50" cy="50" r="50" />
-                <path id="outputPath" d="M 50 50 L 50 0 A 50 50, 0, 0, 1, 50 0 Z" />
-            </g>
-        </svg>
-    </oontzr-app>
+    <oo-knob min="4" max="32" value="16"></oo-knob>
+    <oo-knob></oo-knob>
 </body>
 
 </html>
