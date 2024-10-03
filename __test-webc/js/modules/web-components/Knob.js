@@ -94,119 +94,186 @@ ooKnobTemplate.innerHTML = `
 <label for="numberInput"><slot name="label"></slot></label>
 `;
 
+/**
+ * @class Knob
+ * @extends HTMLElement
+ */
 class Knob extends HTMLElement {
 
+    /**
+     * @constructor
+     */
     constructor() {
+
         super();
 
-        this._config = {};
-        this._config['value'] = this.getAttribute('value') ? parseInt(this.getAttribute('value')) : 1;
-        this._config['min'] = this.getAttribute('min') ? parseInt(this.getAttribute('min')) : 1;
-        this._config['max'] = this.getAttribute('max') ? parseInt(this.getAttribute('max')) : 64;
-        this._config['graphMin'] = this.getAttribute('graphMin') ? parseInt(this.getAttribute('graphMin')) : 1;
-        this._config['graphMax'] = this.getAttribute('graphMax') ? parseInt(this.getAttribute('graphMax')) : 64;
+        // Build configuration from attributes attached to <oo-knob>
+        this._config = {
+            value: this.getAttribute('value') ? parseInt(this.getAttribute('value')) : 1,
+            min: this.getAttribute('min') ? parseInt(this.getAttribute('min')) : 1,
+            max: this.getAttribute('max') ? parseInt(this.getAttribute('max')) : 64,
+            graphMin: this.getAttribute('graphMin') ? parseInt(this.getAttribute('graphMin')) : 0,
+            graphMax: this.getAttribute('graphMax') ? parseInt(this.getAttribute('graphMax')) : 64
+        };
 
+        // Attach shadow root
         this.attachShadow({
             mode: 'open'
         });
 
+        // Append CSS and template to shadow root
         this.shadowRoot.appendChild(ooKnobCss.content.cloneNode(true));
         this.shadowRoot.appendChild(ooKnobTemplate.content.cloneNode(true));
 
+        // Configure number input
         this.num = this.shadowRoot.querySelector('#numberInput');
         this.num.setAttribute('min', this._config.min);
         this.num.setAttribute('max', this._config.max);
         this.num.value = this._config.value;
     }
 
+    /**
+     * @callback connectedCallback
+     */
     connectedCallback() {
+
+        // Add event listener to number input
         this.num.addEventListener('change', (e) => {
 
-            if (e.target.value < parseInt(e.target.getAttribute('min'))) e.target.value = parseInt(e.target.getAttribute('min'));
-            if (e.target.value > parseInt(e.target.getAttribute('max'))) e.target.value = parseInt(e.target.getAttribute('max'));
+            // Prevent value to get out of bounds
+            if (e.target.value < this._config.min) e.target.value = this._config.min;
+            if (e.target.value > this._config.max) e.target.value = this._config.max;
 
+            // Trigger re-render of component
             this._render();
         });
 
-        this.addEventListener('mousedown', (e) => this.addEventListener('mousemove', this.handleMouseMove));
-        this.addEventListener('mouseup', (e) => this.removeEventListener('mousemove', this.handleMouseMove));
-        this.addEventListener('mouseout', (e) => this.removeEventListener('mousemove', this.handleMouseMove));
+        // Add mouse event listeners
+        this.addEventListener('mousedown', (e) => this.addEventListener('mousemove', this.updateInput));
+        this.addEventListener('mouseup', (e) => this.removeEventListener('mousemove', this.updateInput));
+        this.addEventListener('mouseout', (e) => this.removeEventListener('mousemove', this.updateInput));
 
+        this.addEventListener('mouseenter', (e) => this.addEventListener('wheel', this.updateInput));
+        this.addEventListener('mouseout', (e) => this.removeEventListener('wheel', this.updateInput));
+
+        // Add touch event listeners
         this.addEventListener('touchstart', (e) => {
+
+            // Since TouchEvent doesn't provide a property akin to movementY, we need to save the initial clientY property
             this._clientY = e.touches[0].clientY;
-            this.addEventListener('touchmove', this.handleMouseMove);
-        }, {
-            passive: true
+            this.addEventListener('touchmove', this.updateInput);
         });
         this.addEventListener('touchend', (e) => {
-            this.removeEventListener('touchmove', this.handleMouseMove);
+
+            this.removeEventListener('touchmove', this.updateInput);
+            // Clear clientY property
             this._clientY = undefined;
         });
 
         this._render();
     }
 
+    /**
+     * @callback
+     */
     disconnectedCallback() {
+
+        // Remove all event listeners
         this.removeEventListener('mousedown', (e) => {});
         this.removeEventListener('mouseup', (e) => {});
         this.removeEventListener('mousemove', (e) => {});
+        this.removeEventListener('mouseenter', (e) => {});
         this.removeEventListener('mouseout', (e) => {});
         this.removeEventListener('touchstart', (e) => {});
         this.removeEventListener('touchend', (e) => {});
         this.removeEventListener('touchmove', (e) => {});
     }
 
-    handleMouseMove(e) {
+    /**
+     * @method updateInput
+     * @param {MouseEvent|TouchEvent} e The event object
+     * @returns null
+     */
+    updateInput(e) {
 
-        let _target;
+        // Get number input
+        const num = (e.target.shadowRoot) ? e.target.shadowRoot.querySelector('#numberInput') : null;
 
-        document.querySelectorAll('oo-knob').forEach(item => {
-            if (item === e.target) {
-                _target = item;
-                return;
-            }
-        });
-
-        if (_target !== undefined) {
+        if (num) {
 
             if (e.type === 'mousemove') {
+                // Handling of mouse events
 
-                if (e.movementY) e.target.shadowRoot.querySelector('#numberInput').value = parseInt(e.target.shadowRoot.querySelector('#numberInput').value) + Math.round(-.25 * e.movementY);
+                if (e.movementY) num.value = parseInt(num.value) + Math.round(-.25 * e.movementY);
             } else if (e.type === 'touchmove') {
+                // HAndling of touch events
 
-                const deltaY = (e.changedTouches[0].clientY && e.target._clientY) ? e.changedTouches[0].clientY - e.target._clientY : 0;
+                const currentClientY = e.changedTouches[0].clientY;
 
-                e.target._clientY = e.changedTouches[0].clientY;
-                e.target.shadowRoot.querySelector('#numberInput').value -= Math.round(.25 * deltaY);
+                // deltaY basically is a custom movementY for touch events
+                const deltaY = (currentClientY && e.target._clientY) ? currentClientY - e.target._clientY : 0;
+
+                // Update _clientY with the current y position
+                e.target._clientY = currentClientY;
+
+                num.value -= Math.round(.25 * deltaY);
+            } else if (e.type === 'wheel') {
+                // Handling of scroll wheel events
+
+                num.value -= Math.round(.025 * e.deltaY);
             }
 
-            e.target.shadowRoot.querySelector('#numberInput').dispatchEvent(new Event('change'));
+            // Trigger a re-render
+            num.dispatchEvent(new Event('change'));
         }
     }
 
+    /**
+     * @method _render
+     * @returns null
+     */
     _render() {
 
-        const val = parseInt(this.shadowRoot.querySelector('#numberInput').value);
+        // Get number input
+        const num = this.shadowRoot.querySelector('#numberInput');
+
+        // Get current value of number input
+        const val = parseInt(num.value);
+
+        // Some shorthand for graphMin and graphMax attributes
         const min = this._config.graphMin;
         const max = this._config.graphMax;
+
+        // Since the diameter of the SVG circle is 100, set the radius to 50
         const r = 50;
 
-        let amount = ((this.shadowRoot.querySelector('#numberInput').value - 1) / (.5 * max) - 1) * 180;
+        // Get the angle in degrees (-180° to 180°), based on the number input's value
+        let angle = (num.value / (.5 * max) - 1) * 180;
 
-        if (val === min) amount = -179;
-        else if (val === max) amount = 179;
+        // Cover edge cases (We don't want the circle segment to completely disappear)
+        if (val === min) angle = -179;
+        else if (val === max) angle = 179;
 
-        const x = r * Math.cos(amount * Math.PI / 180) + r;
-        const y = r * Math.sin(amount * Math.PI / 180) + r;
-        const laf = (amount > 0) ? 1 : 0;
+        // Get x and y coordinates
+        const x = r * Math.cos(angle * Math.PI / 180) + r;
+        const y = r * Math.sin(angle * Math.PI / 180) + r;
 
+        // Determine the large-arc-flag for the arc syntax
+        // see https://www.nan.fyi/svg-paths/arcs
+        const laf = (angle > 0) ? 1 : 0;
+
+        // Build the path definition property
+        // see https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d
         const d = `M ${r} ${r} L 0 ${r} A ${r} ${r}, 0, ${laf}, 1, ${x} ${y} Z`;
 
+        // Set the SVG path's definition property
         this.shadowRoot.querySelector('#outputPath').setAttribute('d', d);
-        this.shadowRoot.querySelector('#outputLabel').innerHTML = (val < 10) ? `0${val}` : val;
+
+        // Set the text of the value label, add leading 0 if val is lower than 10
+        this.shadowRoot.querySelector('#outputLabel').innerText = (val < 10) ? `0${val}` : val;
     }
 }
 
-customElements.define('oo-knob', Knob)
+window.customElements.define('oo-knob', Knob)
 
 export default Knob;
