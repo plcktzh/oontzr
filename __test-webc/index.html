@@ -7,33 +7,75 @@
     <title>Web Components Test</title>
     <script type="module" src="js/index.js"></script>
     <style type="text/css">
-        svg text {
+        oontzr-app {
+            display: inline-block;
+            position: relative;
+        }
+
+        #outputLabel {
+            align-items: center;
+            display: flex;
+            font-family: inherit;
+            height: 50%;
+            justify-content: center;
+            left: 25%;
+            position: absolute;
+            top: 25%;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            width: 50%;
         }
 
-        svg text::selection {
+        #outputLabel::selection {
             background: none;
+        }
+
+        label {
+            font-family: inherit;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            bottom: -1.5rem;
+            font-family: inherit;
+        }
+
+        input[type="number"] {
+            display: none;
+        }
+
+        svg {
+            display: block;
+        }
+
+        svg #background {
+            fill: #e0e0e0;
+        }
+
+        svg #outputPath {
+            fill: #0ba5aa;
         }
     </style>
 </head>
 
-<body style="overflow: hidden;">
-    <oontzr-app data-oontzr-config-json="data/config.json" style="display:block;background-color:#f0f0f0;padding:2rem;">
-        <input type="number" name="Test" id="numberTest" min="1" max="64">
-        <svg id="output" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" style="border: 1px solid #c0c0c0;">
+<body>
+    <oontzr-app data-oontzr-config-json="data/config.json">
+        <label for="numberInput">Pattern length</label>
+        <input type="number" id="numberInput" min="1" max="64">
+        <div id="outputLabel"></div>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
             <defs>
                 <clipPath id="donut">
-                    <path clip-rule="evenodd" fill="#00f" d="M 24 0 A 24 24, 0, 0, 1, 48 24 A 24 24, 0, 0, 1, 0 24 A 24 24, 0, 0, 1, 24 0 Z M 24 12 A 12 12, 0, 0, 1, 36 24 A 12 12, 0, 0, 1, 12 24 A 12 12, 0, 0, 1, 24 12 Z" />
+                    <path clip-rule="evenodd" fill="#00f" d="M 50 0 A 50 50, 0, 0, 1, 100 50 A 50 50, 0, 0, 1, 0 50 A 50 50, 0, 0, 1, 50 0 Z M 50 25 A 25 25, 0, 0, 1, 75 50 A 25 25, 0, 0, 1, 25 50 A 25 25, 0, 0, 1, 50 25 Z" />
                 </clipPath>
             </defs>
             <g clip-path="url(#donut)">
-                <circle fill="#e0e0e0" cx="24" cy="24" r="24" />
-                <path id="outputTest" fill="#f00" d="M 24 24 L 24 0 A 24 24, 0, 0, 1, 24 0 Z" />
+                <circle id="background" cx="50" cy="50" r="50" />
+                <path id="outputPath" d="M 50 50 L 50 0 A 50 50, 0, 0, 1, 50 0 Z" />
             </g>
-            <text id="outputTestNum" x="17" y="28" style="font-family: sans-serif; font-size: .75rem; width: 24px; position: absolute; margin-left: -12px; margin-top: 12px; text-align: center;"></text>
         </svg>
     </oontzr-app>
 </body>
