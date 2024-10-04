@@ -146,9 +146,9 @@ class Knob extends HTMLElement {
             case 'max':
                 // Set attributes on number input and update _config for attributes value, min, max
                 this.num.setAttribute(name, parseInt(newValue));
-                if (name === 'min' && parseInt(this.num.value) < parseInt(newValue)) this.num.value = parseInt(newValue);
-                if (name === 'max' && parseInt(this.num.value) > parseInt(newValue)) this.num.value = parseInt(newValue);
-                this._config[name] = parseInt(newValue);
+                if (parseInt(this.num.getAttribute('value')) < parseInt(this.num.getAttribute('min'))) this.num.setAttribute(name, parseInt(this.num.getAttribute('min')));
+                if (parseInt(this.num.getAttribute('value')) > parseInt(this.num.getAttribute('max'))) this.num.setAttribute(name, parseInt(this.num.getAttribute('max')));
+                this._config[name] = parseInt(this.num.getAttribute(name));
                 break;
             case 'graph-min':
                 // Update _config for graphMin
