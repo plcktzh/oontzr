@@ -187,8 +187,17 @@ class Knob extends HTMLElement {
         });
 
         // Add mouse event listeners
-        this.addEventListener('mousedown', (e) => this.addEventListener('mousemove', this.updateInput));
-        this.addEventListener('mouseup', (e) => this.removeEventListener('mousemove', this.updateInput));
+        this.addEventListener('mousedown', (e) => {
+
+            // Since Firefox handles MouseEvent.movementY rather awkwardly, we need to save the initial clientY property
+            this._clientY = e.clientY;
+            this.addEventListener('mousemove', this.updateInput);
+        });
+        this.addEventListener('mouseup', (e) => {
+            this.removeEventListener('mousemove', this.updateInput);
+            // Clear clientY property
+            this._clientY = undefined;
+        });
         this.addEventListener('mouseout', (e) => this.removeEventListener('mousemove', this.updateInput));
 
         this.addEventListener('mouseenter', (e) => this.addEventListener('wheel', this.updateInput));
@@ -242,16 +251,12 @@ class Knob extends HTMLElement {
 
         if (num) {
 
-            if (e.type === 'mousemove') {
-                // Handling of mouse events
+            if (e.type === 'mousemove' || e.type === 'touchmove') {
+                // Handling of mouse and touch events
 
-                if (e.movementY) newValue = num.getAttribute('value') + Math.round(-.25 * e.movementY);
-            } else if (e.type === 'touchmove') {
-                // HAndling of touch events
+                const currentClientY = (e.type === 'mousemove') ? e.clientY : e.changedTouches[0].clientY;
 
-                const currentClientY = e.changedTouches[0].clientY;
-
-                // deltaY basically is a custom movementY for touch events
+                // deltaY basically is a custom movementY for touch events (and Firefox)
                 const deltaY = (currentClientY && e.target._clientY) ? currentClientY - e.target._clientY : 0;
 
                 // Update _clientY with the current y position
