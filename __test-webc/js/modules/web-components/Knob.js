@@ -76,7 +76,7 @@ ooKnobCss.innerHTML = `
 
 const ooKnobTemplate = document.createElement('template');
 ooKnobTemplate.innerHTML = `
-<input type="number" id="numberInput" min="1" max="64">
+<input type="number" id="numberInput" min="1" max="64" value="16">
 <div id="outputContainer">
 <div id="outputLabel"></div>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
@@ -108,13 +108,7 @@ class Knob extends HTMLElement {
         super();
 
         // Build configuration from attributes attached to <oo-knob>
-        this._config = {
-            value: this.getAttribute('value') ? parseInt(this.getAttribute('value')) : 1,
-            min: this.getAttribute('min') ? parseInt(this.getAttribute('min')) : 1,
-            max: this.getAttribute('max') ? parseInt(this.getAttribute('max')) : 64,
-            graphMin: this.getAttribute('graphMin') ? parseInt(this.getAttribute('graphMin')) : 0,
-            graphMax: this.getAttribute('graphMax') ? parseInt(this.getAttribute('graphMax')) : 64
-        };
+        this._config = {};
 
         // Attach shadow root
         this.attachShadow({
@@ -125,17 +119,61 @@ class Knob extends HTMLElement {
         this.shadowRoot.appendChild(ooKnobCss.content.cloneNode(true));
         this.shadowRoot.appendChild(ooKnobTemplate.content.cloneNode(true));
 
-        // Configure number input
+        // Get number input
         this.num = this.shadowRoot.querySelector('#numberInput');
-        this.num.setAttribute('min', this._config.min);
-        this.num.setAttribute('max', this._config.max);
-        this.num.value = this._config.value;
+    }
+
+    /**
+     * @static
+     */
+    static get observedAttributes() {
+
+        return ['value', 'min', 'max', 'graph-min', 'graph-max', 'disabled'];
+    }
+
+
+    /**
+     * @callback attributeChangedCallback
+     * @param {String} name 
+     * @param {Object} oldValue 
+     * @param {String} newValue 
+     */
+    attributeChangedCallback(name, oldValue, newValue) {
+
+        switch (name) {
+            case 'value':
+            case 'min':
+            case 'max':
+                // Set attributes on number input and update _config for attributes value, min, max
+                this.num.setAttribute(name, parseInt(newValue));
+                if (name === 'min' && parseInt(this.num.value) < parseInt(newValue)) this.num.value = parseInt(newValue);
+                if (name === 'max' && parseInt(this.num.value) > parseInt(newValue)) this.num.value = parseInt(newValue);
+                this._config[name] = parseInt(newValue);
+                break;
+            case 'graph-min':
+                // Update _config for graphMin
+                this._config['graphMin'] = parseInt(newValue);
+                break;
+            case 'graph-max':
+                // Update _config for graphMax
+                this._config['graphMax'] = parseInt(newValue);
+                break;
+        }
+
+        this.num.dispatchEvent(new Event('change'));
     }
 
     /**
      * @callback connectedCallback
      */
     connectedCallback() {
+
+        // Get attributes from oo-knob and assign to _config properties - includes fallbacks
+        this._config['value'] = this.getAttribute('value') ? parseInt(this.getAttribute('value')) : 1;
+        this._config['min'] = this.getAttribute('min') ? parseInt(this.getAttribute('min')) : 1;
+        this._config['max'] = this.getAttribute('max') ? parseInt(this.getAttribute('max')) : 64;
+        this._config['graphMin'] = this.getAttribute('graphMin') ? parseInt(this.getAttribute('graphMin')) : 0;
+        this._config['graphMax'] = this.getAttribute('graphMax') ? parseInt(this.getAttribute('graphMax')) : 64;
 
         // Add event listener to number input
         this.num.addEventListener('change', (e) => {
@@ -199,12 +237,15 @@ class Knob extends HTMLElement {
         // Get number input
         const num = (e.target.shadowRoot) ? e.target.shadowRoot.querySelector('#numberInput') : null;
 
+        // Declare variable for calculated value
+        let newValue;
+
         if (num) {
 
             if (e.type === 'mousemove') {
                 // Handling of mouse events
 
-                if (e.movementY) num.value = parseInt(num.value) + Math.round(-.25 * e.movementY);
+                if (e.movementY) newValue = num.getAttribute('value') + Math.round(-.25 * e.movementY);
             } else if (e.type === 'touchmove') {
                 // HAndling of touch events
 
@@ -216,12 +257,17 @@ class Knob extends HTMLElement {
                 // Update _clientY with the current y position
                 e.target._clientY = currentClientY;
 
-                num.value -= Math.round(.25 * deltaY);
+                newValue = num.getAttribute('value') - Math.round(.25 * deltaY);
             } else if (e.type === 'wheel') {
                 // Handling of scroll wheel events
 
-                num.value -= Math.round(.025 * e.deltaY);
+                newValue = num.getAttribute('value') - Math.round(.025 * e.deltaY);
             }
+
+            // Check if newValue is within bounds and assign to number input's value attribute
+            if (newValue < parseInt(num.getAttribute('min'))) newValue = num.getAttribute('min');
+            if (newValue > parseInt(num.getAttribute('max'))) newValue = num.getAttribute('max');
+            num.setAttribute('value', newValue);
 
             // Trigger a re-render
             num.dispatchEvent(new Event('change'));
