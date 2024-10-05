@@ -2,7 +2,8 @@
     "event-types": {
         "app-loaded": "app-loaded",
         "state-created": "state-created",
-        "dropdown-submit": "dropdown-submit"
+        "dropdown-submit": "dropdown-submit",
+        "input-change": "input-change"
     },
     "pattern-types": {
         "cellular": {
@@ -103,7 +104,7 @@
         }
     },
     "pattern-parameters": {
-        "velocity-min": 16,
+        "velocity-min": 0,
         "velocity-max": 127,
         "length-min": 1,
         "length-max": 64
@@ -115,8 +116,8 @@
         "canvas": "cnv_"
     },
     "canvas-attributes": {
-        "step-width": 24,
-        "step-height": 32,
+        "step-width": 32,
+        "step-height": 40,
         "step-gap": 2,
         "canvas-padding": 8,
         "step-color": {

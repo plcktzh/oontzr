@@ -2,7 +2,7 @@ import Helpers from '../Helpers.js';
 import App from '../web-components/App.js';
 import Pattern from '../web-components/Pattern.js';
 import PatternType from '../PatternType.js';
-import Step from '../Step.js';
+import Step from '../web-components/Step.js';
 
 /**
  * @class Cellular
@@ -71,7 +71,8 @@ class Cellular extends PatternType {
 
         for (let i = 0; i < this.patternLength; i++) {
             // Push a new Step instance depending on whether or not the current position is a seed
-            steps_out.push(new Step({
+            steps_out.push(new Step(this.parent, {
+                id: Helpers.getRandomId(App.PREFIXES.STEP),
                 isActive: (Helpers.isInArr(seeds, i)) ? true : false,
                 velocity: (Helpers.isInArr(seeds, i)) ? 127 : 0
             }));
@@ -90,7 +91,7 @@ class Cellular extends PatternType {
         const nextGeneration = [];
 
         // If cellular automaton doesn't wrap around, push a new Step with the properties of the first Step in <steps>
-        if (!this.wrapAround) nextGeneration.push(new Step({
+        if (!this.wrapAround) nextGeneration.push(new Step(this.parent, {
             ...steps[0]
         }));
 
@@ -112,7 +113,7 @@ class Cellular extends PatternType {
             }
 
             // Add a new Step to the <nextGeneration> Array and copy the properties of <steps>[i] into it
-            nextGeneration[i] = new Step({
+            nextGeneration[i] = new Step(this.parent, {
                 ...step
             });
 
@@ -123,7 +124,7 @@ class Cellular extends PatternType {
         }
 
         // If cellular automaton doesn't wrap around, push a new Step with the properties of the last Step in <steps>
-        if (!this.wrapAround) nextGeneration.push(new Step({
+        if (!this.wrapAround) nextGeneration.push(new Step(this.parent, {
             ...steps[steps.length - 1]
         }));
 

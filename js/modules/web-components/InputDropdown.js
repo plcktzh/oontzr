@@ -8,9 +8,9 @@ ooInputDropdownTemplate.innerHTML = `
 <span class="label">Toggle Dropdown</span>
 <span class="material-icons">keyboard_arrow_down</span>
 </button>
-<nav>
+<div class="dropdown-items">
 <slot></slot>
-</nav>
+</div>
 </div>
 <button id="submit">
 <span class="label">Submit</span>
@@ -29,11 +29,11 @@ ooInputDropdownCss.innerHTML = `
         box-sizing: border-box;
     }
 
-    :host([data-expanded="false"]) nav {
+    :host([data-expanded="false"]) .dropdown-items {
         display: none;
     }
     
-    :host([data-expanded="true"]) nav {
+    :host([data-expanded="true"]) .dropdown-items {
         background-color: var(--oo-color-secondary-light);
         box-shadow: inset 0 .75rem 1rem -1rem rgba(0, 0, 0, .5);
         display: block;

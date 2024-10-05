@@ -2,7 +2,7 @@ import Helpers from '../Helpers.js';
 import App from '../web-components/App.js';
 import Pattern from '../web-components/Pattern.js';
 import PatternType from '../PatternType.js';
-import Step from '../Step.js';
+import Step from '../web-components/Step.js';
 
 /**
  * @class TR
@@ -56,13 +56,14 @@ class TR extends PatternType {
 
         for (let i = 0; i < this.patternLength; i++) {
 
-            // Push a new empty Step to the steps_out Array
             if (this.parent.steps[i]) {
-                steps_out.push(new Step({
+                steps_out.push(new Step(this.parent, {
                     ...this.parent.steps[i]
                 }));
             } else {
-                steps_out.push(new Step({
+                // Push a new empty Step to the steps_out Array
+                steps_out.push(new Step(this.parent, {
+                    id: Helpers.getRandomId(App.PREFIXES.STEP),
                     isActive: false,
                     velocity: 0
                 }));

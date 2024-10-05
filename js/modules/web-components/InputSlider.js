@@ -1,11 +1,12 @@
 import Helpers from '../Helpers.js';
+import App from './App.js';
 
 const ooInputSliderCss = document.createElement('template');
 ooInputSliderCss.innerHTML = `
 <style>
     :host {
-        background-color: var(--oo-color-gray-lightest);
-        border-radius: var(--oo-border-radius);
+        /** background-color: var(--oo-color-gray-lightest); */
+        /** border-radius: var(--oo-border-radius); */
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -21,8 +22,12 @@ ooInputSliderCss.innerHTML = `
         display: flex;
         flex-direction: column;
         gap: var(--oo-margin-base);
-        padding: var(--oo-padding-base);
+        /** padding: var(--oo-padding-base); */
         position: relative;
+    }
+
+    :host(.no-output-label) #outputLabel {
+        display: none;
     }
 
     #outputLabel {
@@ -64,7 +69,7 @@ ooInputSliderCss.innerHTML = `
 const ooInputSliderTemplate = document.createElement('template');
 ooInputSliderTemplate.innerHTML = `
 <label for="numberInput"><slot name="label"></slot></label>
-<input type="number" id="numberInput" min="1" max="64" value="16">
+<input type="number" id="numberInput" min="0" max="127" value="0">
 <div id="outputContainer">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 100" width="50" height="100" preserveAspectRatio="none">
 <defs>
@@ -127,32 +132,34 @@ class InputSlider extends HTMLElement {
      */
     attributeChangedCallback(name, oldValue, newValue) {
 
-        switch (name) {
-            case 'value':
-            case 'min':
-            case 'max':
-                // Set attributes on number input and update _config for attributes value, min, max
-                this.num.setAttribute(name, parseInt(newValue));
-                if (parseInt(this.num.getAttribute('value')) < parseInt(this.num.getAttribute('min'))) this.num.setAttribute(name, parseInt(this.num.getAttribute('min')));
-                if (parseInt(this.num.getAttribute('value')) > parseInt(this.num.getAttribute('max'))) this.num.setAttribute(name, parseInt(this.num.getAttribute('max')));
-                this._config[name] = parseInt(this.num.getAttribute(name));
-                break;
-            case 'graph-min':
-                // Update _config for graphMin
-                this._config['graphMin'] = parseInt(newValue);
-                break;
-            case 'graph-max':
-                // Update _config for graphMax
-                this._config['graphMax'] = parseInt(newValue);
-                break;
-            case 'width':
-            case 'height':
-                Helpers.nqs('svg', this.shadowRoot).setAttribute(name, parseInt(newValue));
-                this._config[name] = parseInt(newValue);
-                break;
-        }
+        if (newValue !== oldValue) {
+            switch (name) {
+                case 'value':
+                case 'min':
+                case 'max':
+                    // Set attributes on number input and update _config for attributes value, min, max
+                    this.num.setAttribute(name, parseInt(newValue));
+                    if (parseInt(this.num.getAttribute('value')) < parseInt(this.num.getAttribute('min'))) this.num.setAttribute(name, parseInt(this.num.getAttribute('min')));
+                    if (parseInt(this.num.getAttribute('value')) > parseInt(this.num.getAttribute('max'))) this.num.setAttribute(name, parseInt(this.num.getAttribute('max')));
+                    this._config[name] = parseInt(this.num.getAttribute(name));
+                    break;
+                case 'graph-min':
+                    // Update _config for graphMin
+                    this._config['graphMin'] = parseInt(newValue);
+                    break;
+                case 'graph-max':
+                    // Update _config for graphMax
+                    this._config['graphMax'] = parseInt(newValue);
+                    break;
+                case 'width':
+                case 'height':
+                    Helpers.nqs('svg', this.shadowRoot).setAttribute(name, parseInt(newValue));
+                    this._config[name] = parseInt(newValue);
+                    break;
+            }
 
-        this.num.dispatchEvent(new Event('change'));
+            this.num.dispatchEvent(new Event('change'));
+        }
     }
 
     /**
@@ -161,8 +168,8 @@ class InputSlider extends HTMLElement {
     connectedCallback() {
 
         // Get attributes from oo-input-slider and assign to _config properties - includes fallbacks
-        this._config['value'] = this.getAttribute('value') ? parseInt(this.getAttribute('value')) : 1;
-        this._config['min'] = this.getAttribute('min') ? parseInt(this.getAttribute('min')) : 1;
+        this._config['value'] = this.getAttribute('value') ? parseInt(this.getAttribute('value')) : 0;
+        this._config['min'] = this.getAttribute('min') ? parseInt(this.getAttribute('min')) : 0;
         this._config['max'] = this.getAttribute('max') ? parseInt(this.getAttribute('max')) : 127;
         this._config['graphMin'] = this.getAttribute('graphMin') ? parseInt(this.getAttribute('graphMin')) : 0;
         this._config['graphMax'] = this.getAttribute('graphMax') ? parseInt(this.getAttribute('graphMax')) : 100;
@@ -197,6 +204,8 @@ class InputSlider extends HTMLElement {
         this.addEventListener('mouseenter', (e) => this.addEventListener('wheel', this._updateInput));
         this.addEventListener('mouseout', (e) => this.removeEventListener('wheel', this._updateInput));
 
+        this.addEventListener('click', this._updateInput);
+
         // Add touch event listeners
         this.addEventListener('touchstart', (e) => {
 
@@ -225,6 +234,7 @@ class InputSlider extends HTMLElement {
         this.removeEventListener('mousemove', (e) => {});
         this.removeEventListener('mouseenter', (e) => {});
         this.removeEventListener('mouseout', (e) => {});
+        this.removeEventListener('click', this._updateInput);
         this.removeEventListener('touchstart', (e) => {});
         this.removeEventListener('touchend', (e) => {});
         this.removeEventListener('touchmove', (e) => {});
@@ -246,7 +256,10 @@ class InputSlider extends HTMLElement {
 
         if (num) {
 
-            if (e.type === 'mousemove' || e.type === 'touchmove') {
+            if (e.type === 'click') {
+
+                newValue = Math.round((1 - ((e.clientY - Helpers.nqs('svg', e.target.shadowRoot).getBoundingClientRect().y) / Helpers.nqs('svg', e.target.shadowRoot).getBoundingClientRect().height)) * parseInt(num.getAttribute('max')));
+            } else if (e.type === 'mousemove' || e.type === 'touchmove') {
                 // Handling of mouse and touch events
 
                 const currentClientY = (e.type === 'mousemove') ? e.clientY : e.changedTouches[0].clientY;
@@ -271,6 +284,11 @@ class InputSlider extends HTMLElement {
 
             // Trigger a re-render
             num.dispatchEvent(new Event('change'));
+            this.dispatchEvent(new CustomEvent(App.EVENT_TYPES.INPUT_CHANGE, {
+                detail: {
+                    newValue: newValue
+                }
+            }));
         }
     }
 
@@ -306,6 +324,8 @@ class InputSlider extends HTMLElement {
         Helpers.nqs('svg', this.shadowRoot).setAttribute('height', this._config['height']);
 
         Helpers.nqs('#outputLabel', this.shadowRoot).innerText = val;
+
+        this.setAttribute('value', val);
     }
 }
 

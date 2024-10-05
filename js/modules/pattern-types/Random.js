@@ -2,7 +2,7 @@ import Helpers from '../Helpers.js';
 import App from '../web-components/App.js';
 import Pattern from '../web-components/Pattern.js';
 import PatternType from '../PatternType.js';
-import Step from '../Step.js';
+import Step from '../web-components/Step.js';
 
 /**
  * @class Random
@@ -58,7 +58,8 @@ class Random extends PatternType {
             const rnd = (Math.round(Math.random())) ? true : false;
 
             // Push a new Step to the steps_out Array using the random Boolean value created above
-            steps_out.push(new Step({
+            steps_out.push(new Step(this.parent, {
+                id: Helpers.getRandomId(App.PREFIXES.STEP),
                 isActive: rnd,
                 velocity: (rnd) ? 127 : 0
             }));

@@ -6,7 +6,7 @@ ooLoaderCss.innerHTML = `
 <style>
     :host {
         align-items: center;
-        background-color: var(--oo-color-white);
+        background-color: var(--oo-color-primary);
         bottom: 0;
         display: flex;
         justify-content: center;
@@ -15,7 +15,7 @@ ooLoaderCss.innerHTML = `
         right: 0;
         top: 0;
         transition: all var(--oo-duration-base) ease-in-out;
-        z-index: 500;
+        z-index: 9999;
     }
 
     :host * {

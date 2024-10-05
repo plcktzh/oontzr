@@ -15,8 +15,10 @@ ooPatternConfigPanelCss.innerHTML = `
 
 class PatternConfigPanel extends HTMLElement {
 
-    constructor() {
+    constructor(parent) {
         super();
+
+        this.parent = parent;
 
         this.attachShadow({
             mode: 'open'
@@ -24,6 +26,13 @@ class PatternConfigPanel extends HTMLElement {
 
         this.shadowRoot.appendChild(ooPatternConfigPanelCss.content.cloneNode(true));
         this.shadowRoot.appendChild(ooPatternConfigPanelTemplate.content.cloneNode(true));
+
+        this.shadowRoot.innerHTMl += 'Config'
+    }
+
+    connectedCallback() {
+
+        this.setAttribute('data-oo-controls-pattern', this.parent.id);
     }
 }
 

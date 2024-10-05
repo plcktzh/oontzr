@@ -4,30 +4,35 @@ import Cellular from '../pattern-types/Cellular.js';
 import Euclidean from '../pattern-types/Euclidean.js';
 import Random from '../pattern-types/Random.js';
 import TR from '../pattern-types/TR.js';
-import Step from '../Step.js';
+import Step from './Step.js';
+import PatternConfigPanel from './PatternConfigPanel.js';
+import PatternLane from './PatternLane.js';
 
 const ooPatternTemplate = document.createElement('template');
 ooPatternTemplate.innerHTML = `
-<oo-pattern-lane></oo-pattern-lane>
-<oo-pattern-config-panel></oo-pattern-config-panel>
+<h3></h3>
+<div class="container"></div>
 `;
 
 const ooPatternCss = document.createElement('template');
 ooPatternCss.innerHTML = `
 <style>
     :host {
-        background-color: var(--oo-color-gray-lightest);
+        background-color: var(--oo-color-gray-light);
         border-radius: var(--oo-border-radius);
-        display: block;
+        display: flex;
+        flex-direction: column;
+        gap: var(--oo-margin-base);
+        padding: var(--oo-padding-base);
     }
 
     :host * {
         box-sizing: border-box;
     }
 
-    .inner {
-        gap: var(--oo-margin-base);
-        padding: var(--oo-padding-medium);
+    .container {
+        display: flex;
+        gap: var(--oo-margin-medium);
     }
 </style>
 `;
@@ -74,10 +79,13 @@ class Pattern extends HTMLElement {
             mode: 'open'
         });
 
-        this.shadowRoot.appendChild(ooPatternCss.content.cloneNode(true));
-        this.shadowRoot.appendChild(ooPatternTemplate.content.cloneNode(true));
+        Helpers.nac(this.shadowRoot, ooPatternCss.content.cloneNode(true));
+        Helpers.nac(this.shadowRoot, ooPatternTemplate.content.cloneNode(true));
 
-        this.shadowRoot.innerHTML += 'Pattern'
+        const container = Helpers.nqs('.container', this.shadowRoot);
+
+        Helpers.nac(container, new PatternLane(this));
+        Helpers.nac(container, new PatternConfigPanel(this));
     }
 
     static get observedAttributes() {
@@ -132,6 +140,7 @@ class Pattern extends HTMLElement {
 
     _setPatternType() {
 
+        this.setAttribute('id', this.id);
         this.setAttribute('data-oo-pattern-type', this.type);
 
         switch (this.type) {
@@ -194,42 +203,12 @@ class Pattern extends HTMLElement {
                 this.setAttribute('data-oo-do-randomize', this.parameters.doRandomize);
                 break;
         }
+
+        //     // Initialize canvas and append it to App's container
+        //     this.initCanvas();
+        //     this.parent.parent.parent.append(this.output.canvas);
+        //     return this;
     }
-
-    //     // Initialize canvas and append it to App's container
-    //     this.initCanvas();
-    //     this.parent.parent.parent.append(this.output.canvas);
-
-    //     // For TR style Patterns, add an event listener for mouse clicks
-    //     if (this.parameters.type === App.PATTERN_TYPES.TR.TYPE) this.output.canvas.addEventListener('click', (e) => {
-
-    //         // Get mouse's coordinates in relation to the canvas' position in the browser window
-    //         const mouseCoordinates = {
-    //             x: e.clientX - this.output.canvas.getBoundingClientRect().x,
-    //             y: e.clientY - this.output.canvas.getBoundingClientRect().y
-    //         };
-
-    //         // Check which Step has been clicked
-    //         const {
-    //             index,
-    //             step
-    //         } = Helpers.checkClickedStep(mouseCoordinates, this.steps, App.CANVAS_ATTRIBUTES);
-
-    //         // "Invert" the Step that was clicked
-    //         if (step) {
-
-    //             this.steps[index] = new Step({
-    //                 isActive: !step.isActive,
-    //                 velocity: (step.isActive) ? 0 : 127
-    //             });
-
-    //             // Update canvas
-    //             this.drawPattern();
-    //         }
-    //     });
-
-    //     return this;
-    // }
 
     /**
      * @method updateSteps

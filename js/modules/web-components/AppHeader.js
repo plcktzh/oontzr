@@ -20,6 +20,7 @@ ooAppHeaderCss.innerHTML = `
         position: fixed;
         top: 0;
         width: 100%;
+        z-index: 9989;
     }
 
     :host * {
@@ -45,6 +46,7 @@ ooAppHeaderCss.innerHTML = `
         position: absolute;
         right: 1.375rem;
         top: 1.375rem;
+        z-index: 9999;
     }
 </style>
 `;

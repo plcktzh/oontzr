@@ -90,7 +90,7 @@ class Pattern {
             // "Invert" the Step that was clicked
             if (step) {
 
-                this.steps[index] = new Step({
+                this.steps[index] = new Step(this, {
                     isActive: !step.isActive,
                     velocity: (step.isActive) ? 0 : 127
                 });

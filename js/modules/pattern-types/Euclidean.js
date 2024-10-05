@@ -2,7 +2,7 @@ import Helpers from '../Helpers.js';
 import App from '../web-components/App.js';
 import Pattern from '../web-components/Pattern.js';
 import PatternType from '../PatternType.js';
-import Step from '../Step.js';
+import Step from '../web-components/Step.js';
 
 /**
  * @class Euclidean
@@ -120,7 +120,8 @@ class Euclidean extends PatternType {
         steps_split = steps.split('');
 
         steps_split.forEach((step, index) => {
-            steps_out[index] = new Step({
+            steps_out[index] = new Step(this.parent, {
+                id: Helpers.getRandomId(App.PREFIXES.STEP),
                 isActive: (step === '1'),
                 velocity: (step === '1') ? 127 : 0
             });
