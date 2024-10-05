@@ -1,0 +1,22 @@
+{
+  "name": "oontzr",
+  "version": "1.0.0",
+  "description": "A drum sequencer in vanilla JS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plcktzh/oontzr.git"
+  },
+  "author": "Sascha Neumann <github@09f.de>",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/plcktzh/oontzr/issues"
+  },
+  "homepage": "https://github.com/plcktzh/oontzr#readme",
+  "dependencies": {
+    "@material-design-icons/font": "^0.14.13"
+  }
+}
