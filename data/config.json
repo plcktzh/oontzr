@@ -1,6 +1,8 @@
 {
     "event-types": {
-        "app-loaded": "app-loaded"
+        "app-loaded": "app-loaded",
+        "state-created": "state-created",
+        "dropdown-submit": "dropdown-submit"
     },
     "pattern-types": {
         "cellular": {

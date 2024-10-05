@@ -8,16 +8,18 @@ ooAppCss.innerHTML = `
 <style>
     :host {
         display: flex;
-        flex-wrap: wrap;
+        flex-direction: column;
         gap: var(--oo-margin-base);
+        justify-content: space-between;
+    }
+
+    :host * {
+        box-sizing: border-box;
     }
 </style>
 `;
 const ooAppTemplate = document.createElement('template');
-ooAppTemplate.innerHTML = `
-<slot></slot>
-<oo-loader></oo-loader>
-`;
+ooAppTemplate.innerHTML = ``;
 
 class App extends HTMLElement {
     /**
@@ -56,6 +58,8 @@ class App extends HTMLElement {
 
     async connectedCallback() {
 
+        Helpers.nac(this.shadowRoot, Helpers.dce('oo-loader'));
+
         const {
             _configJson
         } = Helpers.buildConfigFromDataAttribute(this, App.DATA_ATTRIBUTE_PREFIX);
@@ -80,7 +84,13 @@ class App extends HTMLElement {
             this._createState();
             this._buildSamplePool();
             this._detachLoader();
-            this._createAddPatternButton();
+
+            Helpers.nac(this.shadowRoot, Helpers.dce('oo-app-header'));
+            Helpers.nac(this.shadowRoot, Helpers.dce('oo-app-main'));
+            Helpers.nac(this.shadowRoot, Helpers.dce('oo-app-footer'));
+
+            this.style.marginTop = `${this.shadowRoot.querySelector('oo-app-header').getBoundingClientRect().height}px`
+            this.style.marginBottom = `${this.shadowRoot.querySelector('oo-app-footer').getBoundingClientRect().height}px`
         } catch (e) {
             console.error(e);
         }
@@ -104,6 +114,8 @@ class App extends HTMLElement {
             patterns: [],
             samples: null
         });
+
+
     }
 
     _buildSamplePool() {
@@ -114,35 +126,6 @@ class App extends HTMLElement {
     _detachLoader() {
 
         Helpers.nqs('oo-loader', this.shadowRoot).detach();
-    }
-
-    _createAddPatternButton() {
-
-        this.addPatternButton = Helpers.dce('oo-input-dropdown');
-        this.addPatternButton.setAttribute('data-type', 'add-pattern');
-        this.addPatternButton.setAttribute('data-expanded', 'false');
-        this.addPatternButton.setAttribute('data-label-toggle', `${App.STRINGS[Helpers.getLanguage(this._s.language)]['SELECT_PATTERN_TYPE_LABEL']}`);
-        this.addPatternButton.setAttribute('data-label-submit', `${App.STRINGS[Helpers.getLanguage(this._s.language)]['BUTTON_ADD_PATTERN_LABEL']}`);
-
-        for (const patternType in App.PATTERN_TYPES) {
-            this.addPatternButton.innerHTML += `
-            <span class="dropdown-item" data-value="${App.PATTERN_TYPES[patternType].TYPE}">${App.STRINGS[Helpers.getLanguage(this._s.language)]['PATTERN_TYPES'][patternType]}</span>`;
-        }
-
-        Helpers.nac(this.shadowRoot, this.addPatternButton);
-
-        this.addPatternButton.addEventListener('dropdown-submit', (e) => {
-
-            if (e.detail.type === 'add-pattern') {
-                try {
-                    Helpers.nac(this.shadowRoot, this._s.createPattern({
-                        type: e.detail.selected
-                    }));
-                } catch (e) {
-                    console.error(`Pattern could not be appended. ${e}`);
-                }
-            }
-        });
     }
 
     play(doRewind) {

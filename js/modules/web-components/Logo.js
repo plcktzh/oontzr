@@ -7,6 +7,10 @@ ooLogoCss.innerHTML = `
         display: inline-block;
         width: 50vmin;
     }
+
+    :host * {
+        box-sizing: border-box;
+    }
     
     svg {
         width: 100%;
@@ -31,20 +35,17 @@ ooLogoCss.innerHTML = `
         }
     }
     
-    :host([position="footer"]) {
+    :host([position="header"]) {
         align-items: center;
         display: flex;
-        height: 75px;
+        height: 70px;
         justify-content: center;
         overflow-y: hidden;
+        padding-top: 26px;
+        width: 320px;
     }
 
-    :host([position="footer"]) svg {
-        width: auto;
-        height: 200px;
-    }
-
-    :host([position="footer"]) svg path {
+    :host([position="header"]) svg path {
         animation-duration: unset;
         animation-name: unset;
         animation-iteration-count: unset;

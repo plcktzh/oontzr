@@ -35,7 +35,9 @@ html {
 }
 
 body {
+    background-color: var(--oo-color-gray-lightest);
     font-family: var(--oo-font-family-base);
+    margin: var(--oo-padding-base);
 }
 
 * {

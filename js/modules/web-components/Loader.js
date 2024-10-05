@@ -17,6 +17,10 @@ ooLoaderCss.innerHTML = `
         transition: all var(--oo-duration-base) ease-in-out;
         z-index: 500;
     }
+
+    :host * {
+        box-sizing: border-box;
+    }
 </style>`;
 
 const ooLoaderTemplate = document.createElement('template');
@@ -37,10 +41,8 @@ class Loader extends HTMLElement {
 
     detach() {
 
-        // setTimeout(() => this.style.opacity = 0, 1000, this);
-        // setTimeout(() => this.remove(), 1500, this);
-
-        this.remove();
+        setTimeout(() => this.style.opacity = 0, 1000, this);
+        setTimeout(() => this.remove(), 1500, this);
     }
 }
 

@@ -25,6 +25,10 @@ ooInputDropdownCss.innerHTML = `
         display: flex;
     }
 
+    :host * {
+        box-sizing: border-box;
+    }
+
     :host([data-expanded="false"]) nav {
         display: none;
     }
@@ -143,7 +147,7 @@ class InputDropdown extends HTMLElement {
         Helpers.nqs('#submit', this.shadowRoot).setAttribute('disabled', 'disabled');
         Helpers.nqs('#submit', this.shadowRoot).addEventListener('click', (e) => {
 
-            this.dispatchEvent(new CustomEvent('dropdown-submit', {
+            this.dispatchEvent(new CustomEvent(App.EVENT_TYPES.DROPDOWN_SUBMIT, {
                 detail: {
                     type: this.getAttribute('data-type'),
                     selected: this.getAttribute('data-selected')

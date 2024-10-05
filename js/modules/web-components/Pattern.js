@@ -8,8 +8,8 @@ import Step from '../Step.js';
 
 const ooPatternTemplate = document.createElement('template');
 ooPatternTemplate.innerHTML = `
-<div class="inner">
-</div>
+<oo-pattern-lane></oo-pattern-lane>
+<oo-pattern-config-panel></oo-pattern-config-panel>
 `;
 
 const ooPatternCss = document.createElement('template');
@@ -19,6 +19,10 @@ ooPatternCss.innerHTML = `
         background-color: var(--oo-color-gray-lightest);
         border-radius: var(--oo-border-radius);
         display: block;
+    }
+
+    :host * {
+        box-sizing: border-box;
     }
 
     .inner {
@@ -72,6 +76,8 @@ class Pattern extends HTMLElement {
 
         this.shadowRoot.appendChild(ooPatternCss.content.cloneNode(true));
         this.shadowRoot.appendChild(ooPatternTemplate.content.cloneNode(true));
+
+        this.shadowRoot.innerHTML += 'Pattern'
     }
 
     static get observedAttributes() {
@@ -188,8 +194,6 @@ class Pattern extends HTMLElement {
                 this.setAttribute('data-oo-do-randomize', this.parameters.doRandomize);
                 break;
         }
-
-        console.log(this.parameters);
     }
 
     //     // Initialize canvas and append it to App's container
