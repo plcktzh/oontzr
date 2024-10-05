@@ -1,5 +1,5 @@
 import Helpers from './Helpers.js';
-import Loader from './Loader.js';
+import Loader from './web-components/Loader.js';
 import Playback from './Playback.js';
 import SamplePool from './SamplePool.js';
 import State from './State.js';
@@ -77,7 +77,7 @@ class Oontzr {
     constructor(containerSelector) {
 
         // Set parent property
-        this.parent = Helpers.dqs(containerSelector);
+        this.parent = Helpers.nqs(containerSelector);
 
         // Build config object
         Helpers.buildConfigFromDataAttribute(this, this.parent, Oontzr.DATA_ATTRIBUTE_PREFIX);

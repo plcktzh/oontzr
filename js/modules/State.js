@@ -1,6 +1,6 @@
 import Helpers from './Helpers.js';
-import Oontzr from './Oontzr.js';
-import Pattern from './Pattern.js';
+import App from './web-components/App.js';
+import Pattern from './web-components/Pattern.js';
 import Playback from './Playback.js';
 
 /**
@@ -9,8 +9,7 @@ import Playback from './Playback.js';
 class State {
 
     /**
-     * @property {Oontzr} parent The parent Oontzr instance
-     * @todo Implement language selection
+     * @property {App} parent The parent OontzApp instance
      * @property {String} language The current UI language
      * @property {Object} playback A configuration Object for playback options
      * @property {Array} patterns An Array containing all Patterns
@@ -34,7 +33,7 @@ class State {
 
     /**
      * @constructor
-     * @param {Oontzr} parent The parent Oontzr instance
+     * @param {App} parent The parent App instance
      * @param {Object} args An optional initialisation Object
      * @returns State
      */
@@ -61,11 +60,10 @@ class State {
         try {
             args = {
                 ...args,
-                id: Helpers.getRandomId(Oontzr.PREFIXES.PATTERN)
+                id: Helpers.getRandomId(App.PREFIXES.PATTERN)
             };
 
             this.patterns[args.id] = new Pattern(this, args);
-            this.patterns[args.id].updateSteps();
 
             return this.patterns[args.id];
         } catch (e) {
@@ -118,7 +116,7 @@ class State {
     deletePattern(id) {
 
         try {
-            Helpers.dqs(`.pattern-lane[data-oontzr-pattern-id="${id}"]`).remove();
+            Helpers.nqs(`.pattern-lane[data-oontzr-pattern-id="${id}"]`).remove();
             return (delete this.patterns[id]);
         } catch (e) {
             console.error(`Pattern could not be deleted. ${e}`);

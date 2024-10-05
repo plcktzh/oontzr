@@ -1,5 +1,3 @@
-import Oontzr from './Oontzr.js';
-
 /**
  * @class Helpers
  */
@@ -12,25 +10,41 @@ class Helpers {
     static NS_SVG = 'http://www.w3.org/2000/svg';
 
     /**
-     * dqs = Shorthand for document.querySelector
+     * nqs = Shorthand for <node>.querySelector
      * @static
-     * @method dqs
+     * @method nqs
      * @param {String} cssSelector The CSS selector of the HTMLElement to be retrieved
+     * @param {Node} node The node on which the query will be executed
      * @returns HTMLElement
      */
-    static dqs(cssSelector) {
-        return document.querySelector(cssSelector);
+    static nqs(cssSelector, node) {
+        if (!node) node = document;
+        return node.querySelector(cssSelector);
     }
 
     /**
-     * dqsa = Shorthand for document.querySelectorAll
+     * nqsa = Shorthand for <node>.querySelectorAll
      * @static
-     * @method dqsa
+     * @method nqsa
      * @param {String} cssSelector The CSS selector for the NodeList to be retrieved
+     * @param {Node} node The node on which the query will be executed
      * @returns NodeList
      */
-    static dqsa(cssSelector) {
-        return document.querySelectorAll(cssSelector);
+    static nqsa(cssSelector, node) {
+        if (!node) node = document;
+        return node.querySelectorAll(cssSelector);
+    }
+
+    /**
+     * nca = Shorthand for <node>.appendChild
+     * @static 
+     * @method nac
+     * @param {Node} node The node to which the <child> Node will be appended to
+     * @param {Node} child The node to be appended to <node>
+     * @returns 
+     */
+    static nac(node, child) {
+        return node.appendChild(child);
     }
 
     /**
@@ -162,27 +176,39 @@ class Helpers {
      * @static
      * @method buildConfigFromDataAttribute
      * @param {Object} target The target Object to assign the new properties to
-     * @param {HTMLElement} element The HTMLElement containing the data attributes to be read
      * @param {Object} prefix An Object containing at least 2 properties: AS_STRING, AS_REGEXP
      * @returns null
      */
-    static buildConfigFromDataAttribute(target, element, prefix) {
+    static buildConfigFromDataAttribute(target, prefix) {
 
-        // Call an empty Array's forEach method on <element>'s attributes Array
-        [].forEach.call(element.attributes, attribute => {
+        const output = {};
+
+        // Call an empty Array's forEach method on <target>'s attributes Array
+        [].forEach.call(target.attributes, attribute => {
 
             // Check if <attribute>'s name matches the prefix RegExp
             if (prefix.AS_REGEXP.test(attribute.name)) {
 
                 // Remove the prefix String from the beginning of <attribute>'s name, then replace all hyphens/dashes (-) from the resulting String, and convert that result to camelCase.
-                const configItem = attribute.name.substr(-(attribute.name.length - prefix.AS_STRING.length)).replace(/-(.)/g, ($0, $1) => {
-                    return $1.toUpperCase();
-                });
+                const configItem = Helpers.getVariableName(attribute.name, prefix);
 
                 // Add a new property to <target> and assign <attribute>'s value
-                target[configItem] = attribute.value;
+                output[`_${configItem}`] = attribute.value;
             }
         });
+
+        return output;
+    }
+
+    static getVariableName(input, prefix) {
+
+        if (prefix.AS_REGEXP.test(input)) {
+            return input.substr(-(input.length - prefix.AS_STRING.length)).replace(/-(.)/g, ($0, $1) => {
+                return $1.toUpperCase();
+            });
+        } else {
+            return input;
+        }
     }
 
     /**
@@ -264,8 +290,9 @@ class Helpers {
      * @method checkClickedStep
      * @param {Object} mouseCoordinates The position of the mouse pointer on click
      * @param {Array} steps The Pattern's steps Array
+     * @param {Object} attributes An object containing the canvas' attributes
      */
-    static checkClickedStep(mouseCoordinates, steps) {
+    static checkClickedStep(mouseCoordinates, steps, attributes) {
 
         let output = {};
 
@@ -276,10 +303,10 @@ class Helpers {
 
             // Calculate the current <step>'s coordinates
             const stepCoordinates = {
-                x: Oontzr.CANVAS_ATTRIBUTES.CANVAS_PADDING + index * Oontzr.CANVAS_ATTRIBUTES.STEP_WIDTH + numGaps * Oontzr.CANVAS_ATTRIBUTES.STEP_GAP,
-                y: Oontzr.CANVAS_ATTRIBUTES.CANVAS_PADDING,
-                w: Oontzr.CANVAS_ATTRIBUTES.STEP_WIDTH,
-                h: Oontzr.CANVAS_ATTRIBUTES.STEP_HEIGHT
+                x: attributes.CANVAS_PADDING + index * attributes.STEP_WIDTH + numGaps * attributes.STEP_GAP,
+                y: attributes.CANVAS_PADDING,
+                w: attributes.STEP_WIDTH,
+                h: attributes.STEP_HEIGHT
             };
 
             // On collision between mouse and <step>, return an object containing both the index and step
@@ -290,6 +317,13 @@ class Helpers {
         });
 
         return output;
+    }
+
+    static getLanguage(language) {
+
+        if (language === 'de') return 'DE';
+        else if (language === 'en') return 'EN';
+        else return 'EN';
     }
 }
 

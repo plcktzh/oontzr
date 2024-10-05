@@ -1,16 +1,35 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/lib/material-design-icons/filled.css">
     <script src="js/index.js" type="module"></script>
     <title>Oontzr.</title>
 </head>
 
 <body>
-    <div id="oontzr" data-oontzr-config-json="data/config.json"></div>
+    <oo-app data-oo-config-json="data/config.json">
+        <!--<oo-input-knob min="4" max="32" value="7">
+            <div slot="label">Num Events</div>
+        </oo-input-knob>
+
+        <oo-input-knob size="150">
+            <div slot="label">Pattern length</div>
+        </oo-input-knob>
+
+        <oo-input-knob size="150">
+            <div slot="label"></div>
+        </oo-input-knob>
+
+        <oo-input-knob size="150" style="--oo-color-primary: var(--oo-color-secondary);"></oo-input-knob>
+
+        <oo-input-slider min="1" max="127" width="25" height="50">
+            <div slot="label">Velocity</div>
+        </oo-input-slider>-->
+    </oo-app>
 </body>
 
 </html>

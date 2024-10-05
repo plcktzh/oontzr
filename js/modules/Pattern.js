@@ -1,5 +1,5 @@
 import Helpers from './Helpers.js';
-import Oontzr from './Oontzr.js';
+import App from './web-components/App.js';
 import Cellular from './pattern-types/Cellular.js';
 import Euclidean from './pattern-types/Euclidean.js';
 import Random from './pattern-types/Random.js';
@@ -42,21 +42,23 @@ class Pattern {
 
         this.parent = parent;
 
+        console.log(args.type, App.PATTERN_TYPES.EUCLIDEAN.TYPE, args.type === App.PATTERN_TYPES.EUCLIDEAN.TYPE);
+
         switch (args.type) {
 
-            case Oontzr.PATTERN_TYPES.CELLULAR.TYPE:
+            case App.PATTERN_TYPES.CELLULAR.TYPE:
                 this.parameters = new Cellular(this, args);
                 this.updateSteps(this.parameters);
                 break;
-            case Oontzr.PATTERN_TYPES.TR.TYPE:
+            case App.PATTERN_TYPES.TR.TYPE:
                 this.parameters = new TR(this, args);
                 this.updateSteps(this.parameters);
                 break;
-            case Oontzr.PATTERN_TYPES.EUCLIDEAN.TYPE:
+            case App.PATTERN_TYPES.EUCLIDEAN.TYPE:
                 this.parameters = new Euclidean(this, args);
                 this.updateSteps(this.parameters);
                 break;
-            case Oontzr.PATTERN_TYPES.RANDOM.TYPE:
+            case App.PATTERN_TYPES.RANDOM.TYPE:
             default:
                 this.parameters = new Random(this, args);
                 this.updateSteps(this.parameters);
@@ -66,12 +68,12 @@ class Pattern {
         // Transfer properties from optional arguments
         Helpers.transferProps(this, args, ['parameters']);
 
-        // Initialize canvas and append it to Oontzr's container
+        // Initialize canvas and append it to App's container
         this.initCanvas();
         this.parent.parent.parent.append(this.output.canvas);
 
         // For TR style Patterns, add an event listener for mouse clicks
-        if (this.parameters.type === Oontzr.PATTERN_TYPES.TR.TYPE) this.output.canvas.addEventListener('click', (e) => {
+        if (this.parameters.type === App.PATTERN_TYPES.TR.TYPE) this.output.canvas.addEventListener('click', (e) => {
 
             // Get mouse's coordinates in relation to the canvas' position in the browser window
             const mouseCoordinates = {
@@ -83,7 +85,7 @@ class Pattern {
             const {
                 index,
                 step
-            } = Helpers.checkClickedStep(mouseCoordinates, this.steps);
+            } = Helpers.checkClickedStep(mouseCoordinates, this.steps, App.CANVAS_ATTRIBUTES);
 
             // "Invert" the Step that was clicked
             if (step) {
@@ -298,8 +300,8 @@ class Pattern {
         const stepsPattern = this.steps;
 
         // Set canvas dimensions in relation to length of Pattern.steps
-        canvasObj.setAttribute('width', `${this.steps.length * Oontzr.CANVAS_ATTRIBUTES.STEP_WIDTH + 2 * Oontzr.CANVAS_ATTRIBUTES.CANVAS_PADDING + (this.steps.length - 1) * Oontzr.CANVAS_ATTRIBUTES.STEP_GAP}`);
-        canvasObj.setAttribute('height', `${Oontzr.CANVAS_ATTRIBUTES.STEP_HEIGHT + 2 * Oontzr.CANVAS_ATTRIBUTES.CANVAS_PADDING}`);
+        canvasObj.setAttribute('width', `${this.steps.length * App.CANVAS_ATTRIBUTES.STEP_WIDTH + 2 * App.CANVAS_ATTRIBUTES.CANVAS_PADDING + (this.steps.length - 1) * App.CANVAS_ATTRIBUTES.STEP_GAP}`);
+        canvasObj.setAttribute('height', `${App.CANVAS_ATTRIBUTES.STEP_HEIGHT + 2 * App.CANVAS_ATTRIBUTES.CANVAS_PADDING}`);
 
         // Clear the canvas
         context.clearRect(0, 0, this.output.canvas.width, this.output.canvas.height);
@@ -310,28 +312,28 @@ class Pattern {
             let stepBgFillStyle, stepFillStyle;
 
             // Set fillStyle for background
-            stepBgFillStyle = `${Oontzr.CANVAS_ATTRIBUTES.STEP_COLOR.INACTIVE}`;
-            if (index === this.currentStep) stepBgFillStyle = `${Oontzr.CANVAS_ATTRIBUTES.STEP_COLOR.INACTIVE_CURRENT}`;
+            stepBgFillStyle = `${App.CANVAS_ATTRIBUTES.STEP_COLOR.INACTIVE}`;
+            if (index === this.currentStep) stepBgFillStyle = `${App.CANVAS_ATTRIBUTES.STEP_COLOR.INACTIVE_CURRENT}`;
 
             // Set fillStyle for active/inactive Step
             if (step.isActive) {
-                stepFillStyle = `${Oontzr.CANVAS_ATTRIBUTES.STEP_COLOR.ACTIVE}`;
-                if (index === this.currentStep) stepFillStyle = `${Oontzr.CANVAS_ATTRIBUTES.STEP_COLOR.ACTIVE_CURRENT}`;
+                stepFillStyle = `${App.CANVAS_ATTRIBUTES.STEP_COLOR.ACTIVE}`;
+                if (index === this.currentStep) stepFillStyle = `${App.CANVAS_ATTRIBUTES.STEP_COLOR.ACTIVE_CURRENT}`;
             } else {
-                stepFillStyle = `${Oontzr.CANVAS_ATTRIBUTES.STEP_COLOR.INACTIVE}`;
+                stepFillStyle = `${App.CANVAS_ATTRIBUTES.STEP_COLOR.INACTIVE}`;
             }
 
             // Calculate x, y, width, height of Step rectangle
             // Height is dependent on Step.velocity
-            const stepHeight = Oontzr.CANVAS_ATTRIBUTES.STEP_HEIGHT * step.velocity / Oontzr.PATTERN_PARAMETERS.VELOCITY_MAX;
-            const stepWidth = Oontzr.CANVAS_ATTRIBUTES.STEP_WIDTH;
+            const stepHeight = App.CANVAS_ATTRIBUTES.STEP_HEIGHT * step.velocity / App.PATTERN_PARAMETERS.VELOCITY_MAX;
+            const stepWidth = App.CANVAS_ATTRIBUTES.STEP_WIDTH;
             // Step rectangles must be vertically aligned to the bottom of the canvas
-            const stepY = Oontzr.CANVAS_ATTRIBUTES.CANVAS_PADDING + Oontzr.CANVAS_ATTRIBUTES.STEP_HEIGHT - stepHeight;
-            const stepX = Oontzr.CANVAS_ATTRIBUTES.CANVAS_PADDING + index * (Oontzr.CANVAS_ATTRIBUTES.STEP_WIDTH + Oontzr.CANVAS_ATTRIBUTES.STEP_GAP);
+            const stepY = App.CANVAS_ATTRIBUTES.CANVAS_PADDING + App.CANVAS_ATTRIBUTES.STEP_HEIGHT - stepHeight;
+            const stepX = App.CANVAS_ATTRIBUTES.CANVAS_PADDING + index * (App.CANVAS_ATTRIBUTES.STEP_WIDTH + App.CANVAS_ATTRIBUTES.STEP_GAP);
 
             // First, fill the background
             context.fillStyle = stepBgFillStyle;
-            context.fillRect(stepX, Oontzr.CANVAS_ATTRIBUTES.CANVAS_PADDING, stepWidth, Oontzr.CANVAS_ATTRIBUTES.STEP_HEIGHT);
+            context.fillRect(stepX, App.CANVAS_ATTRIBUTES.CANVAS_PADDING, stepWidth, App.CANVAS_ATTRIBUTES.STEP_HEIGHT);
 
             // Second, fill the foreground
             context.fillStyle = stepFillStyle;

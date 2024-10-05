@@ -3,78 +3,101 @@
         "app-loaded": "app-loaded"
     },
     "pattern-types": {
+        "cellular": {
+            "type": "cellular",
+            "parameters": {
+                "pattern-length": {
+                    "name": "patternLength",
+                    "initialValue": 64
+                },
+                "num-seeds": {
+                    "name": "numSeeds",
+                    "initialValue": 1
+                },
+                "do-center-seeds": {
+                    "name": "doCenterSeeds",
+                    "initialValue": true
+                },
+                "do-randomize-velocities": {
+                    "name": "doRandomizeVelocities",
+                    "initialValue": false
+                },
+                "wrap-around": {
+                    "name": "wrapAround",
+                    "initialValue": false
+                },
+                "do-randomize": {
+                    "name": "doRandomize",
+                    "initialValue": true
+                }
+            }
+        },
         "euclidean": {
             "type": "euclidean",
-            "parameters": [{
-                "name": "patternLength",
-                "initialValue": 16
-            }, {
-                "name": "numEvents",
-                "initialValue": 4
-            }, {
-                "name": "patternOffset",
-                "initialValue": 0
-            }, {
-                "name": "doRandomizeVelocities",
-                "initialValue": false
-            }, {
-                "name": "doRandomize",
-                "initialValue": false
-            }]
+            "parameters": {
+                "pattern-length": {
+                    "name": "patternLength",
+                    "initialValue": 16
+                },
+                "num-events": {
+                    "name": "numEvents",
+                    "initialValue": 4
+                },
+                "pattern-offset": {
+                    "name": "patternOffset",
+                    "initialValue": 0
+                },
+                "do-randomize-velocities": {
+                    "name": "doRandomizeVelocities",
+                    "initialValue": false
+                },
+                "do-randomize": {
+                    "name": "doRandomize",
+                    "initialValue": false
+                }
+            }
         },
         "random": {
             "type": "random",
-            "parameters": [{
-                "name": "patternLength",
-                "initialValue": 16
-            }, {
-                "name": "patternOffset",
-                "initialValue": 0
-            }, {
-                "name": "doRandomizeVelocities",
-                "initialValue": false
-            }, {
-                "name": "doRandomize",
-                "initialValue": false
-            }]
+            "parameters": {
+                "pattern-length": {
+                    "name": "patternLength",
+                    "initialValue": 16
+                },
+                "pattern-offset": {
+                    "name": "patternOffset",
+                    "initialValue": 0
+                },
+                "do-randomize-velocities": {
+                    "name": "doRandomizeVelocities",
+                    "initialValue": false
+                },
+                "do-randomize": {
+                    "name": "doRandomize",
+                    "initialValue": false
+                }
+            }
         },
         "tr": {
             "type": "tr",
-            "parameters": [{
-                "name": "patternLength",
-                "initialValue": 16
-            }, {
-                "name": "patternOffset",
-                "initialValue": 0
-            }, {
-                "name": "doRandomizeVelocities",
-                "initialValue": false
-            }, {
-                "name": "doRandomize",
-                "initialValue": false
-            }]
-        },
-        "cellular": {
-            "type": "cellular",
-            "parameters": [{
-                "name": "patternLength",
-                "initialValue": 64
-            }, {
-                "name": "numSeeds",
-                "initialValue": 1
-            }, {
-                "name": "doCenterSeeds",
-                "initialValue": true
-            }, {
-                "name": "doRandomizeVelocities",
-                "initialValue": false
-            }, {
-                "name": "wrapAround",
-                "initialValue": false
-            }, {
-                "name": "doRandomize",
-                "initialValue": true
-            }]
+            "parameters": {
+                "pattern-length": {
+                    "name": "patternLength",
+                    "initialValue": 16
+                },
+                "pattern-offset": {
+                    "name": "patternOffset",
+                    "initialValue": 0
+                },
+                "do-randomize-velocities": {
+                    "name": "doRandomizeVelocities",
+                    "initialValue": false
+                },
+                "do-randomize": {
+                    "name": "doRandomize",
+                    "initialValue": false
+                }
+            }
         }
     },
     "pattern-parameters": {
@@ -138,5 +161,27 @@
         "id": "dbi_oh",
         "name": "DrumBrute Impact Open Hihat",
         "filename": "dbi_oh.wav"
-    }]
+    }],
+    "strings": {
+        "en": {
+            "button-add-pattern-label": "Add new pattern",
+            "select-pattern-type-label": "Choose a pattern type ...",
+            "pattern-types": {
+                "euclidean": "Euclidean",
+                "cellular": "Cellular automaton",
+                "random": "Random",
+                "tr": "TR/Roland style"
+            }
+        },
+        "de": {
+            "button-add-pattern-label": "Neues Pattern hinzufügen",
+            "select-pattern-type-label": "Wähle einen Pattern-Typ ...",
+            "pattern-types": {
+                "euclidean": "Euklidisch",
+                "cellular": "Zellulärer Automat",
+                "random": "Zufällig",
+                "tr": "TR/Roland-Stil"
+            }
+        }
+    }
 }

@@ -1,6 +1,6 @@
 import Helpers from '../Helpers.js';
-import Oontzr from '../Oontzr.js';
-import Pattern from '../Pattern.js';
+import App from '../web-components/App.js';
+import Pattern from '../web-components/Pattern.js';
 import PatternType from '../PatternType.js';
 import Step from '../Step.js';
 
@@ -30,9 +30,9 @@ class Cellular extends PatternType {
 
         this.parent = parent;
 
-        Oontzr.PATTERN_TYPES.CELLULAR.PARAMETERS.forEach(parameter => {
-            this[parameter.name] = parameter.initialValue;
-        });
+        for (const parameter in App.PATTERN_TYPES.CELLULAR.PARAMETERS) {
+            this[App.PATTERN_TYPES.CELLULAR.PARAMETERS[parameter]['NAME']] = App.PATTERN_TYPES.CELLULAR.PARAMETERS[parameter]['INITIALVALUE'];
+        }
 
         // Transfer properties from optional arguments
         Helpers.transferProps(this, args);
