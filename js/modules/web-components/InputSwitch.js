@@ -50,10 +50,17 @@ class InputSwitch extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['data-checked'];
+        return ['data-checked', 'label'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
+
+        switch (name) {
+
+            case 'label':
+                Helpers.nqs('slot[name="label"]', this.shadowRoot).innerHTML = newValue;
+                break;
+        }
 
         if (name === 'data-checked') {
             console.log(newValue);

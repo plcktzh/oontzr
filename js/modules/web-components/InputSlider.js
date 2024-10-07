@@ -72,7 +72,6 @@ ooInputSliderCss.innerHTML = `
 
 const ooInputSliderTemplate = document.createElement('template');
 ooInputSliderTemplate.innerHTML = `
-<label for="numberInput"><slot name="label"></slot></label>
 <input type="number" id="numberInput" min="0" max="127" value="0">
 <div id="outputContainer">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 100" width="50" height="100" preserveAspectRatio="none">
@@ -88,6 +87,7 @@ ooInputSliderTemplate.innerHTML = `
 </svg>
 <div id="outputLabel"></div>
 </div>
+<label for="numberInput"></label>
 `;
 
 /**
@@ -124,7 +124,7 @@ class InputSlider extends HTMLElement {
      */
     static get observedAttributes() {
 
-        return ['value', 'min', 'max', 'graph-min', 'graph-max', 'disabled', 'width', 'height'];
+        return ['value', 'min', 'max', 'graph-min', 'graph-max', 'disabled', 'width', 'height', 'label'];
     }
 
 
@@ -164,6 +164,9 @@ class InputSlider extends HTMLElement {
                     (newValue === 'disabled') ? this.num.setAttribute('disabled', 'disabled'): this.num.removeAttribute('disabled');
                     this._config['disabled'] = (newValue === 'disabled') ? true : false;
                     break;
+                case 'label':
+                    Helpers.nqs('label', this.shadowRoot).innerHTML = newValue;
+                    break;
             }
 
             this.num.dispatchEvent(new Event('change'));
@@ -176,9 +179,9 @@ class InputSlider extends HTMLElement {
     connectedCallback() {
 
         // Get attributes from oo-input-slider and assign to _config properties - includes fallbacks
-        this._config['value'] = this.getAttribute('value') ? parseInt(this.getAttribute('value')) : 0;
-        this._config['min'] = this.getAttribute('min') ? parseInt(this.getAttribute('min')) : 0;
         this._config['max'] = this.getAttribute('max') ? parseInt(this.getAttribute('max')) : 127;
+        this._config['min'] = this.getAttribute('min') ? parseInt(this.getAttribute('min')) : 0;
+        this._config['value'] = this.getAttribute('value') ? parseInt(this.getAttribute('value')) : 0;
         this._config['graphMin'] = this.getAttribute('graphMin') ? parseInt(this.getAttribute('graphMin')) : 0;
         this._config['graphMax'] = this.getAttribute('graphMax') ? parseInt(this.getAttribute('graphMax')) : 100;
         this._config['width'] = this.getAttribute('width') ? parseInt(this.getAttribute('width')) : 50;

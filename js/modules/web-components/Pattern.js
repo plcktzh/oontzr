@@ -126,10 +126,7 @@ class Pattern extends HTMLElement {
         this.updateSteps();
     }
 
-    disconnectedCallback() {
-
-        console.log('disconnected');
-    }
+    disconnectedCallback() {}
 
     _setPatternType() {
 

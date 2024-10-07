@@ -12,11 +12,15 @@
                 "pattern-length": {
                     "name": "patternLength",
                     "initialValue": 64,
+                    "minValue": 1,
+                    "maxValue": 64,
                     "type": "Number"
                 },
                 "num-seeds": {
                     "name": "numSeeds",
                     "initialValue": 1,
+                    "minValue": 1,
+                    "maxValue": 64,
                     "type": "Number"
                 },
                 "do-center-seeds": {
@@ -47,16 +51,22 @@
                 "pattern-length": {
                     "name": "patternLength",
                     "initialValue": 16,
+                    "minValue": 1,
+                    "maxValue": 64,
                     "type": "Number"
                 },
                 "num-events": {
                     "name": "numEvents",
                     "initialValue": 4,
+                    "minValue": 1,
+                    "maxValue": 64,
                     "type": "Number"
                 },
                 "pattern-offset": {
                     "name": "patternOffset",
                     "initialValue": 0,
+                    "minValue": -32,
+                    "maxValue": 32,
                     "type": "Number"
                 },
                 "do-randomize-velocities": {
@@ -77,11 +87,15 @@
                 "pattern-length": {
                     "name": "patternLength",
                     "initialValue": 16,
+                    "minValue": 1,
+                    "maxValue": 64,
                     "type": "Number"
                 },
                 "pattern-offset": {
                     "name": "patternOffset",
                     "initialValue": 0,
+                    "minValue": -32,
+                    "maxValue": 32,
                     "type": "Number"
                 },
                 "do-randomize-velocities": {
@@ -102,11 +116,15 @@
                 "pattern-length": {
                     "name": "patternLength",
                     "initialValue": 16,
+                    "minValue": 1,
+                    "maxValue": 64,
                     "type": "Number"
                 },
                 "pattern-offset": {
                     "name": "patternOffset",
                     "initialValue": 0,
+                    "minValue": -32,
+                    "maxValue": 32,
                     "type": "Number"
                 },
                 "do-randomize-velocities": {

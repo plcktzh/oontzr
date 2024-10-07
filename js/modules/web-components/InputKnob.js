@@ -83,7 +83,7 @@ ooInputKnobCss.innerHTML = `
 
 const ooInputKnobTemplate = document.createElement('template');
 ooInputKnobTemplate.innerHTML = `
-<input type="number" id="numberInput" min="1" max="64" value="16">
+<input type="number" id="numberInput">
 <div id="outputContainer">
 <div id="outputLabel"></div>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
@@ -98,7 +98,7 @@ ooInputKnobTemplate.innerHTML = `
 </g>
 </svg>
 </div>
-<label for="numberInput"><slot name="label"></slot></label>
+<label for="numberInput"></label>
 `;
 
 /**
@@ -128,8 +128,6 @@ class InputKnob extends HTMLElement {
 
         // Get number input
         this.num = Helpers.nqs('#numberInput', this.shadowRoot);
-
-        if (!Helpers.nqs('[slot="label"]', this) || Helpers.nqs('[slot="label"]', this).firstChild === null) Helpers.nqs('label', this.shadowRoot).style.display = 'none';
     }
 
     /**
@@ -137,7 +135,7 @@ class InputKnob extends HTMLElement {
      */
     static get observedAttributes() {
 
-        return ['value', 'min', 'max', 'graph-min', 'graph-max', 'disabled', 'size'];
+        return ['label', 'value', 'min', 'max', 'graph-min', 'graph-max', 'disabled', 'size'];
     }
 
 
@@ -151,13 +149,17 @@ class InputKnob extends HTMLElement {
 
         switch (name) {
             case 'value':
+                this.num.value = newValue;
             case 'min':
             case 'max':
                 // Set attributes on number input and update _config for attributes value, min, max
-                this.num.setAttribute(name, parseInt(newValue));
-                if (parseInt(this.num.getAttribute('value')) < parseInt(this.num.getAttribute('min'))) this.num.setAttribute(name, parseInt(this.num.getAttribute('min')));
-                if (parseInt(this.num.getAttribute('value')) > parseInt(this.num.getAttribute('max'))) this.num.setAttribute(name, parseInt(this.num.getAttribute('max')));
+                this.num.setAttribute(name, newValue);
+                if (parseInt(this.num.getAttribute('value')) < parseInt(this.num.getAttribute('min'))) this.num.setAttribute(name, this.num.getAttribute('min'));
+                if (parseInt(this.num.getAttribute('value')) > parseInt(this.num.getAttribute('max'))) this.num.setAttribute(name, this.num.getAttribute('max'));
                 this._config[name] = parseInt(this.num.getAttribute(name));
+
+                if (name === 'min') this.setAttribute('graph-min', newValue);
+                else if (name === 'max') this.setAttribute('graph-max', newValue);
                 break;
             case 'graph-min':
                 // Update _config for graphMin
@@ -168,9 +170,12 @@ class InputKnob extends HTMLElement {
                 this._config['graphMax'] = parseInt(newValue);
                 break;
             case 'size':
-                Helpers.nqs('svg', this.shadowRoot).setAttribute('width', parseInt(newValue));
-                Helpers.nqs('svg', this.shadowRoot).setAttribute('height', parseInt(newValue));
+                Helpers.nqs('svg', this.shadowRoot).setAttribute('width', newValue);
+                Helpers.nqs('svg', this.shadowRoot).setAttribute('height', newValue);
                 this._config[name] = parseInt(newValue);
+                break;
+            case 'label':
+                Helpers.nqs('label', this.shadowRoot).innerHTML = newValue;
                 break;
         }
 
@@ -183,9 +188,6 @@ class InputKnob extends HTMLElement {
     connectedCallback() {
 
         // Get attributes from oo-input-knob and assign to _config properties - includes fallbacks
-        this._config['value'] = this.getAttribute('value') ? parseInt(this.getAttribute('value')) : 1;
-        this._config['min'] = this.getAttribute('min') ? parseInt(this.getAttribute('min')) : 1;
-        this._config['max'] = this.getAttribute('max') ? parseInt(this.getAttribute('max')) : 64;
         this._config['graphMin'] = this.getAttribute('graphMin') ? parseInt(this.getAttribute('graphMin')) : 0;
         this._config['graphMax'] = this.getAttribute('graphMax') ? parseInt(this.getAttribute('graphMax')) : 64;
         this._config['size'] = this.getAttribute('size') ? parseInt(this.getAttribute('size')) : 100;
@@ -298,17 +300,19 @@ class InputKnob extends HTMLElement {
                 // Update _clientY with the current y position
                 e.target._clientY = currentClientY;
 
-                newValue = num.getAttribute('value') - Math.round(.25 * deltaY);
+                newValue = parseInt(num.value) - Math.round(.25 * deltaY);
             } else if (e.type === 'wheel') {
                 // Handling of scroll wheel events
 
-                newValue = num.getAttribute('value') - Math.round(.025 * e.deltaY);
+                newValue = parseInt(num.value) - Math.round(.025 * e.deltaY);
             }
 
             // Check if newValue is within bounds and assign to number input's value attribute
             if (newValue < parseInt(num.getAttribute('min'))) newValue = num.getAttribute('min');
             if (newValue > parseInt(num.getAttribute('max'))) newValue = num.getAttribute('max');
-            num.setAttribute('value', newValue);
+            num.value = newValue;
+
+            this.setAttribute('value', newValue);
 
             // Trigger a re-render
             num.dispatchEvent(new Event('change'));
@@ -329,8 +333,8 @@ class InputKnob extends HTMLElement {
         const val = parseInt(num.value);
 
         // Some shorthand for graphMin and graphMax attributes
-        const min = this._config.graphMin;
-        const max = this._config.graphMax;
+        const min = (this._config.graphMin < 0) ? 0 : this._config.graphMin;
+        const max = (this._config.graphMin < 0) ? this._config.graphMax + Math.abs(this._config.graphMin) : this._config.graphMax;
 
         // Since the diameter of the SVG circle is 100, set the radius to 50
         const r = 50;
@@ -348,11 +352,12 @@ class InputKnob extends HTMLElement {
 
         // Determine the large-arc-flag for the arc syntax
         // see https://www.nan.fyi/svg-paths/arcs
-        const laf = (angle > 0) ? 1 : 0;
+        const laf = (this._config.graphMin < 0) ? (angle < -180) ? 0 : 1 : (angle > 0) ? 1 : 0;
+        const sf = (angle < -180) ? 0 : 1;
 
         // Build the path definition property
         // see https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d
-        const d = `M ${r} ${r} L 0 ${r} A ${r} ${r}, 0, ${laf}, 1, ${x} ${y} Z`;
+        const d = `M ${r} ${r} L 0 ${r} A ${r} ${r}, 0, ${laf}, ${sf}, ${x} ${y} Z`;
 
         // Set the SVG path's definition property
         Helpers.nqs('#outputPath', this.shadowRoot).setAttribute('d', d);

@@ -57,11 +57,6 @@ class PatternLane extends HTMLElement {
 
     attributeChangedCallback(name, oldValue, newValue) {
 
-        if (name === 'data-oo-represents-pattern') {
-
-            if (this.parent.parameters.type === App.PATTERN_TYPES.TR.TYPE) console.log(App.PATTERN_TYPES.TR.TYPE);
-        }
-
         this._render();
     }
 
@@ -71,10 +66,11 @@ class PatternLane extends HTMLElement {
 
         this.parent.steps.forEach((step, index) => {
 
+            Helpers.nac(stepsContainer, step);
+
             step.setAttribute('data-oo-step-is-active', step.isActive);
             step.setAttribute('data-oo-step-velocity', step.velocity);
-
-            Helpers.nac(stepsContainer, step);
+            step.setAttribute('data-oo-step-width', step.getBoundingClientRect().width);
         });
     }
 }

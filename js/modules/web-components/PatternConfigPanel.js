@@ -65,6 +65,10 @@ class PatternConfigPanel extends HTMLElement {
             input.setAttribute('data-oo-pattern-control-input-type', App.PATTERN_TYPES[this.type].PARAMETERS[parameter].TYPE);
             input.setAttribute('data-oo-pattern-control-input-name', parameter);
             input.setAttribute('data-oo-pattern-control-input-initial-value', App.PATTERN_TYPES[this.type].PARAMETERS[parameter].INITIALVALUE);
+            if (App.PATTERN_TYPES[this.type].PARAMETERS[parameter].TYPE === 'Number') {
+                input.setAttribute('data-oo-pattern-control-input-min-value', App.PATTERN_TYPES[this.type].PARAMETERS[parameter].MINVALUE);
+                input.setAttribute('data-oo-pattern-control-input-max-value', App.PATTERN_TYPES[this.type].PARAMETERS[parameter].MAXVALUE);
+            }
         }
     }
 }

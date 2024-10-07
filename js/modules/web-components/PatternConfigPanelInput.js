@@ -6,7 +6,10 @@ import InputSlider from './InputSlider.js';
 import InputSwitch from './InputSwitch.js';
 
 const ooPatternConfigPanelInputTemplate = document.createElement('template');
-ooPatternConfigPanelInputTemplate.innerHTML = ``;
+ooPatternConfigPanelInputTemplate.innerHTML = `
+<div class="container"></div>
+<span class="label"></div>
+`;
 
 const ooPatternConfigPanelInputCss = document.createElement('template');
 ooPatternConfigPanelInputCss.innerHTML = `
@@ -48,7 +51,7 @@ class PatternConfigPanelInput extends HTMLElement {
 
     static get observedAttributes() {
 
-        return ['data-oo-pattern-control-input-type', 'data-oo-pattern-control-input-name', 'data-oo-pattern-control-input-initial-value'];
+        return ['data-oo-pattern-control-input-type', 'data-oo-pattern-control-input-name', 'data-oo-pattern-control-input-initial-value', 'data-oo-pattern-control-input-min-value', 'data-oo-pattern-control-input-max-value'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -67,11 +70,16 @@ class PatternConfigPanelInput extends HTMLElement {
                 }
                 break;
             case 'data-oo-pattern-control-input-name':
-                this.label = `${App.STRINGS[Helpers.getLanguage(app._s.language)].PATTERN_PARAMETERS[newValue]}`;
-                this.input.setAttribute('label', this.label);
+                this.input.setAttribute('label', `${App.STRINGS[Helpers.getLanguage(app._s.language)].PATTERN_PARAMETERS[newValue]}`);
                 break;
             case 'data-oo-pattern-control-input-initial-value':
                 this.input.setAttribute('value', newValue);
+                break;
+            case 'data-oo-pattern-control-input-min-value':
+                this.input.setAttribute('min', newValue);
+                break;
+            case 'data-oo-pattern-control-input-max-value':
+                this.input.setAttribute('max', newValue);
                 break;
         }
     }
