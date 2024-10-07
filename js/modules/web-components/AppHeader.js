@@ -1,5 +1,6 @@
 import App from './App.js';
 import Helpers from '../Helpers.js';
+import Playback from '../Playback.js';
 
 const ooAppHeaderTemplate = document.createElement('template');
 ooAppHeaderTemplate.innerHTML = `
@@ -48,6 +49,13 @@ ooAppHeaderCss.innerHTML = `
         top: 1.375rem;
         z-index: 9999;
     }
+
+    oo-input-spinner {
+        position: absolute;
+        left: 50%;
+        top: 1.375rem;
+        z-index: 9999;
+    }
 </style>
 `;
 class AppHeader extends HTMLElement {
@@ -72,6 +80,28 @@ class AppHeader extends HTMLElement {
 
         const app = Helpers.nqs('oo-app');
 
+        this.tempoInput = Helpers.dce('oo-input-spinner');
+        this.tempoInput.setAttribute('data-type', 'set-tempo');
+        this.tempoInput.setAttribute('data-label', App.STRINGS[Helpers.getLanguage(app._s.language)]['TEMPO_LABEL']);
+        this.tempoInput.setAttribute('data-value', app._s.playback.tempo.bpm);
+
+        Helpers.nac(Helpers.nqs('.inner', this.shadowRoot), this.tempoInput);
+
+        this.tempoInput.addEventListener('input-change', (e) => {
+
+            if (e.detail.type === 'set-tempo') {
+                try {
+                    app._s.playback.tempo.bpm = parseFloat(e.detail.value);
+                    app._s.playback.tempo.msPerStep = Playback.getMilliseconds(parseFloat(e.detail.value));
+                } catch (e) {
+                    console.error(`Tempo could not be set. ${e}`);
+                }
+
+                console.log(app._s.playback.tempo);
+            }
+        });
+
+
         this.addPatternButton = Helpers.dce('oo-input-dropdown');
         this.addPatternButton.setAttribute('data-type', 'add-pattern');
         this.addPatternButton.setAttribute('data-expanded', 'false');
@@ -83,7 +113,7 @@ class AppHeader extends HTMLElement {
             <span class="dropdown-item" data-value="${App.PATTERN_TYPES[patternType].TYPE}">${App.STRINGS[Helpers.getLanguage(app._s.language)]['PATTERN_TYPES'][patternType]}</span>`;
         }
 
-        Helpers.nac(this.shadowRoot, this.addPatternButton);
+        Helpers.nac(Helpers.nqs('.inner', this.shadowRoot), this.addPatternButton);
 
         this.addPatternButton.addEventListener('dropdown-submit', (e) => {
 

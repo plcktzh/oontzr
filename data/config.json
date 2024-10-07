@@ -207,6 +207,7 @@
             "button-set-sample-label": "Set sample",
             "select-pattern-type-label": "Choose a pattern type ...",
             "select-sample-label": "Select a sample ...",
+            "tempo-label": "Tempo",
             "pattern-types": {
                 "euclidean": "Euclidean",
                 "cellular": "Cellular automaton",
@@ -232,6 +233,7 @@
             "button-set-sample-label": "Sample festlegen",
             "select-pattern-type-label": "Wähle einen Pattern-Typ ...",
             "select-sample-label": "Wähle ein Sample ...",
+            "tempo-label": "Tempo",
             "pattern-types": {
                 "euclidean": "Euklidisch",
                 "cellular": "Zellulärer Automat",
