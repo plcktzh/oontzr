@@ -29,11 +29,6 @@ ooPatternCss.innerHTML = `
     :host * {
         box-sizing: border-box;
     }
-
-    .container {
-        display: flex;
-        gap: var(--oo-margin-medium);
-    }
 </style>
 `;
 
@@ -82,10 +77,8 @@ class Pattern extends HTMLElement {
         Helpers.nac(this.shadowRoot, ooPatternCss.content.cloneNode(true));
         Helpers.nac(this.shadowRoot, ooPatternTemplate.content.cloneNode(true));
 
-        const container = Helpers.nqs('.container', this.shadowRoot);
-
-        Helpers.nac(container, new PatternLane(this));
-        Helpers.nac(container, new PatternConfigPanel(this));
+        Helpers.nac(this.shadowRoot, new PatternLane(this));
+        Helpers.nac(this.shadowRoot, new PatternConfigPanel(this));
     }
 
     static get observedAttributes() {
@@ -203,11 +196,6 @@ class Pattern extends HTMLElement {
                 this.setAttribute('data-oo-do-randomize', this.parameters.doRandomize);
                 break;
         }
-
-        //     // Initialize canvas and append it to App's container
-        //     this.initCanvas();
-        //     this.parent.parent.parent.append(this.output.canvas);
-        //     return this;
     }
 
     /**
@@ -226,9 +214,6 @@ class Pattern extends HTMLElement {
 
         // Randomize Step velocities if parameter is set
         if (this.parameters.doRandomizeVelocities) this.randomizeStepVelocities();
-
-        // If canvas exists, (re)draw the Pattern
-        // if (this.output.canvas) this.drawPattern();
 
         return this;
     }
@@ -378,74 +363,6 @@ class Pattern extends HTMLElement {
     //             step: this.steps[this.currentStep]
     //         };
     //     }
-    // }
-
-    // /**
-    //  * @method initCanvas
-    //  * @returns HTMLElement
-    //  */
-    // initCanvas() {
-
-    //     // Create a new canvas HTMLElement, add class and data attribute
-    //     this.output.canvas = Helpers.dce('canvas');
-    //     this.output.canvas.classList.add('pattern-lane');
-    //     this.output.canvas.setAttribute('data-oontzr-pattern-id', this.id);
-    //     // Get context for canvas
-    //     this.output.context = this.output.canvas.getContext('2d');
-
-    //     return this.output.canvas;
-    // }
-
-    // /**
-    //  * @method drawPattern
-    //  * @returns null
-    //  */
-    // drawPattern() {
-
-    //     const canvasObj = this.output.canvas;
-    //     const context = this.output.context;
-    //     const stepsPattern = this.steps;
-
-    //     // Set canvas dimensions in relation to length of Pattern.steps
-    //     canvasObj.setAttribute('width', `${this.steps.length * App.CANVAS_ATTRIBUTES.STEP_WIDTH + 2 * App.CANVAS_ATTRIBUTES.CANVAS_PADDING + (this.steps.length - 1) * App.CANVAS_ATTRIBUTES.STEP_GAP}`);
-    //     canvasObj.setAttribute('height', `${App.CANVAS_ATTRIBUTES.STEP_HEIGHT + 2 * App.CANVAS_ATTRIBUTES.CANVAS_PADDING}`);
-
-    //     // Clear the canvas
-    //     context.clearRect(0, 0, this.output.canvas.width, this.output.canvas.height);
-
-    //     // Walk Pattern.steps Array
-    //     stepsPattern.forEach((step, index) => {
-
-    //         let stepBgFillStyle, stepFillStyle;
-
-    //         // Set fillStyle for background
-    //         stepBgFillStyle = `${App.CANVAS_ATTRIBUTES.STEP_COLOR.INACTIVE}`;
-    //         if (index === this.currentStep) stepBgFillStyle = `${App.CANVAS_ATTRIBUTES.STEP_COLOR.INACTIVE_CURRENT}`;
-
-    //         // Set fillStyle for active/inactive Step
-    //         if (step.isActive) {
-    //             stepFillStyle = `${App.CANVAS_ATTRIBUTES.STEP_COLOR.ACTIVE}`;
-    //             if (index === this.currentStep) stepFillStyle = `${App.CANVAS_ATTRIBUTES.STEP_COLOR.ACTIVE_CURRENT}`;
-    //         } else {
-    //             stepFillStyle = `${App.CANVAS_ATTRIBUTES.STEP_COLOR.INACTIVE}`;
-    //         }
-
-    //         // Calculate x, y, width, height of Step rectangle
-    //         // Height is dependent on Step.velocity
-    //         const stepHeight = App.CANVAS_ATTRIBUTES.STEP_HEIGHT * step.velocity / App.PATTERN_PARAMETERS.VELOCITY_MAX;
-    //         const stepWidth = App.CANVAS_ATTRIBUTES.STEP_WIDTH;
-    //         // Step rectangles must be vertically aligned to the bottom of the canvas
-    //         const stepY = App.CANVAS_ATTRIBUTES.CANVAS_PADDING + App.CANVAS_ATTRIBUTES.STEP_HEIGHT - stepHeight;
-    //         const stepX = App.CANVAS_ATTRIBUTES.CANVAS_PADDING + index * (App.CANVAS_ATTRIBUTES.STEP_WIDTH + App.CANVAS_ATTRIBUTES.STEP_GAP);
-
-    //         // First, fill the background
-    //         context.fillStyle = stepBgFillStyle;
-    //         context.fillRect(stepX, App.CANVAS_ATTRIBUTES.CANVAS_PADDING, stepWidth, App.CANVAS_ATTRIBUTES.STEP_HEIGHT);
-
-    //         // Second, fill the foreground
-    //         context.fillStyle = stepFillStyle;
-    //         context.fillRect(stepX, stepY, stepWidth, stepHeight);
-    //     });
     // }
 }
 

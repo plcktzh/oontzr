@@ -65,8 +65,8 @@ class Step extends HTMLElement {
         this.inputSlider.setAttribute('value', this.getAttribute('data-oo-step-velocity'));
         this.inputSlider.setAttribute('min', App.PATTERN_PARAMETERS.VELOCITY_MIN);
         this.inputSlider.setAttribute('max', App.PATTERN_PARAMETERS.VELOCITY_MAX);
-        this.inputSlider.setAttribute('width', this.getAttribute('data-oo-step-width'));
         this.inputSlider.setAttribute('height', App.CANVAS_ATTRIBUTES.STEP_HEIGHT);
+        if (this.parent.type !== 'tr' && this.getAttribute('data-oo-step-is-active') === 'false') this.inputSlider.setAttribute('disabled', 'disabled');
 
         this.inputSlider.addEventListener('input-change', (e) => {
             this.setAttribute('data-oo-step-velocity', e.detail.newValue);
@@ -74,16 +74,26 @@ class Step extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['data-oo-step-velocity'];
+        return ['data-oo-step-velocity', 'data-oo-step-is-active'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
 
-        if (name === 'data-oo-step-velocity' && this.inputSlider) {
+        if (name === 'data-oo-step-velocity' && this.inputSlider && (this.parent.type === 'tr' || this.isActive)) {
             this.inputSlider.setAttribute('value', newValue);
-            this.isActive = (parseInt(newValue) !== 0) ? true : false;
+            this.velocity = parseInt(newValue);
 
-            console.log(newValue, this.isActive);
+            this.isActive = (parseInt(newValue) !== 0) ? true : false;
+            this.setAttribute('data-oo-step-is-active', this.isActive);
+        } else if (name === 'data-oo-step-is-active' && this.inputSlider && parseInt(this.inputSlider.getAttribute('value')) === App.PATTERN_PARAMETERS.VELOCITY_MIN) {
+            if (newValue === 'true') this.inputSlider.setAttribute('value', App.PATTERN_PARAMETERS.VELOCITY_MAX);
+        }
+
+        if (name === 'data-oo-step-is-active' && this.inputSlider && this.parent.type !== 'tr') {
+            if (newValue === 'false') this.inputSlider.setAttribute('disabled', 'disabled');
+            else this.inputSlider.removeAttribute('disabled');
+
+            this.isActive = (newValue === 'true') ? true : false;
         }
     }
 

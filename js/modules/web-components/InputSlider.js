@@ -15,6 +15,10 @@ ooInputSliderCss.innerHTML = `
     :host * {
         box-sizing: border-box;
     }
+
+    :host([disabled="disabled"]) #outputContainer {
+        cursor: not-allowed;
+    }
     
     #outputContainer {
         align-items: center;
@@ -156,6 +160,10 @@ class InputSlider extends HTMLElement {
                     Helpers.nqs('svg', this.shadowRoot).setAttribute(name, parseInt(newValue));
                     this._config[name] = parseInt(newValue);
                     break;
+                case 'disabled':
+                    (newValue === 'disabled') ? this.num.setAttribute('disabled', 'disabled'): this.num.removeAttribute('disabled');
+                    this._config['disabled'] = (newValue === 'disabled') ? true : false;
+                    break;
             }
 
             this.num.dispatchEvent(new Event('change'));
@@ -175,6 +183,7 @@ class InputSlider extends HTMLElement {
         this._config['graphMax'] = this.getAttribute('graphMax') ? parseInt(this.getAttribute('graphMax')) : 100;
         this._config['width'] = this.getAttribute('width') ? parseInt(this.getAttribute('width')) : 50;
         this._config['height'] = this.getAttribute('height') ? parseInt(this.getAttribute('height')) : 100;
+        this._config['disabled'] = this.getAttribute('height') === 'disabled' ? true : false;
 
         // Add event listener to number input
         this.num.addEventListener('change', (e) => {
@@ -201,8 +210,14 @@ class InputSlider extends HTMLElement {
         });
         this.addEventListener('mouseout', (e) => this.removeEventListener('mousemove', this._updateInput));
 
-        this.addEventListener('mouseenter', (e) => this.addEventListener('wheel', this._updateInput));
-        this.addEventListener('mouseout', (e) => this.removeEventListener('wheel', this._updateInput));
+        this.addEventListener('mouseenter', (e) => this.addEventListener('wheel', this._updateInput, {
+            passive: true
+        }), {
+            passive: true
+        });
+        this.addEventListener('mouseout', (e) => this.removeEventListener('wheel', this._updateInput), {
+            passive: true
+        });
 
         this.addEventListener('click', this._updateInput);
 
@@ -211,13 +226,19 @@ class InputSlider extends HTMLElement {
 
             // Since TouchEvent doesn't provide a property akin to movementY, we need to save the initial clientY property
             this._clientY = e.touches[0].clientY;
-            this.addEventListener('touchmove', this._updateInput);
+            this.addEventListener('touchmove', this._updateInput, {
+                passive: true
+            });
+        }, {
+            passive: true
         });
         this.addEventListener('touchend', (e) => {
 
             this.removeEventListener('touchmove', this._updateInput);
             // Clear clientY property
             this._clientY = undefined;
+        }, {
+            passive: true
         });
 
         this._render();
@@ -248,47 +269,50 @@ class InputSlider extends HTMLElement {
      */
     _updateInput(e) {
 
-        // Get number input
-        const num = (e.target.shadowRoot) ? Helpers.nqs('#numberInput', e.target.shadowRoot) : null;
+        if (!this._config.disabled) {
 
-        // Declare variable for calculated value
-        let newValue;
+            // Get number input
+            const num = (e.target.shadowRoot) ? Helpers.nqs('#numberInput', e.target.shadowRoot) : null;
 
-        if (num) {
+            // Declare variable for calculated value
+            let newValue;
 
-            if (e.type === 'click') {
+            if (num) {
 
-                newValue = Math.round((1 - ((e.clientY - Helpers.nqs('svg', e.target.shadowRoot).getBoundingClientRect().y) / Helpers.nqs('svg', e.target.shadowRoot).getBoundingClientRect().height)) * parseInt(num.getAttribute('max')));
-            } else if (e.type === 'mousemove' || e.type === 'touchmove') {
-                // Handling of mouse and touch events
+                if (e.type === 'click') {
 
-                const currentClientY = (e.type === 'mousemove') ? e.clientY : e.changedTouches[0].clientY;
+                    newValue = Math.round((1 - ((e.clientY - Helpers.nqs('svg', e.target.shadowRoot).getBoundingClientRect().y) / Helpers.nqs('svg', e.target.shadowRoot).getBoundingClientRect().height)) * parseInt(num.getAttribute('max')));
+                } else if (e.type === 'mousemove' || e.type === 'touchmove') {
+                    // Handling of mouse and touch events
 
-                // deltaY basically is a custom movementY for touch events (and Firefox)
-                const deltaY = (currentClientY && e.target._clientY) ? currentClientY - e.target._clientY : 0;
+                    const currentClientY = (e.type === 'mousemove') ? e.clientY : e.changedTouches[0].clientY;
 
-                // Update _clientY with the current y position
-                e.target._clientY = currentClientY;
+                    // deltaY basically is a custom movementY for touch events (and Firefox)
+                    const deltaY = (currentClientY && e.target._clientY) ? currentClientY - e.target._clientY : 0;
 
-                newValue = num.getAttribute('value') - Math.round(.25 * deltaY);
-            } else if (e.type === 'wheel') {
-                // Handling of scroll wheel events
+                    // Update _clientY with the current y position
+                    e.target._clientY = currentClientY;
 
-                newValue = num.getAttribute('value') - Math.round(.025 * e.deltaY);
-            }
+                    newValue = num.getAttribute('value') - Math.round(.25 * deltaY);
+                } else if (e.type === 'wheel') {
+                    // Handling of scroll wheel events
 
-            // Check if newValue is within bounds and assign to number input's value attribute
-            if (newValue < parseInt(num.getAttribute('min'))) newValue = num.getAttribute('min');
-            if (newValue > parseInt(num.getAttribute('max'))) newValue = num.getAttribute('max');
-            num.setAttribute('value', newValue);
-
-            // Trigger a re-render
-            num.dispatchEvent(new Event('change'));
-            this.dispatchEvent(new CustomEvent(App.EVENT_TYPES.INPUT_CHANGE, {
-                detail: {
-                    newValue: newValue
+                    newValue = num.getAttribute('value') - Math.round(.025 * e.deltaY);
                 }
-            }));
+
+                // Check if newValue is within bounds and assign to number input's value attribute
+                if (newValue < parseInt(num.getAttribute('min'))) newValue = num.getAttribute('min');
+                if (newValue > parseInt(num.getAttribute('max'))) newValue = num.getAttribute('max');
+                num.setAttribute('value', newValue);
+
+                // Trigger a re-render
+                num.dispatchEvent(new Event('change'));
+                this.dispatchEvent(new CustomEvent(App.EVENT_TYPES.INPUT_CHANGE, {
+                    detail: {
+                        newValue: newValue
+                    }
+                }));
+            }
         }
     }
 

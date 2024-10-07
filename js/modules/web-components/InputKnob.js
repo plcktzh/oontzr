@@ -206,30 +206,50 @@ class InputKnob extends HTMLElement {
 
             // Since Firefox handles MouseEvent.movementY rather awkwardly, we need to save the initial clientY property
             this._clientY = e.clientY;
-            this.addEventListener('mousemove', this._updateInput);
+            this.addEventListener('mousemove', this._updateInput, {
+                passive: true
+            });
+        }, {
+            passive: true
         });
         this.addEventListener('mouseup', (e) => {
             this.removeEventListener('mousemove', this._updateInput);
             // Clear clientY property
             this._clientY = undefined;
+        }, {
+            passive: true
         });
-        this.addEventListener('mouseout', (e) => this.removeEventListener('mousemove', this._updateInput));
+        this.addEventListener('mouseout', (e) => this.removeEventListener('mousemove', this._updateInput), {
+            passive: true
+        });
 
-        this.addEventListener('mouseenter', (e) => this.addEventListener('wheel', this._updateInput));
-        this.addEventListener('mouseout', (e) => this.removeEventListener('wheel', this._updateInput));
+        this.addEventListener('mouseenter', (e) => this.addEventListener('wheel', this._updateInput, {
+            passive: true
+        }), {
+            passive: true
+        });
+        this.addEventListener('mouseout', (e) => this.removeEventListener('wheel', this._updateInput), {
+            passive: true
+        });
 
         // Add touch event listeners
         this.addEventListener('touchstart', (e) => {
 
             // Since TouchEvent doesn't provide a property akin to movementY, we need to save the initial clientY property
             this._clientY = e.touches[0].clientY;
-            this.addEventListener('touchmove', this._updateInput);
+            this.addEventListener('touchmove', this._updateInput, {
+                passive: true
+            });
+        }, {
+            passive: true
         });
         this.addEventListener('touchend', (e) => {
 
             this.removeEventListener('touchmove', this._updateInput);
             // Clear clientY property
             this._clientY = undefined;
+        }, {
+            passive: true
         });
 
         this._render();
