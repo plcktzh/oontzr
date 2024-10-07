@@ -88,8 +88,6 @@ class Pattern extends HTMLElement {
 
     attributeChangedCallback(name, oldValue, newValue) {
 
-        const args = {};
-
         switch (name) {
             case 'id':
                 this.id = newValue;
@@ -100,30 +98,27 @@ class Pattern extends HTMLElement {
                 this.type = newValue;
                 break;
             case 'data-oo-pattern-length':
+            case 'data-oo-pattern-offset':
             case 'data-oo-num-events':
             case 'data-oo-num-seeds':
                 this.parameters[Helpers.getVariableName(name, App.DATA_ATTRIBUTE_PREFIX)] = parseInt(newValue) || App.PATTERN_TYPES[this.type.toUpperCase()]['PARAMETERS'][name.replace(App.DATA_ATTRIBUTE_PREFIX.AS_STRING, '').replaceAll('-', '_').toUpperCase()]['INITIALVALUE'];
-
-                args[Helpers.getVariableName(name, App.DATA_ATTRIBUTE_PREFIX)] = parseInt(newValue);
-                this.updateSteps(args);
                 break;
-            case 'data-oo-pattern-offset':
+            case 'data-oo-do-center-seeds':
             case 'data-oo-do-randomize-velocities':
             case 'data-oo-do-randomize':
-            case 'data-oo-do-center-seeds':
             case 'data-oo-wrap-around':
                 this.parameters[Helpers.getVariableName(name, App.DATA_ATTRIBUTE_PREFIX)] = ((newValue === 'true') ? true : false) || App.PATTERN_TYPES[this.type.toUpperCase()]['PARAMETERS'][name.replace(App.DATA_ATTRIBUTE_PREFIX.AS_STRING, '').replaceAll('-', '_').toUpperCase()]['INITIALVALUE'];
-
-                args[Helpers.getVariableName(name, App.DATA_ATTRIBUTE_PREFIX)] = (newValue === 'true') ? true : false;
-                this.updateSteps(args);
                 break;
         }
+
+        this.updateSteps({
+            ...this.parameters
+        });
     }
 
     connectedCallback() {
 
         this._setPatternType();
-        this.updateSteps();
     }
 
     disconnectedCallback() {}
@@ -193,6 +188,10 @@ class Pattern extends HTMLElement {
                 this.setAttribute('data-oo-do-randomize', this.parameters.doRandomize);
                 break;
         }
+
+        this.updateSteps({
+            ...this.parameters
+        });
     }
 
     /**
@@ -202,15 +201,19 @@ class Pattern extends HTMLElement {
      */
     updateSteps(args) {
 
-        // Transfer properties from optional arguments
-        Helpers.transferProps(this, args);
+        if (args && Object.keys(args).length) {
+            // Transfer properties from optional arguments
+            Helpers.transferProps(this, args);
 
-        // (Re)build steps Array and shift it
-        this.steps = this.parameters.buildPattern(args);
-        this.steps = this.shiftPattern(this.parameters.patternOffset);
+            // (Re)build steps Array and shift it
+            this.steps = this.parameters.buildPattern(args);
+            this.steps = this.shiftPattern(this.parameters.patternOffset);
 
-        // Randomize Step velocities if parameter is set
-        if (this.parameters.doRandomizeVelocities) this.randomizeStepVelocities();
+            // Randomize Step velocities if parameter is set
+            if (this.parameters.doRandomizeVelocities) this.randomizeStepVelocities();
+        }
+
+        Helpers.nqs('oo-pattern-lane', this.shadowRoot).render();
 
         return this;
     }

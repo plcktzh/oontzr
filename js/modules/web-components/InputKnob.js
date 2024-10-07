@@ -110,9 +110,11 @@ class InputKnob extends HTMLElement {
     /**
      * @constructor
      */
-    constructor() {
+    constructor(parent) {
 
         super();
+
+        this.parent = parent;
 
         // Build configuration from attributes attached to <oo-input-knob>
         this._config = {};
@@ -313,6 +315,7 @@ class InputKnob extends HTMLElement {
             num.value = newValue;
 
             this.setAttribute('value', newValue);
+            this.parent.setAttribute('data-oo-pattern-control-input-value', newValue);
 
             // Trigger a re-render
             num.dispatchEvent(new Event('change'));

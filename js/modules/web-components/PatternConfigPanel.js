@@ -64,12 +64,30 @@ class PatternConfigPanel extends HTMLElement {
             const input = Helpers.nac(this.shadowRoot, new PatternConfigPanelInput(this));
             input.setAttribute('data-oo-pattern-control-input-type', App.PATTERN_TYPES[this.type].PARAMETERS[parameter].TYPE);
             input.setAttribute('data-oo-pattern-control-input-name', parameter);
-            input.setAttribute('data-oo-pattern-control-input-initial-value', App.PATTERN_TYPES[this.type].PARAMETERS[parameter].INITIALVALUE);
+            input.setAttribute('data-oo-pattern-control-input-value', App.PATTERN_TYPES[this.type].PARAMETERS[parameter].INITIALVALUE);
             if (App.PATTERN_TYPES[this.type].PARAMETERS[parameter].TYPE === 'Number') {
-                input.setAttribute('data-oo-pattern-control-input-min-value', App.PATTERN_TYPES[this.type].PARAMETERS[parameter].MINVALUE);
-                input.setAttribute('data-oo-pattern-control-input-max-value', App.PATTERN_TYPES[this.type].PARAMETERS[parameter].MAXVALUE);
+                if (parameter === 'PATTERN_OFFSET') {
+                    input.setAttribute('data-oo-pattern-control-input-min-value', -1 * Math.floor(.5 * App.PATTERN_TYPES[this.type].PARAMETERS.PATTERN_LENGTH.INITIALVALUE));
+                    input.setAttribute('data-oo-pattern-control-input-max-value', Math.floor(.5 * App.PATTERN_TYPES[this.type].PARAMETERS.PATTERN_LENGTH.INITIALVALUE));
+                } else if (['NUM_EVENTS', 'NUM_SEEDS'].indexOf(parameter) > -1) {
+                    input.setAttribute('data-oo-pattern-control-input-min-value', App.PATTERN_TYPES[this.type].PARAMETERS[parameter].MINVALUE);
+                    input.setAttribute('data-oo-pattern-control-input-max-value', App.PATTERN_TYPES[this.type].PARAMETERS.PATTERN_LENGTH.INITIALVALUE);
+                } else {
+                    input.setAttribute('data-oo-pattern-control-input-min-value', App.PATTERN_TYPES[this.type].PARAMETERS[parameter].MINVALUE);
+                    input.setAttribute('data-oo-pattern-control-input-max-value', App.PATTERN_TYPES[this.type].PARAMETERS[parameter].MAXVALUE);
+                }
             }
         }
+    }
+
+    static get observedAttributes() {
+
+        return ['data-oo-pattern-length', 'data-oo-num-events', 'data-oo-num-seeds', 'data-oo-do-center-seeds', 'data-oo-pattern-offset', 'data-oo-wrap-around', 'data-oo-do-randomize-velocities', 'data-oo-do-randomize'];
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+
+        this.parent.setAttribute(name, newValue);
     }
 }
 

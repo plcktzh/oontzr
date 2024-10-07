@@ -51,18 +51,11 @@ class PatternLane extends HTMLElement {
         this.setAttribute('data-oo-represents-pattern', this.parent.id);
     }
 
-    static get observedAttributes() {
-        return ['data-oo-represents-pattern'];
-    }
-
-    attributeChangedCallback(name, oldValue, newValue) {
-
-        this._render();
-    }
-
-    _render() {
+    render() {
 
         const stepsContainer = Helpers.nqs('.steps-container', this.shadowRoot);
+
+        Helpers.nqsa('oo-pattern-step', stepsContainer).forEach(step => step.remove());
 
         this.parent.steps.forEach((step, index) => {
 

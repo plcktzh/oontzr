@@ -99,9 +99,11 @@ class InputSlider extends HTMLElement {
     /**
      * @constructor
      */
-    constructor() {
+    constructor(parent) {
 
         super();
+
+        this.parent = parent;
 
         // Build configuration from attributes attached to <oo-input-slider>
         this._config = {};
@@ -307,6 +309,9 @@ class InputSlider extends HTMLElement {
                 if (newValue < parseInt(num.getAttribute('min'))) newValue = num.getAttribute('min');
                 if (newValue > parseInt(num.getAttribute('max'))) newValue = num.getAttribute('max');
                 num.setAttribute('value', newValue);
+
+                this.setAttribute('value', newValue);
+                this.parent.setAttribute('data-oo-pattern-control-input-value', newValue);
 
                 // Trigger a re-render
                 num.dispatchEvent(new Event('change'));
