@@ -110,14 +110,14 @@ class State {
 
     /**
      * @method deletePattern
-     * @param {String} id The ID of the Pattern to be updated
+     * @param {Pattern} pattern The Pattern to be deleted
      * @returns Boolean
      */
-    deletePattern(id) {
+    deletePattern(pattern) {
 
         try {
-            Helpers.nqs(`.pattern-lane[data-oontzr-pattern-id="${id}"]`).remove();
-            return (delete this.patterns[id]);
+            pattern.remove();
+            return (delete this.patterns[pattern]);
         } catch (e) {
             console.error(`Pattern could not be deleted. ${e}`);
             return false;
@@ -125,38 +125,38 @@ class State {
 
     }
 
-    /**
-     * @method clonePattern
-     * @param {String} id The ID of the Pattern to be cloned
-     * @param {Object} args An optional initialisation Object
-     * @returns Pattern|null
-     */
-    clonePattern(id, args) {
+    // /**
+    //  * @method clonePattern
+    //  * @param {String} id The ID of the Pattern to be cloned
+    //  * @param {Object} args An optional initialisation Object
+    //  * @returns Pattern|null
+    //  */
+    // clonePattern(id, args) {
 
-        try {
-            const source = this.readPattern(id);
-            const clone = this.createPattern({
-                type: source.parameters.type
-            });
+    //     try {
+    //         const source = this.readPattern(id);
+    //         const clone = this.createPattern({
+    //             type: source.parameters.type
+    //         });
 
-            Helpers.transferProps(clone, source, ['id']);
-            if (args) Helpers.transferProps(clone, args);
+    //         Helpers.transferProps(clone, source, ['id']);
+    //         if (args) Helpers.transferProps(clone, args);
 
-            return clone;
-        } catch (e) {
-            console.error(`Pattern could not be cloned. ${e}`);
-            return null;
-        }
-    }
+    //         return clone;
+    //     } catch (e) {
+    //         console.error(`Pattern could not be cloned. ${e}`);
+    //         return null;
+    //     }
+    // }
 
-    /**
-     * @method patternExists
-     * @param {String} id The ID of the Pattern to be checked
-     * @returns Boolean
-     */
-    patternExists(id) {
-        return (this.readPattern(id) !== undefined);
-    }
+    //     /**
+    //      * @method patternExists
+    //      * @param {String} id The ID of the Pattern to be checked
+    //      * @returns Boolean
+    //      */
+    //     patternExists(id) {
+    //         return (this.readPattern(id) !== undefined);
+    //     }
 }
 
 export default State;

@@ -66,8 +66,6 @@ class AppHeader extends HTMLElement {
     connectedCallback() {
 
         this._createAddPatternButton();
-
-        // Helpers.nqs('body').style.paddingTop = `${this.getBoundingClientRect().height + 16}px`;
     }
 
     _createAddPatternButton() {

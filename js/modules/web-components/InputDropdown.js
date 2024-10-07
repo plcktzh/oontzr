@@ -3,7 +3,7 @@ import App from './App.js';
 
 const ooInputDropdownTemplate = document.createElement('template');
 ooInputDropdownTemplate.innerHTML = `
-<div>
+<div class="container">
 <button id="toggle">
 <span class="label">Toggle Dropdown</span>
 <span class="material-icons">keyboard_arrow_down</span>
@@ -23,10 +23,21 @@ ooInputDropdownCss.innerHTML = `
 <style>
     :host {
         display: flex;
+        width: auto;
     }
 
     :host * {
         box-sizing: border-box;
+    }
+
+    .container {
+        width: auto;
+    }
+
+    .container button,
+    .container .dropdown-items {
+        min-width: max-content;
+        width: 100%;
     }
 
     :host([data-expanded="false"]) .dropdown-items {
@@ -85,6 +96,10 @@ ooInputDropdownCss.innerHTML = `
         border-top-left-radius: 1.25rem;
     }
 
+    button#toggle .label {
+        width: auto;
+    }
+
     :host([data-expanded="true"]) button#toggle,
     button#toggle:hover {
         box-shadow: inset -1rem 0 .25rem -1rem rgba(0, 0, 0, .5);
@@ -99,6 +114,7 @@ ooInputDropdownCss.innerHTML = `
         box-shadow: inset 1rem 0 .25rem -1rem rgba(13, 13, 13, .5);
         border-bottom-right-radius: 1.25rem;
         border-top-right-radius: 1.25rem;
+        min-width: max-content;
     }
 
     button[disabled] {
@@ -128,8 +144,6 @@ class InputDropdown extends HTMLElement {
     }
 
     connectedCallback() {
-
-        Helpers.nqs('#toggle', this.shadowRoot).style.width = `${Helpers.nqs('#toggle', this.shadowRoot).getBoundingClientRect().width}px`;
 
         Helpers.nqs('#toggle', this.shadowRoot).addEventListener('click', (e) => {
 
@@ -183,13 +197,14 @@ class InputDropdown extends HTMLElement {
                 Helpers.nqs('#submit .label', this.shadowRoot).innerText = newValue;
                 break;
             case 'data-selected':
-                Helpers.nqs('#toggle .label', this.shadowRoot).innerText = App.STRINGS[Helpers.getLanguage(Helpers.nqs('oo-app')._s.language)]['PATTERN_TYPES'][newValue.toUpperCase()];
                 Helpers.nqs(':host slot', this.shadowRoot).assignedElements().forEach(item => {
 
                     if (item.getAttribute('data-value') === newValue) {
+                        Helpers.nqs('#toggle .label', this.shadowRoot).innerText = item.innerText;
 
                         const spanIcon = Helpers.dce('span');
                         spanIcon.style.fontFamily = 'var(--oo-font-family-icon)';
+                        spanIcon.style.paddingLeft = 'var(--oo-padding-base)';
                         spanIcon.innerText = 'check';
 
                         Helpers.nac(item, spanIcon);

@@ -1,7 +1,5 @@
 {
     "event-types": {
-        "app-loaded": "app-loaded",
-        "state-created": "state-created",
         "dropdown-submit": "dropdown-submit",
         "input-change": "input-change"
     },
@@ -205,7 +203,10 @@
     "strings": {
         "en": {
             "button-add-pattern-label": "Add new pattern",
+            "button-delete-pattern-label": "Delete pattern",
+            "button-set-sample-label": "Set sample",
             "select-pattern-type-label": "Choose a pattern type ...",
+            "select-sample-label": "Select a sample ...",
             "pattern-types": {
                 "euclidean": "Euclidean",
                 "cellular": "Cellular automaton",
@@ -227,7 +228,10 @@
         },
         "de": {
             "button-add-pattern-label": "Neues Pattern hinzufügen",
+            "button-delete-pattern-label": "Pattern löschen",
+            "button-set-sample-label": "Sample festlegen",
             "select-pattern-type-label": "Wähle einen Pattern-Typ ...",
+            "select-sample-label": "Wähle ein Sample ...",
             "pattern-types": {
                 "euclidean": "Euklidisch",
                 "cellular": "Zellulärer Automat",

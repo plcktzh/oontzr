@@ -7,12 +7,10 @@ import TR from '../pattern-types/TR.js';
 import Step from './Step.js';
 import PatternConfigPanel from './PatternConfigPanel.js';
 import PatternLane from './PatternLane.js';
+import PatternHeader from './PatternHeader.js';
 
 const ooPatternTemplate = document.createElement('template');
-ooPatternTemplate.innerHTML = `
-<h3></h3>
-<div class="container"></div>
-`;
+ooPatternTemplate.innerHTML = ``;
 
 const ooPatternCss = document.createElement('template');
 ooPatternCss.innerHTML = `
@@ -77,6 +75,7 @@ class Pattern extends HTMLElement {
         Helpers.nac(this.shadowRoot, ooPatternCss.content.cloneNode(true));
         Helpers.nac(this.shadowRoot, ooPatternTemplate.content.cloneNode(true));
 
+        Helpers.nac(this.shadowRoot, new PatternHeader(this));
         Helpers.nac(this.shadowRoot, new PatternLane(this));
         Helpers.nac(this.shadowRoot, new PatternConfigPanel(this));
     }
@@ -266,35 +265,35 @@ class Pattern extends HTMLElement {
         }
     }
 
-    /**
-     * Shift steps to the left by 1
-     * @method nudgeLeft
-     * @returns Pattern
-     * @see Pattern.shiftPattern
-     */
-    nudgeLeft() {
-        return this.shiftPattern(-1);
-    }
-
-    /**
-     * Shift steps to the right by 1
-     * @method nudgeRight
-     * @returns Pattern
-     * @see Pattern.shiftPattern
-     */
-    nudgeRight() {
-        return this.shiftPattern(1);
-    }
+    // /**
+    //  * Shift steps to the left by 1
+    //  * @method nudgeLeft
+    //  * @returns Pattern
+    //  * @see Pattern.shiftPattern
+    //  */
+    // nudgeLeft() {
+    //     return this.shiftPattern(-1);
+    // }
 
     // /**
-    //  * @method setSample
-    //  * @param {String} id The ID of the Sample to be assigned to the pattern
-    //  * @returns null
+    //  * Shift steps to the right by 1
+    //  * @method nudgeRight
+    //  * @returns Pattern
+    //  * @see Pattern.shiftPattern
     //  */
-    // setSample(id) {
-
-    //     this.sample = this.parent.samples.getSample(id);
+    // nudgeRight() {
+    //     return this.shiftPattern(1);
     // }
+
+    /**
+     * @method setSample
+     * @param {String} id The ID of the Sample to be assigned to the pattern
+     * @returns null
+     */
+    setSample(id) {
+
+        this.sample = this.parent.samples.getSample(id);
+    }
 
     // /**
     //  * @method setChokesPattern
@@ -322,8 +321,6 @@ class Pattern extends HTMLElement {
         this.steps.forEach(step => {
             step.setVelocity();
         });
-
-        // if (this.output.canvas) this.drawPattern();
     }
 
     // /**
