@@ -107,24 +107,6 @@ class Step extends HTMLElement {
                 this.inputSlider.setAttribute('data-oo-step-width', newValue);
                 break;
         }
-
-        // if (name === 'data-oo-step-velocity' && this.inputSlider && (this.parent.type === 'tr' || this.isActive)) {
-        // this.inputSlider.setAttribute('value', newValue);
-        // this.velocity = parseInt(newValue);
-        // 
-        // this.isActive = (parseInt(newValue) !== 0) ? true : false;
-        // this.setAttribute('data-oo-step-is-active', this.isActive);
-        // } else if (name === 'data-oo-step-is-active' && this.inputSlider && parseInt(this.inputSlider.getAttribute('value')) === App.PATTERN_PARAMETERS.VELOCITY_MIN) {
-        // if (newValue === 'true') this.inputSlider.setAttribute('value', App.PATTERN_PARAMETERS.VELOCITY_MAX);
-        // }
-        // if (name === 'data-oo-step-is-active' && this.inputSlider && this.parent.type !== 'tr') {
-        //     if (newValue === 'false') this.inputSlider.setAttribute('disabled', 'disabled');
-        //     else this.inputSlider.removeAttribute('disabled');
-
-        //     this.isActive = (newValue === 'true') ? true : false;
-        // }
-
-        // if (name === 'data-oo-step-width') this.inputSlider.setAttribute('data-oo-step-width', newValue);
     }
 
     /**

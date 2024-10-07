@@ -50,7 +50,7 @@ class TR extends PatternType {
         // Transfer properties from optional arguments
         Helpers.transferProps(this, args);
 
-        if (this.parent.steps.length === this.patternLength) return this.parent.steps;
+        // if (this.parent.steps.length === this.patternLength) return this.parent.steps;
 
         let steps_out = [];
 

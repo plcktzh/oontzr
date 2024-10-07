@@ -101,13 +101,13 @@ class Pattern extends HTMLElement {
             case 'data-oo-pattern-offset':
             case 'data-oo-num-events':
             case 'data-oo-num-seeds':
-                this.parameters[Helpers.getVariableName(name, App.DATA_ATTRIBUTE_PREFIX)] = parseInt(newValue) || App.PATTERN_TYPES[this.type.toUpperCase()]['PARAMETERS'][name.replace(App.DATA_ATTRIBUTE_PREFIX.AS_STRING, '').replaceAll('-', '_').toUpperCase()]['INITIALVALUE'];
+                this.parameters[Helpers.getVariableName(name, App.DATA_ATTRIBUTE_PREFIX)] = parseInt(newValue);
                 break;
             case 'data-oo-do-center-seeds':
             case 'data-oo-do-randomize-velocities':
             case 'data-oo-do-randomize':
             case 'data-oo-wrap-around':
-                this.parameters[Helpers.getVariableName(name, App.DATA_ATTRIBUTE_PREFIX)] = ((newValue === 'true') ? true : false) || App.PATTERN_TYPES[this.type.toUpperCase()]['PARAMETERS'][name.replace(App.DATA_ATTRIBUTE_PREFIX.AS_STRING, '').replaceAll('-', '_').toUpperCase()]['INITIALVALUE'];
+                this.parameters[Helpers.getVariableName(name, App.DATA_ATTRIBUTE_PREFIX)] = ((newValue === 'true') ? true : false);
                 break;
         }
 

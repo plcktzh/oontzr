@@ -160,11 +160,11 @@ class InputSwitch extends HTMLElement {
             case 'label':
                 Helpers.nqs('slot[name="label"]', this.shadowRoot).innerHTML = newValue;
                 break;
-        }
 
-        if (name === 'value') {
-            Helpers.nqs('#toggle', this.shadowRoot).checked = (newValue === 'true') ? true : false;
-            Helpers.nqs('#outputLabel', this.shadowRoot).innerHTML = (newValue === 'true') ? App.STRINGS[Helpers.getLanguage(Helpers.nqs('oo-app')._s.language)].PATTERN_PARAMETERS.ON : App.STRINGS[Helpers.getLanguage(Helpers.nqs('oo-app')._s.language)].PATTERN_PARAMETERS.OFF;
+            case 'value':
+                Helpers.nqs('#toggle', this.shadowRoot).checked = (newValue === 'true') ? true : false;
+                Helpers.nqs('#outputLabel', this.shadowRoot).innerHTML = (newValue === 'true') ? App.STRINGS[Helpers.getLanguage(Helpers.nqs('oo-app')._s.language)].PATTERN_PARAMETERS.ON : App.STRINGS[Helpers.getLanguage(Helpers.nqs('oo-app')._s.language)].PATTERN_PARAMETERS.OFF;
+                break;
         }
     }
 }

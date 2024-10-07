@@ -311,7 +311,7 @@ class InputSlider extends HTMLElement {
                 num.setAttribute('value', newValue);
 
                 this.setAttribute('value', newValue);
-                this.parent.setAttribute('data-oo-pattern-control-input-value', newValue);
+                if (this.parent) this.parent.setAttribute('data-oo-pattern-control-input-value', newValue);
 
                 // Trigger a re-render
                 num.dispatchEvent(new Event('change'));
