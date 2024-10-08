@@ -46,9 +46,8 @@ ooAppFooterCss.innerHTML = `
         display: flex;
         font-size: var(--oo-font-size-label);
         gap: var(--oo-margin-base);
-        justify-content: space-between;
+        justify-content: flex-end;
         margin: 0 auto;
-        max-width: 1600px;
         width: 100%;
     }
 

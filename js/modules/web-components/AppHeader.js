@@ -50,6 +50,7 @@ ooAppHeaderCss.innerHTML = `
         border: none;
         border-radius: 1.25rem;
         display: flex;
+        font-size: var(--oo-font-size-label);
         justify-content: space-between;
         font-size: var(--oo-font-size-label);
         height: 2.5rem;

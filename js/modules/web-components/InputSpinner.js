@@ -16,6 +16,7 @@ ooInputSpinnerCss.innerHTML = `
 
     label {
         color: var(--oo-color-gray-lightest);
+        font-size: var(--oo-font-size-label);
     }
 
     .container {
