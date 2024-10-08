@@ -28,6 +28,7 @@ ooAppFooterCss.innerHTML = `
         padding: var(--oo-padding-base);
         position: fixed;
         width: 100%;
+        z-index: 9998;
     }
 
     :host * {

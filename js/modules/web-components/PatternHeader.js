@@ -21,7 +21,7 @@ ooPatternHeaderCss.innerHTML = `
 
     oo-input-dropdown {
         position: absolute;
-        z-index: 9999;
+        z-index: 9989;
     }
 
     button {

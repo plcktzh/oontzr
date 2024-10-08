@@ -86,6 +86,7 @@ class App extends HTMLElement {
 
             this._createState();
             this._buildSamplePool();
+            this._createAudioContext();
             this._detachLoader();
 
             Helpers.nac(this.shadowRoot, new AppHeader(this));
@@ -126,6 +127,19 @@ class App extends HTMLElement {
         this._s.samples = new SamplePool(App.SAMPLES);
     }
 
+    _createAudioContext() {
+
+        this.audioContext = new(window.AudioContext || window.webkit.AudioContext)();
+
+        for (const index in this._s.samples) {
+
+            fetch(`${App.SAMPLES_DIRECTORY}${this._s.samples[index].filename}`)
+                .then(data => data.arrayBuffer())
+                .then(arrayBuffer => this.audioContext.decodeAudioData(arrayBuffer))
+                .then(decodedAudio => this._s.samples[index]['audio'] = decodedAudio);
+        }
+    }
+
     _detachLoader() {
 
         Helpers.nqs('oo-loader', this.shadowRoot).detach();
@@ -155,13 +169,26 @@ class App extends HTMLElement {
 
                 if (this._s.patterns[id].sample !== null) {
 
-                    const stepAudio = new Audio();
-                    stepAudio.src = `${App.SAMPLES_DIRECTORY}${this._s.patterns[id].sample.filename}`;
-
                     if (step.isActive) {
-                        stepAudio.volume = step.velocity / App.PATTERN_PARAMETERS.VELOCITY_MAX;
-                        stepAudio.play();
-                    } else stepAudio.volume = 0;
+                        const playStep = this.audioContext.createBufferSource();
+                        playStep.buffer = this._s.patterns[id].sample.audio;
+
+                        const gainNode = this.audioContext.createGain();
+                        gainNode.gain.setValueAtTime(step.velocity / App.PATTERN_PARAMETERS.VELOCITY_MAX, this.audioContext.currentTime);
+
+                        const compNode = this.audioContext.createDynamicsCompressor();
+                        compNode.threshold.setValueAtTime(-45, this.audioContext.currentTime);
+                        compNode.knee.setValueAtTime(35, this.audioContext.currentTime);
+                        compNode.ratio.setValueAtTime(20, this.audioContext.currentTime);
+                        compNode.attack.setValueAtTime(0.05, this.audioContext.currentTime);
+                        compNode.release.setValueAtTime(.5, this.audioContext.currentTime);
+
+                        playStep.connect(gainNode);
+                        gainNode.connect(compNode);
+                        compNode.connect(this.audioContext.destination);
+
+                        playStep.start(this.audioContext.currentTime);
+                    }
                 }
 
                 this._s.patterns[id].setAttribute('data-oo-step-current', index);
