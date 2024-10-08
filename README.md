@@ -2,14 +2,18 @@
     <img alt="Oontzr logo" src="images/logo.svg">
 </p>
 
+# Demo
+
+https://09f.de/etc/oontzr/
+
 # Installation
 
 * `npm install`
-* create symlinks:
-    * ./css/lib/material-design-icons/filled.css --> ./node_modules/@material-design-icons/font/filled.css
-    * ./css/lib/material-design-icons/material-icons.woff2 --> ./node_modules/@material-design-icons/font/material-icons.woff2
-    * ./css/lib/inter-ui/inter-latin.css --> ./node_modules/inter-ui/inter-latin.css
-    * ./css/lib/inter-ui/web-latin/* --> ./node_modules/inter-ui/web-latin/*
+* create symlinks (or just copy the files (or modify the css files (or don't, I won't judge)))
+    * `./css/lib/material-design-icons/filled.css` --> `./node_modules/@material-design-icons/font/filled.css`
+    * `./css/lib/material-design-icons/material-icons.woff2` --> `./node_modules/@material-design-icons/font/material-icons.woff2`
+    * `./css/lib/inter-ui/inter-latin.css` --> `./node_modules/inter-ui/inter-latin.css`
+    * `./css/lib/inter-ui/web-latin/*` --> `./node_modules/inter-ui/web-latin/*`
 * run on a webserver
 
 # Known issues
