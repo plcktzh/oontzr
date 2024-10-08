@@ -153,7 +153,8 @@ class App extends HTMLElement {
         this.playNextStep();
 
         // Enable playback
-        return this._s.isPlaying = true;
+        this._s.isPlaying = true;
+        Helpers.nqs('oo-app-header', this.shadowRoot).setAttribute('data-oo-is-playing', this._s.isPlaying);
     }
 
     playNextStep() {
@@ -225,7 +226,8 @@ class App extends HTMLElement {
     pause() {
 
         // Disable playback
-        return this._s.isPlaying = false;
+        this._s.isPlaying = false;
+        Helpers.nqs('oo-app-header', this.shadowRoot).setAttribute('data-oo-is-playing', this._s.isPlaying);
     }
 }
 

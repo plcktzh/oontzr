@@ -88,8 +88,6 @@ class Cellular extends PatternType {
      */
     randomizePattern(steps) {
 
-        console.log('randomizePattern');
-
         const nextGeneration = [];
 
         // If cellular automaton doesn't wrap around, push a new Step with the properties of the first Step in <steps>
@@ -135,8 +133,6 @@ class Cellular extends PatternType {
             isActive: steps[steps.length - 1].isActive,
             velocity: steps[steps.length - 1].velocity
         }));
-
-        console.log(nextGeneration);
 
         return nextGeneration;
     }

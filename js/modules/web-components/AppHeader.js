@@ -56,6 +56,7 @@ ooAppHeaderCss.innerHTML = `
         margin: auto 0;
         padding: var(--oo-padding-medium);
         transition: all var(--oo-duration-short) ease-in-out, border-bottom-left-radius 0ms;
+        width: 6rem;
     }
 
     button:hover {
@@ -102,6 +103,27 @@ class AppHeader extends HTMLElement {
         this._createAddPatternButton();
     }
 
+    static get observedAttributes() {
+        return ['data-oo-is-playing'];
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+
+        if (name === 'data-oo-is-playing') {
+
+            if (newValue === 'true') {
+
+                Helpers.nac(Helpers.nqs('.inner', this.shadowRoot), this.pauseButton);
+                this.playButton.remove();
+            } else {
+
+                Helpers.nac(Helpers.nqs('.inner', this.shadowRoot), this.playButton);
+                this.pauseButton.remove();
+            }
+        }
+    }
+
+
     _createAddPatternButton() {
 
         const app = Helpers.nqs('oo-app');
@@ -122,8 +144,6 @@ class AppHeader extends HTMLElement {
                 } catch (e) {
                     console.error(`Tempo could not be set. ${e}`);
                 }
-
-                console.log(app._s.playback.tempo);
             }
         });
 
@@ -142,8 +162,6 @@ class AppHeader extends HTMLElement {
 
             this.parent.pause();
         });
-
-        Helpers.nac(Helpers.nqs('.inner', this.shadowRoot), this.pauseButton);
 
         this.addPatternButton = Helpers.dce('oo-input-dropdown');
         this.addPatternButton.setAttribute('data-type', 'add-pattern');

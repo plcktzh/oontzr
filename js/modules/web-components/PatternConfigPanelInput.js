@@ -17,7 +17,7 @@ ooPatternConfigPanelInputCss.innerHTML = `
     :host {
         background-color: var(--oo-color-gray-lightest);
         border-radius: var(--oo-border-radius);
-        padding: var(-oo-padding-base);
+        padding: var(--oo-padding-base);
     }
 
     :host * {

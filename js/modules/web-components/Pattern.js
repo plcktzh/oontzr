@@ -114,8 +114,6 @@ class Pattern extends HTMLElement {
                 break;
         }
 
-        console.log(this.parameters);
-
         if (name !== 'data-oo-step-current') {
             this.updateSteps({
                 ...this.parameters
