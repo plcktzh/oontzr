@@ -82,7 +82,7 @@ class Pattern extends HTMLElement {
 
     static get observedAttributes() {
 
-        return ['id', 'data-expanded', 'data-oo-pattern-type', 'data-oo-pattern-length', 'data-oo-num-events', 'data-oo-pattern-offset', 'data-oo-do-randomize-velocities', 'data-oo-do-randomize', 'data-oo-num-seeds', 'data-oo-do-center-seeds', 'data-oo-wrap-around', 'data-oo-step-current'];
+        return ['id', 'data-expanded', 'data-oo-pattern-type', 'data-oo-pattern-length', 'data-oo-num-events', 'data-oo-pattern-offset', 'data-oo-do-randomize-velocities', 'data-oo-do-randomize', 'data-oo-num-seeds', 'data-oo-do-center-seeds', 'data-oo-wrap-around', 'data-oo-step-current', 'data-oo-volume'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -100,6 +100,7 @@ class Pattern extends HTMLElement {
             case 'data-oo-pattern-offset':
             case 'data-oo-num-events':
             case 'data-oo-num-seeds':
+            case 'data-oo-volume':
                 this.parameters[Helpers.getVariableName(name, App.DATA_ATTRIBUTE_PREFIX)] = parseInt(newValue);
                 break;
             case 'data-oo-do-center-seeds':
@@ -112,6 +113,8 @@ class Pattern extends HTMLElement {
                 Helpers.nqs('oo-pattern-lane', this.shadowRoot).setAttribute('data-oo-step-current', newValue);
                 break;
         }
+
+        console.log(this.parameters);
 
         if (name !== 'data-oo-step-current') {
             this.updateSteps({
@@ -141,13 +144,15 @@ class Pattern extends HTMLElement {
                     doCenterSeeds: this.getAttribute('data-oo-do-center-seeds') ? ((this.getAttribute('data-oo-do-center-seeds') === 'true') ? true : false) : App.PATTERN_TYPES.CELLULAR.PARAMETERS.DO_CENTER_SEEDS,
                     doRandomizeVelocities: this.getAttribute('data-oo-do-randomize-velocities') ? ((this.getAttribute('data-oo-do-randomize-velocities') === 'true') ? true : false) : App.PATTERN_TYPES.CELLULAR.PARAMETERS.DO_RANDOMIZE_VELOCITIES,
                     wrapAround: this.getAttribute('data-oo-wrap-around') ? ((this.getAttribute('data-oo-wrap-around') === 'true') ? true : false) : App.PATTERN_TYPES.CELLULAR.PARAMETERS.WRAP_AROUND,
-                    doRandomize: this.getAttribute('data-oo-do-randomize') ? ((this.getAttribute('data-oo-do-randomize') === 'true') ? true : false) : App.PATTERN_TYPES.CELLULAR.PARAMETERS.DO_RANDOMIZE
+                    doRandomize: this.getAttribute('data-oo-do-randomize') ? ((this.getAttribute('data-oo-do-randomize') === 'true') ? true : false) : App.PATTERN_TYPES.CELLULAR.PARAMETERS.DO_RANDOMIZE,
+                    volume: this.getAttribute('data-oo-volume') ? parseInt(this.getAttribute('data-oo-volume')) : App.PATTERN_TYPES.CELLULAR.PARAMETERS.VOLUME
                 });
                 this.setAttribute('data-oo-pattern-length', this.parameters.patternLength);
                 this.setAttribute('data-oo-num-seeds', this.parameters.numSeeds);
                 this.setAttribute('data-oo-do-center-seeds', this.parameters.doCenterSeeds);
                 this.setAttribute('data-oo-do-randomize-velocities', this.parameters.doRandomizeVelocities);
                 this.setAttribute('data-oo-do-randomize', this.parameters.doRandomize);
+                this.setAttribute('data-oo-volume', this.parameters.volume);
                 break;
             case App.PATTERN_TYPES.EUCLIDEAN.TYPE:
                 this.parameters = new Euclidean(this, {
@@ -156,13 +161,15 @@ class Pattern extends HTMLElement {
                     numEvents: this.getAttribute('data-oo-num-events') ? parseInt(this.getAttribute('data-oo-num-events')) : App.PATTERN_TYPES.EUCLIDEAN.PARAMETERS.NUM_EVENTS,
                     patternOffset: this.getAttribute('data-oo-pattern-offset') ? parseInt(this.getAttribute('data-oo-pattern-offset')) : App.PATTERN_TYPES.EUCLIDEAN.PARAMETERS.PATTERN_OFFSET,
                     doRandomizeVelocities: this.getAttribute('data-oo-do-randomize-velocities') ? ((this.getAttribute('data-oo-do-randomize-velocities') === 'true') ? true : false) : App.PATTERN_TYPES.EUCLIDEAN.PARAMETERS.DO_RANDOMIZE_VELOCITIES,
-                    doRandomize: this.getAttribute('data-oo-do-randomize') ? ((this.getAttribute('data-oo-do-randomize') === 'true') ? true : false) : App.PATTERN_TYPES.EUCLIDEAN.PARAMETERS.DO_RANDOMIZE
+                    doRandomize: this.getAttribute('data-oo-do-randomize') ? ((this.getAttribute('data-oo-do-randomize') === 'true') ? true : false) : App.PATTERN_TYPES.EUCLIDEAN.PARAMETERS.DO_RANDOMIZE,
+                    volume: this.getAttribute('data-oo-volume') ? parseInt(this.getAttribute('data-oo-volume')) : App.PATTERN_TYPES.EUCLIDEAN.PARAMETERS.VOLUME
                 });
                 this.setAttribute('data-oo-pattern-length', this.parameters.patternLength);
                 this.setAttribute('data-oo-num-events', this.parameters.numEvents);
                 this.setAttribute('data-oo-pattern-offset', this.parameters.patternOffset);
                 this.setAttribute('data-oo-do-randomize-velocities', this.parameters.doRandomizeVelocities);
                 this.setAttribute('data-oo-do-randomize', this.parameters.doRandomize);
+                this.setAttribute('data-oo-volume', this.parameters.volume);
                 break;
             case App.PATTERN_TYPES.RANDOM.TYPE:
                 this.parameters = new Random(this, {
@@ -170,12 +177,14 @@ class Pattern extends HTMLElement {
                     patternLength: this.getAttribute('data-oo-pattern-length') ? parseInt(this.getAttribute('data-oo-pattern-length')) : App.PATTERN_TYPES.RANDOM.PARAMETERS.PATTERN_LENGTH,
                     patternOffset: this.getAttribute('data-oo-pattern-offset') ? parseInt(this.getAttribute('data-oo-pattern-offset')) : App.PATTERN_TYPES.RANDOM.PARAMETERS.PATTERN_OFFSET,
                     doRandomizeVelocities: this.getAttribute('data-oo-do-randomize-velocities') ? ((this.getAttribute('data-oo-do-randomize-velocities') === 'true') ? true : false) : App.PATTERN_TYPES.RANDOM.PARAMETERS.DO_RANDOMIZE_VELOCITIES,
-                    doRandomize: this.getAttribute('data-oo-do-randomize') ? ((this.getAttribute('data-oo-do-randomize') === 'true') ? true : false) : App.PATTERN_TYPES.RANDOM.PARAMETERS.DO_RANDOMIZE
+                    doRandomize: this.getAttribute('data-oo-do-randomize') ? ((this.getAttribute('data-oo-do-randomize') === 'true') ? true : false) : App.PATTERN_TYPES.RANDOM.PARAMETERS.DO_RANDOMIZE,
+                    volume: this.getAttribute('data-oo-volume') ? parseInt(this.getAttribute('data-oo-volume')) : App.PATTERN_TYPES.RANDOM.PARAMETERS.VOLUME
                 });
                 this.setAttribute('data-oo-pattern-length', this.parameters.patternLength);
                 this.setAttribute('data-oo-pattern-offset', this.parameters.patternOffset);
                 this.setAttribute('data-oo-do-randomize-velocities', this.parameters.doRandomizeVelocities);
                 this.setAttribute('data-oo-do-randomize', this.parameters.doRandomize);
+                this.setAttribute('data-oo-volume', this.parameters.volume);
                 break;
             case App.PATTERN_TYPES.TR.TYPE:
             default:
@@ -184,12 +193,14 @@ class Pattern extends HTMLElement {
                     patternLength: this.getAttribute('data-oo-pattern-length') ? parseInt(this.getAttribute('data-oo-pattern-length')) : App.PATTERN_TYPES.TR.PARAMETERS.PATTERN_LENGTH,
                     patternOffset: this.getAttribute('data-oo-pattern-offset') ? parseInt(this.getAttribute('data-oo-pattern-offset')) : App.PATTERN_TYPES.TR.PARAMETERS.PATTERN_OFFSET,
                     doRandomizeVelocities: this.getAttribute('data-oo-do-randomize-velocities') ? ((this.getAttribute('data-oo-do-randomize-velocities') === 'true') ? true : false) : App.PATTERN_TYPES.TR.PARAMETERS.DO_RANDOMIZE_VELOCITIES,
-                    doRandomize: this.getAttribute('data-oo-do-randomize') ? ((this.getAttribute('data-oo-do-randomize') === 'true') ? true : false) : App.PATTERN_TYPES.TR.PARAMETERS.DO_RANDOMIZE
+                    doRandomize: this.getAttribute('data-oo-do-randomize') ? ((this.getAttribute('data-oo-do-randomize') === 'true') ? true : false) : App.PATTERN_TYPES.TR.PARAMETERS.DO_RANDOMIZE,
+                    volume: this.getAttribute('data-oo-volume') ? parseInt(this.getAttribute('data-oo-volume')) : App.PATTERN_TYPES.TR.PARAMETERS.VOLUME
                 });
                 this.setAttribute('data-oo-pattern-length', this.parameters.patternLength);
                 this.setAttribute('data-oo-pattern-offset', this.parameters.patternOffset);
                 this.setAttribute('data-oo-do-randomize-velocities', this.parameters.doRandomizeVelocities);
                 this.setAttribute('data-oo-do-randomize', this.parameters.doRandomize);
+                this.setAttribute('data-oo-volume', this.parameters.volume);
                 break;
         }
 

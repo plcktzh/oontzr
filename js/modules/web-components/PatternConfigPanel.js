@@ -82,7 +82,7 @@ class PatternConfigPanel extends HTMLElement {
 
     static get observedAttributes() {
 
-        return ['data-oo-pattern-length', 'data-oo-num-events', 'data-oo-num-seeds', 'data-oo-do-center-seeds', 'data-oo-pattern-offset', 'data-oo-wrap-around', 'data-oo-do-randomize-velocities', 'data-oo-do-randomize'];
+        return ['data-oo-pattern-length', 'data-oo-num-events', 'data-oo-num-seeds', 'data-oo-do-center-seeds', 'data-oo-pattern-offset', 'data-oo-wrap-around', 'data-oo-do-randomize-velocities', 'data-oo-do-randomize', 'data-oo-volume'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {

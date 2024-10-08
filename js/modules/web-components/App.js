@@ -174,7 +174,7 @@ class App extends HTMLElement {
                         playStep.buffer = this._s.patterns[id].sample.audio;
 
                         const gainNode = this.audioContext.createGain();
-                        gainNode.gain.setValueAtTime(step.velocity / App.PATTERN_PARAMETERS.VELOCITY_MAX, this.audioContext.currentTime);
+                        gainNode.gain.setValueAtTime((this._s.patterns[id].parameters.volume / App.PATTERN_PARAMETERS.VOLUME_MAX) * (step.velocity / App.PATTERN_PARAMETERS.VELOCITY_MAX), this.audioContext.currentTime);
 
                         const compNode = this.audioContext.createDynamicsCompressor();
                         compNode.threshold.setValueAtTime(-45, this.audioContext.currentTime);

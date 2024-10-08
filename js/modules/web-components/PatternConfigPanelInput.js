@@ -123,6 +123,9 @@ class PatternConfigPanelInput extends HTMLElement {
                     case 'WRAP_AROUND':
                         this.parent.setAttribute('data-oo-wrap-around', newValue);
                         break;
+                    case 'VOLUME':
+                        this.parent.setAttribute('data-oo-volume', newValue);
+                        break;
                 }
                 break;
             case 'data-oo-pattern-control-input-min-value':

@@ -41,6 +41,13 @@
                     "name": "doRandomize",
                     "initialValue": true,
                     "type": "Boolean"
+                },
+                "volume": {
+                    "name": "volume",
+                    "initialValue": 127,
+                    "minValue": 0,
+                    "maxValue": 127,
+                    "type": "Number"
                 }
             }
         },
@@ -77,6 +84,13 @@
                     "name": "doRandomize",
                     "initialValue": false,
                     "type": "Boolean"
+                },
+                "volume": {
+                    "name": "volume",
+                    "initialValue": 127,
+                    "minValue": 0,
+                    "maxValue": 127,
+                    "type": "Number"
                 }
             }
         },
@@ -106,6 +120,13 @@
                     "name": "doRandomize",
                     "initialValue": false,
                     "type": "Boolean"
+                },
+                "volume": {
+                    "name": "volume",
+                    "initialValue": 127,
+                    "minValue": 0,
+                    "maxValue": 127,
+                    "type": "Number"
                 }
             }
         },
@@ -135,6 +156,13 @@
                     "name": "doRandomize",
                     "initialValue": false,
                     "type": "Boolean"
+                },
+                "volume": {
+                    "name": "volume",
+                    "initialValue": 127,
+                    "minValue": 0,
+                    "maxValue": 127,
+                    "type": "Number"
                 }
             }
         }
@@ -142,6 +170,8 @@
     "pattern-parameters": {
         "velocity-min": 0,
         "velocity-max": 127,
+        "volume-min": 0,
+        "volume-max": 127,
         "length-min": 1,
         "length-max": 64
     },
@@ -226,6 +256,7 @@
                 "pattern-length": "Pattern length",
                 "pattern-offset": "Pattern offset",
                 "wrap-around": "Wrap around",
+                "volume": "Volume",
                 "on": "On",
                 "off": "Off"
             }
@@ -254,6 +285,7 @@
                 "pattern-length": "Pattern-Länge",
                 "pattern-offset": "Pattern-Offset",
                 "wrap-around": "Umbrechen",
+                "volume": "Lautstärke",
                 "on": "An",
                 "off": "Aus"
             }
