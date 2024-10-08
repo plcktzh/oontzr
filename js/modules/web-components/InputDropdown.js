@@ -43,7 +43,6 @@ ooInputDropdownCss.innerHTML = `
     .container .dropdown-items {
         max-height: 10rem;
         overflow-y: auto;
-        scroll-snap-type: y mandatory;
     }
     
     :host([data-expanded="false"]) .dropdown-items {
@@ -64,7 +63,6 @@ ooInputDropdownCss.innerHTML = `
         display: flex;
         justify-content: space-between;
         padding: var(--oo-padding-base) var(--oo-padding-medium);
-        scroll-snap-align: start end;
         transition: all var(--oo-duration-short) ease-in-out;
     }
     
