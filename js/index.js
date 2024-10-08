@@ -1,67 +1,29 @@
 import Helpers from './modules/Helpers.js';
-import Oontzr from './modules/Oontzr.js';
+// import PatternType from './modules/PatternType.js';
+import Playback from './modules/Playback.js';
+import Sample from './modules/Sample.js';
+import SamplePool from './modules/SamplePool.js';
+import State from './modules/State.js';
 
-async function _09f() {
+import Cellular from './modules/pattern-types/Cellular.js';
+import Euclidean from './modules/pattern-types/Euclidean.js';
+import Random from './modules/pattern-types/Random.js';
+import TR from './modules/pattern-types/TR.js';
 
-    window._09f = _09f;
-
-    let oontzr;
-
-    oontzr = new Oontzr('#oontzr');
-
-    document.addEventListener('app-loaded', (e) => {
-
-        const ptn0 = oontzr.createPattern({
-            type: 'cellular',
-            doCenterSeeds: false,
-            numSeeds: 3,
-            doRandomize: true,
-            doRandomizeVelocities: true
-        });
-
-        const ptn1 = oontzr.clonePattern(ptn0.id);
-        oontzr.updatePattern(ptn1.id, {
-            patternLength: 12
-        });
-
-        const ptn2 = oontzr.createPattern({
-            type: 'tr',
-            doRandomize: true,
-            doRandomizeVelocities: true
-        });
-
-        const ptn2b = oontzr.clonePattern(ptn2.id, {
-            parameters: {
-                doRandomize: false
-            }
-        });
-
-        const ptn2c = oontzr.clonePattern(ptn2b.id);
-
-        const ptn3 = oontzr.createPattern({
-            type: 'euclidean'
-        });
-
-        // oontzr._s.readPattern(ptn0.id).setSample('dbi_oh');
-        // oontzr._s.readPattern(ptn1.id).setSample('dbi_cb');
-        // oontzr._s.readPattern(ptn2.id).setSample('dbi_ch');
-        // oontzr._s.readPattern(ptn3.id).setSample('dbi_bd');
-
-        // oontzr.readPattern(ptn1.id).randomizeStepVelocities();
-        // oontzr.readPattern(ptn2.id).randomizeStepVelocities();
-
-        oontzr.play();
-
-        const btn = Helpers.dce('button');
-        btn.innerText = 'Play/Pause';
-        btn.addEventListener('click', () => {
-            if (oontzr._s.isPlaying) oontzr.pause();
-            else oontzr.play(true);
-        });
-        Helpers.dqs('#oontzr').prepend(btn);
-    });
-};
-
-_09f();
-
-export default _09f;
+import App from './modules/web-components/App.js';
+import AppFooter from './modules/web-components/AppFooter.js';
+import AppHeader from './modules/web-components/AppHeader.js';
+import AppMain from './modules/web-components/AppMain.js';
+import InputDropdown from './modules/web-components/InputDropdown.js';
+import InputKnob from './modules/web-components/InputKnob.js';
+import InputSlider from './modules/web-components/InputSlider.js';
+import InputSpinner from './modules/web-components/InputSpinner.js';
+import InputSwitch from './modules/web-components/InputSlider.js';
+import Loader from './modules/web-components/Loader.js';
+import Logo from './modules/web-components/Logo.js';
+import Pattern from './modules/web-components/Pattern.js';
+import PatternConfigPanel from './modules/web-components/PatternConfigPanel.js';
+import PatternConfigPanelInput from './modules/web-components/PatternConfigPanelInput.js';
+import PatternHeader from './modules/web-components/PatternHeader.js';
+import PatternLane from './modules/web-components/PatternLane.js';
+import Step from './modules/web-components/Step.js';

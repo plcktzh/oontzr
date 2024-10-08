@@ -1,8 +1,8 @@
 import Helpers from '../Helpers.js';
-import Oontzr from '../Oontzr.js';
-import Pattern from '../Pattern.js';
+import App from '../web-components/App.js';
+import Pattern from '../web-components/Pattern.js';
 import PatternType from '../PatternType.js';
-import Step from '../Step.js';
+import Step from '../web-components/Step.js';
 
 /**
  * @class Cellular
@@ -30,9 +30,9 @@ class Cellular extends PatternType {
 
         this.parent = parent;
 
-        Oontzr.PATTERN_TYPES.CELLULAR.PARAMETERS.forEach(parameter => {
-            this[parameter.name] = parameter.initialValue;
-        });
+        for (const parameter in App.PATTERN_TYPES.CELLULAR.PARAMETERS) {
+            this[App.PATTERN_TYPES.CELLULAR.PARAMETERS[parameter]['NAME']] = App.PATTERN_TYPES.CELLULAR.PARAMETERS[parameter]['INITIALVALUE'];
+        }
 
         // Transfer properties from optional arguments
         Helpers.transferProps(this, args);
@@ -71,7 +71,8 @@ class Cellular extends PatternType {
 
         for (let i = 0; i < this.patternLength; i++) {
             // Push a new Step instance depending on whether or not the current position is a seed
-            steps_out.push(new Step({
+            steps_out.push(new Step(this.parent, {
+                id: Helpers.getRandomId(App.PREFIXES.STEP),
                 isActive: (Helpers.isInArr(seeds, i)) ? true : false,
                 velocity: (Helpers.isInArr(seeds, i)) ? 127 : 0
             }));
@@ -87,11 +88,15 @@ class Cellular extends PatternType {
      */
     randomizePattern(steps) {
 
+        console.log('randomizePattern');
+
         const nextGeneration = [];
 
         // If cellular automaton doesn't wrap around, push a new Step with the properties of the first Step in <steps>
-        if (!this.wrapAround) nextGeneration.push(new Step({
-            ...steps[0]
+        if (!this.wrapAround) nextGeneration.push(new Step(this.parent, {
+            id: steps[0].id,
+            isActive: steps[0].isActive,
+            velocity: steps[0].velocity
         }));
 
         // Set initial and final values of iterator for the next for loop, depending on whether the automaton should wrap around
@@ -112,20 +117,26 @@ class Cellular extends PatternType {
             }
 
             // Add a new Step to the <nextGeneration> Array and copy the properties of <steps>[i] into it
-            nextGeneration[i] = new Step({
-                ...step
+            nextGeneration[i] = new Step(this.parent, {
+                id: step.id,
+                isActive: step.isActive,
+                velocity: step.velocity
             });
 
             // Set isActive property depending on the state of the previous and next step
             nextGeneration[i].isActive = (previous.isActive !== next.isActive);
             // Set velocity depending on whether or not the current step is active
-            nextGeneration[i].velocity = (nextGeneration[i].isActive) ? 127 : 0;
+            nextGeneration[i].velocity = (nextGeneration[i].isActive) ? (this.doRandomizeVelocities) ? Math.round(Math.random() * App.PATTERN_PARAMETERS.VELOCITY_MAX) : App.PATTERN_PARAMETERS.VELOCITY_MAX : App.PATTERN_PARAMETERS.VELOCITY_MIN;
         }
 
         // If cellular automaton doesn't wrap around, push a new Step with the properties of the last Step in <steps>
-        if (!this.wrapAround) nextGeneration.push(new Step({
-            ...steps[steps.length - 1]
+        if (!this.wrapAround) nextGeneration.push(new Step(this.parent, {
+            id: steps[steps.length - 1].id,
+            isActive: steps[steps.length - 1].isActive,
+            velocity: steps[steps.length - 1].velocity
         }));
+
+        console.log(nextGeneration);
 
         return nextGeneration;
     }

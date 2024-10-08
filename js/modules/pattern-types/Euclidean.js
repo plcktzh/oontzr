@@ -1,8 +1,8 @@
 import Helpers from '../Helpers.js';
-import Oontzr from '../Oontzr.js';
-import Pattern from '../Pattern.js';
+import App from '../web-components/App.js';
+import Pattern from '../web-components/Pattern.js';
 import PatternType from '../PatternType.js';
-import Step from '../Step.js';
+import Step from '../web-components/Step.js';
 
 /**
  * @class Euclidean
@@ -30,9 +30,9 @@ class Euclidean extends PatternType {
 
         this.parent = parent;
 
-        Oontzr.PATTERN_TYPES.EUCLIDEAN.PARAMETERS.forEach(parameter => {
-            this[parameter.name] = parameter.initialValue;
-        });
+        for (const parameter in App.PATTERN_TYPES.EUCLIDEAN.PARAMETERS) {
+            this[App.PATTERN_TYPES.EUCLIDEAN.PARAMETERS[parameter]['NAME']] = App.PATTERN_TYPES.EUCLIDEAN.PARAMETERS[parameter]['INITIALVALUE'];
+        }
 
         // Transfer properties from optional arguments
         Helpers.transferProps(this, args);
@@ -120,7 +120,8 @@ class Euclidean extends PatternType {
         steps_split = steps.split('');
 
         steps_split.forEach((step, index) => {
-            steps_out[index] = new Step({
+            steps_out[index] = new Step(this.parent, {
+                id: Helpers.getRandomId(App.PREFIXES.STEP),
                 isActive: (step === '1'),
                 velocity: (step === '1') ? 127 : 0
             });

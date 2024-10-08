@@ -1,84 +1,146 @@
 {
     "event-types": {
-        "app-loaded": "app-loaded"
+        "dropdown-submit": "dropdown-submit",
+        "input-change": "input-change",
+        "steps-change": "steps-change"
     },
     "pattern-types": {
+        "cellular": {
+            "type": "cellular",
+            "parameters": {
+                "pattern-length": {
+                    "name": "patternLength",
+                    "initialValue": 64,
+                    "minValue": 1,
+                    "maxValue": 64,
+                    "type": "Number"
+                },
+                "num-seeds": {
+                    "name": "numSeeds",
+                    "initialValue": 1,
+                    "minValue": 1,
+                    "maxValue": 64,
+                    "type": "Number"
+                },
+                "do-center-seeds": {
+                    "name": "doCenterSeeds",
+                    "initialValue": true,
+                    "type": "Boolean"
+                },
+                "do-randomize-velocities": {
+                    "name": "doRandomizeVelocities",
+                    "initialValue": false,
+                    "type": "Boolean"
+                },
+                "wrap-around": {
+                    "name": "wrapAround",
+                    "initialValue": false,
+                    "type": "Boolean"
+                },
+                "do-randomize": {
+                    "name": "doRandomize",
+                    "initialValue": true,
+                    "type": "Boolean"
+                }
+            }
+        },
         "euclidean": {
             "type": "euclidean",
-            "parameters": [{
-                "name": "patternLength",
-                "initialValue": 16
-            }, {
-                "name": "numEvents",
-                "initialValue": 4
-            }, {
-                "name": "patternOffset",
-                "initialValue": 0
-            }, {
-                "name": "doRandomizeVelocities",
-                "initialValue": false
-            }, {
-                "name": "doRandomize",
-                "initialValue": false
-            }]
+            "parameters": {
+                "pattern-length": {
+                    "name": "patternLength",
+                    "initialValue": 16,
+                    "minValue": 1,
+                    "maxValue": 64,
+                    "type": "Number"
+                },
+                "num-events": {
+                    "name": "numEvents",
+                    "initialValue": 4,
+                    "minValue": 1,
+                    "maxValue": 64,
+                    "type": "Number"
+                },
+                "pattern-offset": {
+                    "name": "patternOffset",
+                    "initialValue": 0,
+                    "minValue": -32,
+                    "maxValue": 32,
+                    "type": "Number"
+                },
+                "do-randomize-velocities": {
+                    "name": "doRandomizeVelocities",
+                    "initialValue": false,
+                    "type": "Boolean"
+                },
+                "do-randomize": {
+                    "name": "doRandomize",
+                    "initialValue": false,
+                    "type": "Boolean"
+                }
+            }
         },
         "random": {
             "type": "random",
-            "parameters": [{
-                "name": "patternLength",
-                "initialValue": 16
-            }, {
-                "name": "patternOffset",
-                "initialValue": 0
-            }, {
-                "name": "doRandomizeVelocities",
-                "initialValue": false
-            }, {
-                "name": "doRandomize",
-                "initialValue": false
-            }]
+            "parameters": {
+                "pattern-length": {
+                    "name": "patternLength",
+                    "initialValue": 16,
+                    "minValue": 1,
+                    "maxValue": 64,
+                    "type": "Number"
+                },
+                "pattern-offset": {
+                    "name": "patternOffset",
+                    "initialValue": 0,
+                    "minValue": -32,
+                    "maxValue": 32,
+                    "type": "Number"
+                },
+                "do-randomize-velocities": {
+                    "name": "doRandomizeVelocities",
+                    "initialValue": false,
+                    "type": "Boolean"
+                },
+                "do-randomize": {
+                    "name": "doRandomize",
+                    "initialValue": false,
+                    "type": "Boolean"
+                }
+            }
         },
         "tr": {
             "type": "tr",
-            "parameters": [{
-                "name": "patternLength",
-                "initialValue": 16
-            }, {
-                "name": "patternOffset",
-                "initialValue": 0
-            }, {
-                "name": "doRandomizeVelocities",
-                "initialValue": false
-            }, {
-                "name": "doRandomize",
-                "initialValue": false
-            }]
-        },
-        "cellular": {
-            "type": "cellular",
-            "parameters": [{
-                "name": "patternLength",
-                "initialValue": 64
-            }, {
-                "name": "numSeeds",
-                "initialValue": 1
-            }, {
-                "name": "doCenterSeeds",
-                "initialValue": true
-            }, {
-                "name": "doRandomizeVelocities",
-                "initialValue": false
-            }, {
-                "name": "wrapAround",
-                "initialValue": false
-            }, {
-                "name": "doRandomize",
-                "initialValue": true
-            }]
+            "parameters": {
+                "pattern-length": {
+                    "name": "patternLength",
+                    "initialValue": 16,
+                    "minValue": 1,
+                    "maxValue": 64,
+                    "type": "Number"
+                },
+                "pattern-offset": {
+                    "name": "patternOffset",
+                    "initialValue": 0,
+                    "minValue": -32,
+                    "maxValue": 32,
+                    "type": "Number"
+                },
+                "do-randomize-velocities": {
+                    "name": "doRandomizeVelocities",
+                    "initialValue": false,
+                    "type": "Boolean"
+                },
+                "do-randomize": {
+                    "name": "doRandomize",
+                    "initialValue": false,
+                    "type": "Boolean"
+                }
+            }
         }
     },
     "pattern-parameters": {
-        "velocity-min": 16,
+        "velocity-min": 0,
         "velocity-max": 127,
         "length-min": 1,
         "length-max": 64
@@ -90,8 +152,8 @@
         "canvas": "cnv_"
     },
     "canvas-attributes": {
-        "step-width": 24,
-        "step-height": 32,
+        "step-width": 32,
+        "step-height": 40,
         "step-gap": 2,
         "canvas-padding": 8,
         "step-color": {
@@ -138,5 +200,63 @@
         "id": "dbi_oh",
         "name": "DrumBrute Impact Open Hihat",
         "filename": "dbi_oh.wav"
-    }]
+    }],
+    "strings": {
+        "en": {
+            "button-add-pattern-label": "Add new pattern",
+            "button-delete-pattern-label": "Delete pattern",
+            "button-set-sample-label": "Set sample",
+            "select-pattern-type-label": "Choose a pattern type ...",
+            "select-sample-label": "Select a sample ...",
+            "tempo-label": "Tempo",
+            "button-play-label": "Play",
+            "button-pause-label": "Pause",
+            "pattern-types": {
+                "euclidean": "Euclidean",
+                "cellular": "Cellular automaton",
+                "random": "Random",
+                "tr": "TR/Roland style"
+            },
+            "pattern-parameters": {
+                "do-center-seeds": "Center seeds",
+                "do-randomize": "Randomize pattern on repeat",
+                "do-randomize-velocities": "Randomize velocity per step",
+                "num-events": "Number of events",
+                "num-seeds": "Number of seeds",
+                "pattern-length": "Pattern length",
+                "pattern-offset": "Pattern offset",
+                "wrap-around": "Wrap around",
+                "on": "On",
+                "off": "Off"
+            }
+        },
+        "de": {
+            "button-add-pattern-label": "Neues Pattern hinzufügen",
+            "button-delete-pattern-label": "Pattern löschen",
+            "button-set-sample-label": "Sample festlegen",
+            "select-pattern-type-label": "Wähle einen Pattern-Typ ...",
+            "select-sample-label": "Wähle ein Sample ...",
+            "tempo-label": "Tempo",
+            "button-play-label": "Abspielen",
+            "button-pause-label": "Pausieren",
+            "pattern-types": {
+                "euclidean": "Euklidisch",
+                "cellular": "Zellulärer Automat",
+                "random": "Zufällig",
+                "tr": "TR/Roland-Stil"
+            },
+            "pattern-parameters": {
+                "do-center-seeds": "Seeds zentrieren",
+                "do-randomize": "Zufälliges Pattern bei Wiederholung",
+                "do-randomize-velocities": "Zufällige Anschlagstärke pro Step",
+                "num-events": "Anzahl der Events",
+                "num-seeds": "Anzahl der Seeds",
+                "pattern-length": "Pattern-Länge",
+                "pattern-offset": "Pattern-Offset",
+                "wrap-around": "Umbrechen",
+                "on": "An",
+                "off": "Aus"
+            }
+        }
+    }
 }

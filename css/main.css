@@ -1,22 +1,57 @@
 :root {
-    --oontzr-color-white: rgb(255, 255, 255);
-    --oontzr-color-black: rgb(19, 19, 19);
-    --oontzr-color-gray-dark: rgb(66, 66, 66);
-    --oontzr-color-gray-medium: rgb(170, 170, 170);
-    --oontzr-color-gray-light: rgb(204, 204, 204);
-    --oontzr-color-gray-lightest: rgb(240, 240, 240);
-    --oontzr-color-primary: rgb(11, 165, 170);
-    --oontzr-color-primary-light: rgb(169, 217, 218);
-    --oontzr-color-secondary: rgb(218, 0, 69);
+    --oo-font-family-base: 'Inter', system-ui;
+    --oo-font-family-icon: 'Material Icons';
+    --oo-font-size-base: 16px;
+    --oo-font-size-text: 1.5rem;
+    --oo-font-size-label: .75rem;
+    --oo-margin-base: .5rem;
+    --oo-margin-medium: calc(1.5 * var(--oo-margin-base));
+    --oo-margin-small: calc(.5 * var(--oo-margin-base));
+    --oo-padding-base: .5rem;
+    --oo-padding-medium: calc(2 * var(--oo-padding-base));
 
+    --oo-border-radius: .5rem;
+    --oo-border-radius-small: calc(.5 * var(--oo-border-radius));
+
+    --oo-color-white: rgb(255, 255, 255);
+    --oo-color-black: rgb(19, 19, 19);
+    --oo-color-gray-dark: rgb(66, 66, 66);
+    --oo-color-gray-medium: rgb(170, 170, 170);
+    --oo-color-gray-light: rgb(204, 204, 204);
+    --oo-color-gray-lightest: rgb(240, 240, 240);
+    --oo-color-primary: rgb(11, 165, 170);
+    --oo-color-primary-light: rgb(169, 217, 218);
+    --oo-color-secondary: rgb(218, 0, 69);
+    --oo-color-secondary-light: hsl(341, 40%, 75%);
+    --oo-color-secondary-dark: rgb(128, 0, 40);
+
+    --oo-duration-short: 250ms;
+    --oo-duration-base: 500ms;
+    --oo-duration-long: 2500ms;
+}
+
+html {
+    font-size: var(--oo-font-size-base);
+}
+
+body {
+    background-color: var(--oo-color-gray-lightest);
+    font-family: var(--oo-font-family-base);
+    margin: var(--oo-padding-base);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/**
+
+:root {
     --oontzr-border-width: .1rem;
     --oontzr-border-color: var(--oontzr-color-gray-light);
     --oontzr-border-radius: .5rem;
 
     --oontzr-margin-base: .5rem;
-
-    --oontzr-duration-base: 500ms;
-    --oontzr-duration-long: 2500ms;
 }
 
 html {
@@ -30,47 +65,6 @@ body {
     padding: 0;
 }
 
-#oontzr_loader {
-    align-items: center;
-    background-color: var(--oontzr-color-white);
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transition: all var(--oontzr-duration-base) ease-in-out;
-    z-index: 500;
-}
-
-.fade-out#oontzr_loader {
-    opacity: 0;
-}
-
-#oontzr_loader svg {
-    width: 10vw;
-}
-
-#oontzr_loader svg path {
-    fill: var(--oontzr-color-primary-light);
-    animation-duration: var(--oontzr-duration-long);
-    animation-name: hueRotate;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-}
-
-@keyframes hueRotate {
-    from {
-        fill: var(--oontzr-color-primary);
-    }
-
-    to {
-        fill: var(--oontzr-color-primary-light);
-    }
-}
-
-
 canvas.pattern-lane {
     background-color: var(--oontzr-color-white);
     border: var(--oontzr-border-width) solid var(--oontzr-border-color);
@@ -79,3 +73,5 @@ canvas.pattern-lane {
     display: block;
     margin: var(--oontzr-margin-base) 0;
 }
+
+*/

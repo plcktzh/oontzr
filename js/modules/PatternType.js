@@ -1,4 +1,4 @@
-import Pattern from './Pattern.js';
+import Pattern from './web-components/Pattern.js';
 
 /**
  * @interface PatternType

@@ -1,8 +1,8 @@
 import Helpers from '../Helpers.js';
-import Oontzr from '../Oontzr.js';
-import Pattern from '../Pattern.js';
+import App from '../web-components/App.js';
+import Pattern from '../web-components/Pattern.js';
 import PatternType from '../PatternType.js';
-import Step from '../Step.js';
+import Step from '../web-components/Step.js';
 
 /**
  * @class TR
@@ -30,9 +30,9 @@ class TR extends PatternType {
 
         this.parent = parent;
 
-        Oontzr.PATTERN_TYPES.RANDOM.PARAMETERS.forEach(parameter => {
-            this[parameter.name] = parameter.initialValue;
-        });
+        for (const parameter in App.PATTERN_TYPES.TR.PARAMETERS) {
+            this[App.PATTERN_TYPES.TR.PARAMETERS[parameter]['NAME']] = App.PATTERN_TYPES.TR.PARAMETERS[parameter]['INITIALVALUE'];
+        }
 
         // Transfer properties from optional arguments
         Helpers.transferProps(this, args);
@@ -50,19 +50,22 @@ class TR extends PatternType {
         // Transfer properties from optional arguments
         Helpers.transferProps(this, args);
 
-        if (this.parent.steps.length === this.patternLength) return this.parent.steps;
+        // if (this.parent.steps.length === this.patternLength) return this.parent.steps;
 
         let steps_out = [];
 
         for (let i = 0; i < this.patternLength; i++) {
 
-            // Push a new empty Step to the steps_out Array
             if (this.parent.steps[i]) {
-                steps_out.push(new Step({
-                    ...this.parent.steps[i]
+                steps_out.push(new Step(this.parent, {
+                    id: Helpers.getRandomId(App.PREFIXES.STEP),
+                    isActive: this.parent.steps[i].isActive,
+                    velocity: this.parent.steps[i].velocity
                 }));
             } else {
-                steps_out.push(new Step({
+                // Push a new empty Step to the steps_out Array
+                steps_out.push(new Step(this.parent, {
+                    id: Helpers.getRandomId(App.PREFIXES.STEP),
                     isActive: false,
                     velocity: 0
                 }));

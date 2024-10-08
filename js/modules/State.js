@@ -1,6 +1,6 @@
 import Helpers from './Helpers.js';
-import Oontzr from './Oontzr.js';
-import Pattern from './Pattern.js';
+import App from './web-components/App.js';
+import Pattern from './web-components/Pattern.js';
 import Playback from './Playback.js';
 
 /**
@@ -9,8 +9,7 @@ import Playback from './Playback.js';
 class State {
 
     /**
-     * @property {Oontzr} parent The parent Oontzr instance
-     * @todo Implement language selection
+     * @property {App} parent The parent OontzApp instance
      * @property {String} language The current UI language
      * @property {Object} playback A configuration Object for playback options
      * @property {Array} patterns An Array containing all Patterns
@@ -34,7 +33,7 @@ class State {
 
     /**
      * @constructor
-     * @param {Oontzr} parent The parent Oontzr instance
+     * @param {App} parent The parent App instance
      * @param {Object} args An optional initialisation Object
      * @returns State
      */
@@ -61,11 +60,10 @@ class State {
         try {
             args = {
                 ...args,
-                id: Helpers.getRandomId(Oontzr.PREFIXES.PATTERN)
+                id: Helpers.getRandomId(App.PREFIXES.PATTERN)
             };
 
             this.patterns[args.id] = new Pattern(this, args);
-            this.patterns[args.id].updateSteps();
 
             return this.patterns[args.id];
         } catch (e) {
@@ -112,14 +110,14 @@ class State {
 
     /**
      * @method deletePattern
-     * @param {String} id The ID of the Pattern to be updated
+     * @param {Pattern} pattern The Pattern to be deleted
      * @returns Boolean
      */
-    deletePattern(id) {
+    deletePattern(pattern) {
 
         try {
-            Helpers.dqs(`.pattern-lane[data-oontzr-pattern-id="${id}"]`).remove();
-            return (delete this.patterns[id]);
+            pattern.remove();
+            return (delete this.patterns[pattern.id]);
         } catch (e) {
             console.error(`Pattern could not be deleted. ${e}`);
             return false;
@@ -127,38 +125,38 @@ class State {
 
     }
 
-    /**
-     * @method clonePattern
-     * @param {String} id The ID of the Pattern to be cloned
-     * @param {Object} args An optional initialisation Object
-     * @returns Pattern|null
-     */
-    clonePattern(id, args) {
+    // /**
+    //  * @method clonePattern
+    //  * @param {String} id The ID of the Pattern to be cloned
+    //  * @param {Object} args An optional initialisation Object
+    //  * @returns Pattern|null
+    //  */
+    // clonePattern(id, args) {
 
-        try {
-            const source = this.readPattern(id);
-            const clone = this.createPattern({
-                type: source.parameters.type
-            });
+    //     try {
+    //         const source = this.readPattern(id);
+    //         const clone = this.createPattern({
+    //             type: source.parameters.type
+    //         });
 
-            Helpers.transferProps(clone, source, ['id']);
-            if (args) Helpers.transferProps(clone, args);
+    //         Helpers.transferProps(clone, source, ['id']);
+    //         if (args) Helpers.transferProps(clone, args);
 
-            return clone;
-        } catch (e) {
-            console.error(`Pattern could not be cloned. ${e}`);
-            return null;
-        }
-    }
+    //         return clone;
+    //     } catch (e) {
+    //         console.error(`Pattern could not be cloned. ${e}`);
+    //         return null;
+    //     }
+    // }
 
-    /**
-     * @method patternExists
-     * @param {String} id The ID of the Pattern to be checked
-     * @returns Boolean
-     */
-    patternExists(id) {
-        return (this.readPattern(id) !== undefined);
-    }
+    //     /**
+    //      * @method patternExists
+    //      * @param {String} id The ID of the Pattern to be checked
+    //      * @returns Boolean
+    //      */
+    //     patternExists(id) {
+    //         return (this.readPattern(id) !== undefined);
+    //     }
 }
 
 export default State;
