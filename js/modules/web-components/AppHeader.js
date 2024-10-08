@@ -84,8 +84,17 @@ ooAppHeaderCss.innerHTML = `
     }
 </style>
 `;
+
+/**
+ * @class AppHeader
+ * @extends HTMLElement
+ */
 class AppHeader extends HTMLElement {
 
+    /**
+     * @constructor
+     * @param {App} parent
+     */
     constructor(parent) {
         super();
 
@@ -99,15 +108,20 @@ class AppHeader extends HTMLElement {
         this.shadowRoot.appendChild(ooAppHeaderTemplate.content.cloneNode(true));
     }
 
-    connectedCallback() {
-
-        this._createAddPatternButton();
-    }
-
+    /**
+     * @static
+     * @returns Array
+     */
     static get observedAttributes() {
         return ['data-oo-is-playing'];
     }
 
+    /**
+     * @method attributeChangedCallback
+     * @param {String} name 
+     * @param {String} oldValue 
+     * @param {String} newValue 
+     */
     attributeChangedCallback(name, oldValue, newValue) {
 
         if (name === 'data-oo-is-playing') {
@@ -124,7 +138,18 @@ class AppHeader extends HTMLElement {
         }
     }
 
+    /**
+     * @callback connectedCallback
+     */
+    connectedCallback() {
 
+        this._createAddPatternButton();
+    }
+
+    /**
+     * @private
+     * @method _createAddPatternButton
+     */
     _createAddPatternButton() {
 
         const app = Helpers.nqs('oo-app');

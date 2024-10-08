@@ -76,6 +76,10 @@ ooAppFooterCss.innerHTML = `
 
 class AppFooter extends HTMLElement {
 
+    /**
+     * @constructor
+     * @param {App} parent
+     */
     constructor(parent) {
         super();
 
@@ -88,8 +92,6 @@ class AppFooter extends HTMLElement {
         this.shadowRoot.appendChild(ooAppFooterCss.content.cloneNode(true));
         this.shadowRoot.appendChild(ooAppFooterTemplate.content.cloneNode(true));
     }
-
-    connectedCallback() {}
 }
 
 window.customElements.define('oo-app-footer', AppFooter);

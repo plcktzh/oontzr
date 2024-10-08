@@ -6,6 +6,9 @@ import AppFooter from './AppFooter.js';
 import AppHeader from './AppHeader.js';
 import AppMain from './AppMain.js';
 
+const ooAppTemplate = document.createElement('template');
+ooAppTemplate.innerHTML = ``;
+
 const ooAppCss = document.createElement('template');
 ooAppCss.innerHTML = `
 <style>
@@ -21,9 +24,11 @@ ooAppCss.innerHTML = `
     }
 </style>
 `;
-const ooAppTemplate = document.createElement('template');
-ooAppTemplate.innerHTML = ``;
 
+/**
+ * @class App
+ * @extends HTMLElement
+ */
 class App extends HTMLElement {
     /**
      * @static
@@ -48,6 +53,9 @@ class App extends HTMLElement {
     static CANVAS_ATTRIBUTES;
     static SAMPLES;
 
+    /**
+     * @constructor
+     */
     constructor() {
         super();
 
@@ -59,6 +67,10 @@ class App extends HTMLElement {
         this.shadowRoot.appendChild(ooAppTemplate.content.cloneNode(true));
     }
 
+    /**
+     * @async
+     * @callback connectedCallback
+     */
     async connectedCallback() {
 
         Helpers.nac(this.shadowRoot, Helpers.dce('oo-loader'));
@@ -100,6 +112,10 @@ class App extends HTMLElement {
         }
     }
 
+    /**
+     * @private
+     * @method _createState
+     */
     _createState() {
 
         this._s = new State(this, {
@@ -122,11 +138,19 @@ class App extends HTMLElement {
 
     }
 
+    /**
+     * @private
+     * @method _buildSamplePool
+     */
     _buildSamplePool() {
 
         this._s.samples = new SamplePool(App.SAMPLES);
     }
 
+    /**
+     * @private
+     * @method _createAudioContext
+     */
     _createAudioContext() {
 
         this.audioContext = new(window.AudioContext || window.webkit.AudioContext)();
@@ -140,11 +164,19 @@ class App extends HTMLElement {
         }
     }
 
+    /**
+     * @private
+     * @method _detachLoader
+     */
     _detachLoader() {
 
         Helpers.nqs('oo-loader', this.shadowRoot).detach();
     }
 
+    /**
+     * @method play
+     * @param {Boolean} doRewind Determines whether or not playback starts from step 1 or continues from the last played step
+     */
     play(doRewind) {
 
         if (doRewind) this.rewind();
@@ -157,6 +189,9 @@ class App extends HTMLElement {
         Helpers.nqs('oo-app-header', this.shadowRoot).setAttribute('data-oo-is-playing', this._s.isPlaying);
     }
 
+    /**
+     * @method playNextStep
+     */
     playNextStep() {
 
         setTimeout(() => {
@@ -214,6 +249,9 @@ class App extends HTMLElement {
         }, this._s.playback.tempo.msPerStep);
     }
 
+    /**
+     * @method rewind
+     */
     rewind() {
 
         // Walk through the Pattern Array
@@ -223,6 +261,9 @@ class App extends HTMLElement {
         }
     }
 
+    /**
+     * @method pause
+     */
     pause() {
 
         // Disable playback

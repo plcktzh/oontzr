@@ -1,6 +1,16 @@
 import Helpers from '../Helpers.js';
 import App from './App.js';
 
+const ooInputSpinnerTemplate = document.createElement('template');
+ooInputSpinnerTemplate.innerHTML = `
+<label></label>
+<div class="container">
+<button id="decrease"><span class="material-icons">remove</span></button>
+<input type="number" id="inputNumber">
+<button id="increase"><span class="material-icons">add</span></button>
+</div>
+`;
+
 const ooInputSpinnerCss = document.createElement('template');
 ooInputSpinnerCss.innerHTML = `
 <style>
@@ -65,16 +75,10 @@ ooInputSpinnerCss.innerHTML = `
 </style>
 `;
 
-const ooInputSpinnerTemplate = document.createElement('template');
-ooInputSpinnerTemplate.innerHTML = `
-<label></label>
-<div class="container">
-<button id="decrease"><span class="material-icons">remove</span></button>
-<input type="number" id="inputNumber">
-<button id="increase"><span class="material-icons">add</span></button>
-</div>
-`;
-
+/**
+ * @class InputSpinner
+ * @extends HTMLElement
+ */
 class InputSpinner extends HTMLElement {
 
     constructor() {
@@ -88,10 +92,20 @@ class InputSpinner extends HTMLElement {
         this.shadowRoot.appendChild(ooInputSpinnerTemplate.content.cloneNode(true));
     }
 
+    /**
+     * @static
+     * @returns Array
+     */
     static get observedAttributes() {
         return ['data-type', 'data-label', 'data-value'];
     }
 
+    /**
+     * @method attributeChangedCallback
+     * @param {String} name 
+     * @param {String} oldValue 
+     * @param {String} newValue 
+     */
     attributeChangedCallback(name, oldValue, newValue) {
 
         switch (name) {
@@ -104,6 +118,9 @@ class InputSpinner extends HTMLElement {
         }
     }
 
+    /**
+     * @callback connectedCallback
+     */
     connectedCallback() {
 
         Helpers.nqs('#decrease', this.shadowRoot).addEventListener('click', (e) => {
@@ -145,10 +162,6 @@ class InputSpinner extends HTMLElement {
 
             this.setAttribute('data-value', parseFloat(e.target.value));
         });
-
-    }
-
-    disconnectedCallback() {
 
     }
 }

@@ -2,16 +2,9 @@ import Helpers from '../Helpers.js';
 import App from './App.js';
 import Step from './Step.js';
 
-const ooPatternLaneTemplate = document.createElement('template');
-ooPatternLaneTemplate.innerHTML = `
-<div class="steps-container"></div>
-`;
-
 const ooPatternLaneCss = document.createElement('template');
 ooPatternLaneCss.innerHTML = `
 <style>
-    :host {
-    }
 
     :host * {
         box-sizing: border-box;
@@ -31,8 +24,21 @@ ooPatternLaneCss.innerHTML = `
 </style>
 `;
 
+const ooPatternLaneTemplate = document.createElement('template');
+ooPatternLaneTemplate.innerHTML = `
+<div class="steps-container"></div>
+`;
+
+/**
+ * @class PatternLane
+ * @extends HTMLElement
+ */
 class PatternLane extends HTMLElement {
 
+    /**
+     * @constructor
+     * @param {Pattern} parent
+     */
     constructor(parent) {
         super();
 
@@ -46,6 +52,32 @@ class PatternLane extends HTMLElement {
         this.shadowRoot.appendChild(ooPatternLaneTemplate.content.cloneNode(true));
     }
 
+    /**
+     * @static
+     * @returns Array
+     */
+    static get observedAttributes() {
+
+        return ['data-oo-step-current'];
+    }
+
+    /**
+     * @method attributeChangedCallback
+     * @param {String} name 
+     * @param {String} oldValue 
+     * @param {String} newValue 
+     */
+    attributeChangedCallback(name, oldValue, newValue) {
+
+        if (name === 'data-oo-step-current') {
+            if (oldValue && Helpers.nqs(`[data-oo-step-index="${oldValue}"]`, this.shadowRoot)) Helpers.nqs(`[data-oo-step-index="${oldValue}"]`, this.shadowRoot).removeAttribute('style');
+            Helpers.nqs(`[data-oo-step-index="${newValue}"]`, this.shadowRoot).setAttribute('style', '--oo-color-primary: var(--oo-color-secondary); --oo-color-gray-light: var(--oo-color-secondary-light)');
+        }
+    }
+
+    /**
+     * @callback connectedCallback
+     */
     connectedCallback() {
 
         this.setAttribute('data-oo-represents-pattern', this.parent.id);
@@ -61,6 +93,9 @@ class PatternLane extends HTMLElement {
         });
     }
 
+    /**
+     * @method render
+     */
     render() {
 
         const stepsContainer = Helpers.nqs('.steps-container', this.shadowRoot);
@@ -75,19 +110,6 @@ class PatternLane extends HTMLElement {
             step.setAttribute('data-oo-step-is-active', step.isActive);
             step.setAttribute('data-oo-step-index', index);
         });
-    }
-
-    static get observedAttributes() {
-
-        return ['data-oo-step-current'];
-    }
-
-    attributeChangedCallback(name, oldValue, newValue) {
-
-        if (name === 'data-oo-step-current') {
-            if (oldValue && Helpers.nqs(`[data-oo-step-index="${oldValue}"]`, this.shadowRoot)) Helpers.nqs(`[data-oo-step-index="${oldValue}"]`, this.shadowRoot).removeAttribute('style');
-            Helpers.nqs(`[data-oo-step-index="${newValue}"]`, this.shadowRoot).setAttribute('style', '--oo-color-primary: var(--oo-color-secondary); --oo-color-gray-light: var(--oo-color-secondary-light)');
-        }
     }
 }
 

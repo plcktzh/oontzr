@@ -200,6 +200,13 @@ class Helpers {
         return output;
     }
 
+    /**
+     * @static
+     * @method getVariableName
+     * @param {String} input The String to be transformed
+     * @param {Object} prefix A configuration object containing at least 2 properties AS_REGEXP and AS_STRING
+     * @returns String
+     */
     static getVariableName(input, prefix) {
 
         if (prefix.AS_REGEXP.test(input)) {
@@ -319,6 +326,12 @@ class Helpers {
         return output;
     }
 
+    /**
+     * @static
+     * @method getLanguage
+     * @param {String} language The 2-character language string taken from the lang attribute of the html element, includes fallback
+     * @returns String
+     */
     static getLanguage(language) {
 
         if (language === 'de') return 'DE';

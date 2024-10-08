@@ -2,6 +2,15 @@ import Helpers from '../Helpers.js';
 import App from './App.js';
 import InputDropdown from './InputDropdown.js';
 
+const ooPatternHeaderTemplate = document.createElement('template');
+ooPatternHeaderTemplate.innerHTML = `
+<div id="sampleContainer"></div>
+<button id="delete">
+<span class="label">Delete pattern</span>
+<span class="material-icons">delete</span>
+</button>
+`;
+
 const ooPatternHeaderCss = document.createElement('template');
 ooPatternHeaderCss.innerHTML = `
 <style>
@@ -56,17 +65,16 @@ ooPatternHeaderCss.innerHTML = `
 </style>
 `;
 
-const ooPatternHeaderTemplate = document.createElement('template');
-ooPatternHeaderTemplate.innerHTML = `
-<div id="sampleContainer"></div>
-<button id="delete">
-<span class="label">Delete pattern</span>
-<span class="material-icons">delete</span>
-</button>
-`;
-
+/**
+ * @class PatternHeader
+ * @extends HTMLElement
+ */
 class PatternHeader extends HTMLElement {
 
+    /**
+     * @constructor
+     * @param {Pattern} parent
+     */
     constructor(parent) {
         super();
 
@@ -80,10 +88,20 @@ class PatternHeader extends HTMLElement {
         this.shadowRoot.appendChild(ooPatternHeaderTemplate.content.cloneNode(true));
     }
 
+    /**
+     * @static
+     * @returns Array
+     */
     static get observedAttributes() {
         return ['data-label-delete'];
     }
 
+    /**
+     * @method attributeChangedCallback
+     * @param {String} name 
+     * @param {String} oldValue 
+     * @param {String} newValue 
+     */
     attributeChangedCallback(name, oldValue, newValue) {
 
         switch (name) {
@@ -92,9 +110,11 @@ class PatternHeader extends HTMLElement {
                 Helpers.nqs('#delete .label', this.shadowRoot).innerText = newValue;
                 break;
         }
-
     }
 
+    /**
+     * @callback connectedCallback
+     */
     connectedCallback() {
 
         const app = Helpers.nqs('oo-app');
@@ -127,10 +147,6 @@ class PatternHeader extends HTMLElement {
 
             this.parent.parent.parent._s.deletePattern(this.parent);
         });
-
-    }
-
-    disconnectedCallback() {
 
     }
 }

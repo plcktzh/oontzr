@@ -4,6 +4,7 @@ import InputDropdown from './InputDropdown.js';
 import InputKnob from './InputKnob.js';
 import InputSlider from './InputSlider.js';
 import InputSwitch from './InputSwitch.js';
+import PatternConfigPanel from './PatternConfigPanel.js';
 
 const ooPatternConfigPanelInputTemplate = document.createElement('template');
 ooPatternConfigPanelInputTemplate.innerHTML = `
@@ -26,8 +27,16 @@ ooPatternConfigPanelInputCss.innerHTML = `
 </style>
 `;
 
+/**
+ * @class PatternConfigPanelInput
+ * @extends HTMLElement
+ */
 class PatternConfigPanelInput extends HTMLElement {
 
+    /**
+     * @constructor
+     * @param {PatternConfigPanel} parent
+     */
     constructor(parent) {
         super();
 
@@ -41,19 +50,21 @@ class PatternConfigPanelInput extends HTMLElement {
         this.shadowRoot.appendChild(ooPatternConfigPanelInputTemplate.content.cloneNode(true));
     }
 
-    connectedCallback() {
-
-    }
-
-    disconnectedCallback() {
-
-    }
-
+    /**
+     * @static
+     * @returns Array
+     */
     static get observedAttributes() {
 
         return ['data-oo-pattern-control-input-type', 'data-oo-pattern-control-input-name', 'data-oo-pattern-control-input-initial-value', 'data-oo-pattern-control-input-min-value', 'data-oo-pattern-control-input-max-value', 'data-oo-pattern-control-input-value'];
     }
 
+    /**
+     * @method attributeChangedCallback
+     * @param {String} name 
+     * @param {String} oldValue 
+     * @param {String} newValue 
+     */
     attributeChangedCallback(name, oldValue, newValue) {
 
         const app = Helpers.nqs('oo-app');

@@ -135,6 +135,10 @@ ooInputDropdownCss.innerHTML = `
 </style>
 `;
 
+/**
+ * @class InputDropdown
+ * @extends HTMLElement
+ */
 class InputDropdown extends HTMLElement {
 
     constructor() {
@@ -148,47 +152,20 @@ class InputDropdown extends HTMLElement {
         this.shadowRoot.appendChild(ooInputDropdownTemplate.content.cloneNode(true));
     }
 
-    connectedCallback() {
-
-        Helpers.nqs('#toggle', this.shadowRoot).addEventListener('click', (e) => {
-
-            const isExpanded = (this.getAttribute('data-expanded') === 'false') ? false : true;
-            this.setAttribute('data-expanded', `${!isExpanded}`);
-        });
-
-        Helpers.nqs(':host slot', this.shadowRoot).assignedElements().forEach(item => {
-
-            item.addEventListener('click', (e) => {
-                this.setAttribute('data-selected', (e.target.getAttribute('data-value')));
-            });
-        });
-
-        Helpers.nqs('#submit', this.shadowRoot).setAttribute('disabled', 'disabled');
-        Helpers.nqs('#submit', this.shadowRoot).addEventListener('click', (e) => {
-
-            this.dispatchEvent(new CustomEvent(App.EVENT_TYPES.DROPDOWN_SUBMIT, {
-                detail: {
-                    type: this.getAttribute('data-type'),
-                    selected: this.getAttribute('data-selected')
-                }
-            }));
-        });
-    }
-
-    disconnectedCallback() {
-
-        Helpers.nqs('#toggle', this.shadowRoot).removeEventListener('click', (e) => {});
-        Helpers.nqs(':host slot', this.shadowRoot).assignedElements().forEach(item => {
-
-            item.removeEventListener('click', (e) => {});
-        });
-        Helpers.nqs('#submit', this.shadowRoot).removeEventListener('click', (e) => {});
-    }
-
+    /**
+     * @static
+     * @returns Array
+     */
     static get observedAttributes() {
         return ['data-expanded', 'data-label-toggle', 'data-label-submit', 'data-selected'];
     }
 
+    /**
+     * @method attributeChangedCallback
+     * @param {String} name 
+     * @param {String} oldValue 
+     * @param {String} newValue 
+     */
     attributeChangedCallback(name, oldValue, newValue) {
 
         switch (name) {
@@ -222,6 +199,49 @@ class InputDropdown extends HTMLElement {
                 setTimeout(() => this.setAttribute('data-expanded', 'false'), 500);
                 break;
         }
+    }
+
+    /**
+     * @callback connectedCallback
+     */
+    connectedCallback() {
+
+        Helpers.nqs('#toggle', this.shadowRoot).addEventListener('click', (e) => {
+
+            const isExpanded = (this.getAttribute('data-expanded') === 'false') ? false : true;
+            this.setAttribute('data-expanded', `${!isExpanded}`);
+        });
+
+        Helpers.nqs(':host slot', this.shadowRoot).assignedElements().forEach(item => {
+
+            item.addEventListener('click', (e) => {
+                this.setAttribute('data-selected', (e.target.getAttribute('data-value')));
+            });
+        });
+
+        Helpers.nqs('#submit', this.shadowRoot).setAttribute('disabled', 'disabled');
+        Helpers.nqs('#submit', this.shadowRoot).addEventListener('click', (e) => {
+
+            this.dispatchEvent(new CustomEvent(App.EVENT_TYPES.DROPDOWN_SUBMIT, {
+                detail: {
+                    type: this.getAttribute('data-type'),
+                    selected: this.getAttribute('data-selected')
+                }
+            }));
+        });
+    }
+
+    /**
+     * @callback diconnectedCallback
+     */
+    disconnectedCallback() {
+
+        Helpers.nqs('#toggle', this.shadowRoot).removeEventListener('click', (e) => {});
+        Helpers.nqs(':host slot', this.shadowRoot).assignedElements().forEach(item => {
+
+            item.removeEventListener('click', (e) => {});
+        });
+        Helpers.nqs('#submit', this.shadowRoot).removeEventListener('click', (e) => {});
     }
 }
 

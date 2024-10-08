@@ -9,7 +9,7 @@ import Playback from './Playback.js';
 class State {
 
     /**
-     * @property {App} parent The parent OontzApp instance
+     * @property {App} parent The parent App instance
      * @property {String} language The current UI language
      * @property {Object} playback A configuration Object for playback options
      * @property {Array} patterns An Array containing all Patterns
@@ -124,39 +124,6 @@ class State {
         }
 
     }
-
-    // /**
-    //  * @method clonePattern
-    //  * @param {String} id The ID of the Pattern to be cloned
-    //  * @param {Object} args An optional initialisation Object
-    //  * @returns Pattern|null
-    //  */
-    // clonePattern(id, args) {
-
-    //     try {
-    //         const source = this.readPattern(id);
-    //         const clone = this.createPattern({
-    //             type: source.parameters.type
-    //         });
-
-    //         Helpers.transferProps(clone, source, ['id']);
-    //         if (args) Helpers.transferProps(clone, args);
-
-    //         return clone;
-    //     } catch (e) {
-    //         console.error(`Pattern could not be cloned. ${e}`);
-    //         return null;
-    //     }
-    // }
-
-    //     /**
-    //      * @method patternExists
-    //      * @param {String} id The ID of the Pattern to be checked
-    //      * @returns Boolean
-    //      */
-    //     patternExists(id) {
-    //         return (this.readPattern(id) !== undefined);
-    //     }
 }
 
 export default State;

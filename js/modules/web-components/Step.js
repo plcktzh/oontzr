@@ -2,15 +2,9 @@ import Helpers from '../Helpers.js';
 import App from './App.js';
 import InputSlider from './InputSlider.js';
 
-const ooStepTemplate = document.createElement('template');
-ooStepTemplate.innerHTML = ``;
-
 const ooStepCss = document.createElement('template');
 ooStepCss.innerHTML = `
 <style>
-    :host {
-    }
-
     :host * {
         box-sizing: border-box;
     }
@@ -22,8 +16,12 @@ ooStepCss.innerHTML = `
 </style>
 `;
 
+const ooStepTemplate = document.createElement('template');
+ooStepTemplate.innerHTML = ``;
+
 /**
  * @class Step
+ * @extends HTMLElement
  */
 class Step extends HTMLElement {
 
@@ -36,6 +34,7 @@ class Step extends HTMLElement {
 
     /**
      * @constructor
+     * @param {Pattern} parent
      * @param {Object} args An optional initialisation Object
      * @returns Step
      */
@@ -58,27 +57,20 @@ class Step extends HTMLElement {
         return this;
     }
 
-    connectedCallback() {
-
-        this.inputSlider = Helpers.nac(this.shadowRoot, new InputSlider())
-        this.inputSlider.classList.add('no-output-label');
-        if (this.getAttribute('data-oo-step-velocity')) this.inputSlider.setAttribute('value', this.getAttribute('data-oo-step-velocity'));
-        else this.inputSlider.setAttribute('value', '0');
-        this.inputSlider.setAttribute('min', App.PATTERN_PARAMETERS.VELOCITY_MIN);
-        this.inputSlider.setAttribute('max', App.PATTERN_PARAMETERS.VELOCITY_MAX);
-        this.inputSlider.setAttribute('height', App.CANVAS_ATTRIBUTES.STEP_HEIGHT);
-        this.inputSlider.setAttribute('width', '21.38');
-        if (this.parent.type !== 'tr' && this.getAttribute('data-oo-step-is-active') === 'false') this.inputSlider.setAttribute('disabled', 'disabled');
-
-        this.inputSlider.addEventListener('input-change', (e) => {
-            this.setAttribute('data-oo-step-velocity', e.detail.newValue);
-        });
-    }
-
+    /**
+     * @static
+     * @returns Array
+     */
     static get observedAttributes() {
         return ['data-oo-step-velocity', 'data-oo-step-is-active', 'data-oo-step-width'];
     }
 
+    /**
+     * @method attributeChangedCallback
+     * @param {String} name 
+     * @param {String} oldValue 
+     * @param {String} newValue 
+     */
     attributeChangedCallback(name, oldValue, newValue) {
 
         switch (name) {
@@ -107,6 +99,26 @@ class Step extends HTMLElement {
                 this.inputSlider.setAttribute('data-oo-step-width', newValue);
                 break;
         }
+    }
+
+    /**
+     * @callback connectedCallback
+     */
+    connectedCallback() {
+
+        this.inputSlider = Helpers.nac(this.shadowRoot, new InputSlider())
+        this.inputSlider.classList.add('no-output-label');
+        if (this.getAttribute('data-oo-step-velocity')) this.inputSlider.setAttribute('value', this.getAttribute('data-oo-step-velocity'));
+        else this.inputSlider.setAttribute('value', '0');
+        this.inputSlider.setAttribute('min', App.PATTERN_PARAMETERS.VELOCITY_MIN);
+        this.inputSlider.setAttribute('max', App.PATTERN_PARAMETERS.VELOCITY_MAX);
+        this.inputSlider.setAttribute('height', App.CANVAS_ATTRIBUTES.STEP_HEIGHT);
+        this.inputSlider.setAttribute('width', '21.38');
+        if (this.parent.type !== 'tr' && this.getAttribute('data-oo-step-is-active') === 'false') this.inputSlider.setAttribute('disabled', 'disabled');
+
+        this.inputSlider.addEventListener('input-change', (e) => {
+            this.setAttribute('data-oo-step-velocity', e.detail.newValue);
+        });
     }
 
     /**

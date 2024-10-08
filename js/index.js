@@ -1,10 +1,10 @@
 import Helpers from './modules/Helpers.js';
-// import PatternType from './modules/PatternType.js';
 import Playback from './modules/Playback.js';
 import Sample from './modules/Sample.js';
 import SamplePool from './modules/SamplePool.js';
 import State from './modules/State.js';
 
+import PatternType from './modules/PatternType.js';
 import Cellular from './modules/pattern-types/Cellular.js';
 import Euclidean from './modules/pattern-types/Euclidean.js';
 import Random from './modules/pattern-types/Random.js';

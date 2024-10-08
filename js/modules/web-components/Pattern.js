@@ -30,6 +30,10 @@ ooPatternCss.innerHTML = `
 </style>
 `;
 
+/**
+ * @class Pattern
+ * @extends HTMLElement
+ */
 class Pattern extends HTMLElement {
 
     /**
@@ -80,11 +84,21 @@ class Pattern extends HTMLElement {
         Helpers.nac(this.shadowRoot, new PatternConfigPanel(this));
     }
 
+    /**
+     * @static
+     * @returns Array
+     */
     static get observedAttributes() {
 
         return ['id', 'data-expanded', 'data-oo-pattern-type', 'data-oo-pattern-length', 'data-oo-num-events', 'data-oo-pattern-offset', 'data-oo-do-randomize-velocities', 'data-oo-do-randomize', 'data-oo-num-seeds', 'data-oo-do-center-seeds', 'data-oo-wrap-around', 'data-oo-step-current', 'data-oo-volume'];
     }
 
+    /**
+     * @method attributeChangedCallback
+     * @param {String} name 
+     * @param {String} oldValue 
+     * @param {String} newValue 
+     */
     attributeChangedCallback(name, oldValue, newValue) {
 
         switch (name) {
@@ -121,13 +135,18 @@ class Pattern extends HTMLElement {
         }
     }
 
+    /**
+     * @callback connectedCallback
+     */
     connectedCallback() {
 
         this._setPatternType();
     }
 
-    disconnectedCallback() {}
-
+    /**
+     * @private
+     * @method _setPatternType
+     */
     _setPatternType() {
 
         this.setAttribute('id', this.id);
@@ -279,26 +298,6 @@ class Pattern extends HTMLElement {
         }
     }
 
-    // /**
-    //  * Shift steps to the left by 1
-    //  * @method nudgeLeft
-    //  * @returns Pattern
-    //  * @see Pattern.shiftPattern
-    //  */
-    // nudgeLeft() {
-    //     return this.shiftPattern(-1);
-    // }
-
-    // /**
-    //  * Shift steps to the right by 1
-    //  * @method nudgeRight
-    //  * @returns Pattern
-    //  * @see Pattern.shiftPattern
-    //  */
-    // nudgeRight() {
-    //     return this.shiftPattern(1);
-    // }
-
     /**
      * @method setSample
      * @param {String} id The ID of the Sample to be assigned to the pattern
@@ -308,23 +307,6 @@ class Pattern extends HTMLElement {
 
         this.sample = this.parent.samples.getSample(id);
     }
-
-    // /**
-    //  * @method setChokesPattern
-    //  * @param {String} id The ID of the Pattern to be choked by this Pattern instance
-    //  * @returns Pattern
-    //  */
-    // setChokesPattern(id) {
-
-    //     try {
-    //         if (this.parent.patternExists(id)) this.chokesPattern = id;
-    //         else throw new Error(`Pattern '${id}' could not be found.`);
-    //     } catch (e) {
-    //         console.error(e);
-    //     }
-
-    //     return this;
-    // }
 
     /**
      * @method randomizeStepVelocities

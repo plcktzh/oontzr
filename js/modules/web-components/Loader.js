@@ -1,6 +1,9 @@
 import Helpers from '../Helpers.js';
 import Logo from './Logo.js';
 
+const ooLoaderTemplate = document.createElement('template');
+ooLoaderTemplate.innerHTML = `<oo-logo></oo-logo>`;
+
 const ooLoaderCss = document.createElement('template');
 ooLoaderCss.innerHTML = `
 <style>
@@ -23,11 +26,15 @@ ooLoaderCss.innerHTML = `
     }
 </style>`;
 
-const ooLoaderTemplate = document.createElement('template');
-ooLoaderTemplate.innerHTML = `<oo-logo></oo-logo>`;
-
+/**
+ * @class Loader
+ * @extends HTMLElement
+ */
 class Loader extends HTMLElement {
 
+    /**
+     * @constructor
+     */
     constructor() {
         super();
 
@@ -39,6 +46,9 @@ class Loader extends HTMLElement {
         this.shadowRoot.appendChild(ooLoaderTemplate.content.cloneNode(true));
     }
 
+    /**
+     * @method detach
+     */
     detach() {
 
         setTimeout(() => this.style.opacity = 0, 1000, this);

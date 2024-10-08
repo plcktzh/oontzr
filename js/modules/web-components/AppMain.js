@@ -18,8 +18,16 @@ ooAppMainCss.innerHTML = `
 </style>
 `;
 
+/**
+ * @class AppMain
+ * @extends HTMLElement
+ */
 class AppMain extends HTMLElement {
 
+    /**
+     * @constructor
+     * @param {App} parent
+     */
     constructor(parent) {
         super();
 

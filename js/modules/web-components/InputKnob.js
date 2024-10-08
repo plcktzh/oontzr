@@ -1,5 +1,25 @@
 import Helpers from '../Helpers.js';
 
+const ooInputKnobTemplate = document.createElement('template');
+ooInputKnobTemplate.innerHTML = `
+<input type="number" id="numberInput">
+<div id="outputContainer">
+<div id="outputLabel"></div>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+<defs>
+<clipPath id="donut">
+<path clip-rule="evenodd" fill="#00f" d="M 50 0 A 50 50, 0, 0, 1, 100 50 A 50 50, 0, 0, 1, 0 50 A 50 50, 0, 0, 1, 50 0 Z M 50 25 A 25 25, 0, 0, 1, 75 50 A 25 25, 0, 0, 1, 25 50 A 25 25, 0, 0, 1, 50 25 Z" />
+</clipPath>
+</defs>
+<g clip-path="url(#donut)" transform="rotate(90, 50, 50)">
+<circle id="background" cx="50" cy="50" r="50" />
+<path id="outputPath" d="M 50 50 L 50 0 A 50 50, 0, 0, 1, 50 0 Z" />
+</g>
+</svg>
+</div>
+<label for="numberInput"></label>
+`;
+
 const ooInputKnobCss = document.createElement('template');
 ooInputKnobCss.innerHTML = `
 <style>
@@ -81,26 +101,6 @@ ooInputKnobCss.innerHTML = `
 </style>
 `;
 
-const ooInputKnobTemplate = document.createElement('template');
-ooInputKnobTemplate.innerHTML = `
-<input type="number" id="numberInput">
-<div id="outputContainer">
-<div id="outputLabel"></div>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
-<defs>
-<clipPath id="donut">
-<path clip-rule="evenodd" fill="#00f" d="M 50 0 A 50 50, 0, 0, 1, 100 50 A 50 50, 0, 0, 1, 0 50 A 50 50, 0, 0, 1, 50 0 Z M 50 25 A 25 25, 0, 0, 1, 75 50 A 25 25, 0, 0, 1, 25 50 A 25 25, 0, 0, 1, 50 25 Z" />
-</clipPath>
-</defs>
-<g clip-path="url(#donut)" transform="rotate(90, 50, 50)">
-<circle id="background" cx="50" cy="50" r="50" />
-<path id="outputPath" d="M 50 50 L 50 0 A 50 50, 0, 0, 1, 50 0 Z" />
-</g>
-</svg>
-</div>
-<label for="numberInput"></label>
-`;
-
 /**
  * @class InputKnob
  * @extends HTMLElement
@@ -109,6 +109,7 @@ class InputKnob extends HTMLElement {
 
     /**
      * @constructor
+     * @param {HTMLElement} parent
      */
     constructor(parent) {
 
@@ -134,17 +135,17 @@ class InputKnob extends HTMLElement {
 
     /**
      * @static
+     * @returns Array
      */
     static get observedAttributes() {
 
         return ['label', 'value', 'min', 'max', 'graph-min', 'graph-max', 'disabled', 'size'];
     }
 
-
     /**
-     * @callback attributeChangedCallback
+     * @method attributeChangedCallback
      * @param {String} name 
-     * @param {Object} oldValue 
+     * @param {String} oldValue 
      * @param {String} newValue 
      */
     attributeChangedCallback(name, oldValue, newValue) {
@@ -260,7 +261,7 @@ class InputKnob extends HTMLElement {
     }
 
     /**
-     * @callback
+     * @callback diconnectedCallback
      */
     disconnectedCallback() {
 

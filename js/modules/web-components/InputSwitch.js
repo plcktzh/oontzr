@@ -122,8 +122,16 @@ ooInputSwitchCss.innerHTML = `
 </style>
 `;
 
+/**
+ * @class InputSwitch
+ * @extends HTMLElement
+ */
 class InputSwitch extends HTMLElement {
 
+    /**
+     * @constructor
+     * @param {HTMLElement} parent
+     */
     constructor(parent) {
         super();
 
@@ -137,22 +145,20 @@ class InputSwitch extends HTMLElement {
         this.shadowRoot.appendChild(ooInputSwitchTemplate.content.cloneNode(true));
     }
 
-    connectedCallback() {
-
-        Helpers.nqs('#toggle', this.shadowRoot).addEventListener('change', (e) => {
-            this.setAttribute('value', (e.target.checked) ? 'true' : 'false');
-            this.parent.setAttribute('data-oo-pattern-control-input-value', this.getAttribute('value'));
-        });
-    }
-
-    disconnectedCallback() {
-
-    }
-
+    /**
+     * @static
+     * @returns Array
+     */
     static get observedAttributes() {
         return ['value', 'label'];
     }
 
+    /**
+     * @method attributeChangedCallback
+     * @param {String} name 
+     * @param {String} oldValue 
+     * @param {String} newValue 
+     */
     attributeChangedCallback(name, oldValue, newValue) {
 
         switch (name) {
@@ -166,6 +172,17 @@ class InputSwitch extends HTMLElement {
                 Helpers.nqs('#outputLabel', this.shadowRoot).innerHTML = (newValue === 'true') ? App.STRINGS[Helpers.getLanguage(Helpers.nqs('oo-app')._s.language)].PATTERN_PARAMETERS.ON : App.STRINGS[Helpers.getLanguage(Helpers.nqs('oo-app')._s.language)].PATTERN_PARAMETERS.OFF;
                 break;
         }
+    }
+
+    /**
+     * @callback connectedCallback
+     */
+    connectedCallback() {
+
+        Helpers.nqs('#toggle', this.shadowRoot).addEventListener('change', (e) => {
+            this.setAttribute('value', (e.target.checked) ? 'true' : 'false');
+            this.parent.setAttribute('data-oo-pattern-control-input-value', this.getAttribute('value'));
+        });
     }
 }
 

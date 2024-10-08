@@ -1,6 +1,26 @@
 import Helpers from '../Helpers.js';
 import App from './App.js';
 
+const ooInputSliderTemplate = document.createElement('template');
+ooInputSliderTemplate.innerHTML = `
+<input type="number" id="numberInput" min="0" max="127" value="0">
+<div id="outputContainer">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 100" width="50" height="100" preserveAspectRatio="none">
+<defs>
+<clipPath id="candybar">
+<rect x="0" y="0" width="50" height="100" />
+</clipPath>
+</defs>
+<g clip-path="url(#candybar)">
+<rect id="background" x="0" y="0" width="50" height="100" />
+<rect id="outputPath" x="0" y="50" width="50" height="50" />
+</g>
+</svg>
+<div id="outputLabel"></div>
+</div>
+<label for="numberInput"></label>
+`;
+
 const ooInputSliderCss = document.createElement('template');
 ooInputSliderCss.innerHTML = `
 <style>
@@ -67,26 +87,6 @@ ooInputSliderCss.innerHTML = `
 </style>
 `;
 
-const ooInputSliderTemplate = document.createElement('template');
-ooInputSliderTemplate.innerHTML = `
-<input type="number" id="numberInput" min="0" max="127" value="0">
-<div id="outputContainer">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 100" width="50" height="100" preserveAspectRatio="none">
-<defs>
-<clipPath id="candybar">
-<rect x="0" y="0" width="50" height="100" />
-</clipPath>
-</defs>
-<g clip-path="url(#candybar)">
-<rect id="background" x="0" y="0" width="50" height="100" />
-<rect id="outputPath" x="0" y="50" width="50" height="50" />
-</g>
-</svg>
-<div id="outputLabel"></div>
-</div>
-<label for="numberInput"></label>
-`;
-
 /**
  * @class InputSlider
  * @extends HTMLElement
@@ -95,6 +95,7 @@ class InputSlider extends HTMLElement {
 
     /**
      * @constructor
+     * @param {HTMLElement} parent
      */
     constructor(parent) {
 
@@ -120,17 +121,17 @@ class InputSlider extends HTMLElement {
 
     /**
      * @static
+     * @returns Array
      */
     static get observedAttributes() {
 
         return ['value', 'min', 'max', 'graph-min', 'graph-max', 'disabled', 'width', 'height', 'label'];
     }
 
-
     /**
-     * @callback attributeChangedCallback
+     * @method attributeChangedCallback
      * @param {String} name 
-     * @param {Object} oldValue 
+     * @param {String} oldValue 
      * @param {String} newValue 
      */
     attributeChangedCallback(name, oldValue, newValue) {
@@ -247,7 +248,7 @@ class InputSlider extends HTMLElement {
     }
 
     /**
-     * @callback
+     * @callback diconnectedCallback
      */
     disconnectedCallback() {
 
