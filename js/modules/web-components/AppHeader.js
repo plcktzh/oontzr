@@ -51,13 +51,13 @@ ooAppHeaderCss.innerHTML = `
         border-radius: 1.25rem;
         display: flex;
         font-size: var(--oo-font-size-label);
-        justify-content: space-between;
+        justify-content: center;
         font-size: var(--oo-font-size-label);
         height: 2.5rem;
         margin: auto 0;
         padding: var(--oo-padding-medium);
         transition: all var(--oo-duration-short) ease-in-out, border-bottom-left-radius 0ms;
-        width: 6rem;
+        width: 6.5rem;
     }
 
     button:hover {
