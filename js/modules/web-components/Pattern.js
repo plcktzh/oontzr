@@ -128,7 +128,7 @@ class Pattern extends HTMLElement {
                 break;
         }
 
-        if (name !== 'data-oo-step-current') {
+        if (name !== 'data-oo-step-current' && name !== 'data-oo-volume') {
             this.updateSteps({
                 ...this.parameters
             });
