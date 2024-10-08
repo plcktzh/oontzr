@@ -36,11 +36,42 @@ ooAppHeaderCss.innerHTML = `
     
     .inner {
         display: flex;
-        gap: var(--oo-margin-base);
-        justify-content: space-between;
+        gap: calc(5 * var(--oo-margin-base));
+        justify-content: flex-start;
         margin: 0 auto;
         max-width: 1600px;
         width: 100%;
+    }
+
+    button {
+        align-items: center;
+        background-color: var(--oo-color-secondary);
+        color: var(--oo-color-white);
+        border: none;
+        border-radius: 1.25rem;
+        display: flex;
+        justify-content: space-between;
+        font-size: var(--oo-font-size-label);
+        height: 2.5rem;
+        margin: auto 0;
+        padding: var(--oo-padding-medium);
+        transition: all var(--oo-duration-short) ease-in-out, border-bottom-left-radius 0ms;
+    }
+
+    button:hover {
+        cursor: pointer;
+        background-color: var(--oo-color-secondary-dark);
+    }
+
+    button[disabled] {
+        background-color: var(--oo-color-secondary-light);
+        color: var(--oo-color-secondary-dark);
+        cursor: not-allowed;
+    }
+
+    .material-icons {
+        font-family: var(--oo-font-family-icon);
+        margin-left: var(--oo-margin-medium);
     }
 
     oo-input-dropdown {
@@ -49,19 +80,14 @@ ooAppHeaderCss.innerHTML = `
         top: 1.375rem;
         z-index: 9999;
     }
-
-    oo-input-spinner {
-        position: absolute;
-        left: 50%;
-        top: 1.375rem;
-        z-index: 9999;
-    }
 </style>
 `;
 class AppHeader extends HTMLElement {
 
-    constructor() {
+    constructor(parent) {
         super();
+
+        this.parent = parent;
 
         this.attachShadow({
             mode: 'open'
@@ -101,6 +127,23 @@ class AppHeader extends HTMLElement {
             }
         });
 
+        this.playButton = Helpers.dce('button');
+        this.playButton.innerHTML = `<span class="label">${App.STRINGS[Helpers.getLanguage(app._s.language)]['BUTTON_PLAY_LABEL']}</span><span class="material-icons">play_arrow</span>`;
+        this.playButton.addEventListener('click', (e) => {
+
+            this.parent.play(true);
+        });
+
+        Helpers.nac(Helpers.nqs('.inner', this.shadowRoot), this.playButton);
+
+        this.pauseButton = Helpers.dce('button');
+        this.pauseButton.innerHTML = `<span class="label">${App.STRINGS[Helpers.getLanguage(app._s.language)]['BUTTON_PAUSE_LABEL']}</span><span class="material-icons">pause</span>`;
+        this.pauseButton.addEventListener('click', (e) => {
+
+            this.parent.pause();
+        });
+
+        Helpers.nac(Helpers.nqs('.inner', this.shadowRoot), this.pauseButton);
 
         this.addPatternButton = Helpers.dce('oo-input-dropdown');
         this.addPatternButton.setAttribute('data-type', 'add-pattern');

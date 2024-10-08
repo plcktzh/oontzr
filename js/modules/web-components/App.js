@@ -2,6 +2,9 @@ import Helpers from '../Helpers.js';
 import Playback from '../Playback.js';
 import SamplePool from '../SamplePool.js';
 import State from '../State.js';
+import AppFooter from './AppFooter.js';
+import AppHeader from './AppHeader.js';
+import AppMain from './AppMain.js';
 
 const ooAppCss = document.createElement('template');
 ooAppCss.innerHTML = `
@@ -85,9 +88,9 @@ class App extends HTMLElement {
             this._buildSamplePool();
             this._detachLoader();
 
-            Helpers.nac(this.shadowRoot, Helpers.dce('oo-app-header'));
-            Helpers.nac(this.shadowRoot, Helpers.dce('oo-app-main'));
-            Helpers.nac(this.shadowRoot, Helpers.dce('oo-app-footer'));
+            Helpers.nac(this.shadowRoot, new AppHeader(this));
+            Helpers.nac(this.shadowRoot, new AppMain(this));
+            Helpers.nac(this.shadowRoot, new AppFooter(this));
 
             this.style.marginTop = `${this.shadowRoot.querySelector('oo-app-header').getBoundingClientRect().height}px`
             this.style.marginBottom = `${this.shadowRoot.querySelector('oo-app-footer').getBoundingClientRect().height}px`
@@ -129,76 +132,73 @@ class App extends HTMLElement {
     }
 
     play(doRewind) {
-        console.log('play', doRewind);
 
-        // if (doRewind) this.rewind();
+        if (doRewind) this.rewind();
 
-        // // Step through the patterns
-        // this.playNextStep();
+        // Step through the patterns
+        this.playNextStep();
 
-        // // Enable playback
-        // return this._s.isPlaying = true;
+        // Enable playback
+        return this._s.isPlaying = true;
     }
 
     playNextStep() {
-        console.log('playNextStep');
 
-        // setTimeout(() => {
-        //     // Walk the Pattern Array
-        //     for (const id in this._s.patterns) {
-        //         // Get current Step
-        //         const {
-        //             index,
-        //             step
-        //         } = this._s.patterns[id].getStep();
+        setTimeout(() => {
+            // Walk the Pattern Array
+            for (const id in this._s.patterns) {
+                // Get current Step
+                const {
+                    index,
+                    step
+                } = this._s.patterns[id].getStep();
 
-        //         if (this._s.patterns[id].sample !== null) {
+                if (this._s.patterns[id].sample !== null) {
 
-        //             const stepAudio = new Audio();
-        //             stepAudio.src = `${Oontzr.SAMPLES_DIRECTORY}${this._s.patterns[id].sample.filename}`;
+                    const stepAudio = new Audio();
+                    stepAudio.src = `${App.SAMPLES_DIRECTORY}${this._s.patterns[id].sample.filename}`;
 
-        //             if (step.isActive) {
-        //                 stepAudio.volume = step.velocity / Oontzr.PATTERN_PARAMETERS.VELOCITY_MAX;
-        //                 stepAudio.play();
-        //             } else stepAudio.volume = 0;
-        //         }
+                    if (step.isActive) {
+                        stepAudio.volume = step.velocity / App.PATTERN_PARAMETERS.VELOCITY_MAX;
+                        stepAudio.play();
+                    } else stepAudio.volume = 0;
+                }
 
-        //         if (index === Object.keys(this._s.patterns[id].steps).length - 1) {
-        //             // If "playback head" is on the last step in the pattern, check whether the pattern should be randomized on each repeat
-        //             if (this._s.patterns[id].parameters.doRandomize) {
-        //                 // Randomize pattern steps
-        //                 this._s.patterns[id].steps = this._s.patterns[id].parameters.randomizePattern(this._s.patterns[id].steps);
-        //                 // If velocities should also be randomized on each repeat, call Pattern.randomizeStepVelocities
-        //                 if (this._s.patterns[id].parameters.doRandomizeVelocities) this._s.patterns[id].randomizeStepVelocities();
-        //             }
-        //         }
+                this._s.patterns[id].setAttribute('data-oo-step-current', index);
 
-        //         // Redraw canvas
-        //         this._s.patterns[id].drawPattern();
-        //     }
+                if (index === Object.keys(this._s.patterns[id].steps).length - 1) {
+                    // If "playback head" is on the last step in the pattern, check whether the pattern should be randomized on each repeat
+                    if (this._s.patterns[id].parameters.doRandomize) {
 
-        //     // If playback hasn't been stopped, play the next Step
-        //     if (this._s.isPlaying) this.playNextStep();
-        // }, this._s.playback.tempo.msPerStep);
+                        // Randomize pattern steps
+                        this._s.patterns[id].steps = this._s.patterns[id].parameters.randomizePattern(this._s.patterns[id].steps);
+
+                        // If velocities should also be randomized on each repeat, call Pattern.randomizeStepVelocities
+                        if (this._s.patterns[id].parameters.doRandomizeVelocities) this._s.patterns[id].randomizeStepVelocities();
+
+                        this._s.patterns[id].dispatchEvent(new Event(App.EVENT_TYPES.STEPS_CHANGE));
+                    }
+                }
+            }
+
+            // If playback hasn't been stopped, play the next Step
+            if (this._s.isPlaying) this.playNextStep();
+        }, this._s.playback.tempo.msPerStep);
     }
 
     rewind() {
 
-        console.log('rewind');
-
-        // // Walk through the Pattern Array
-        // for (const id in this._s.patterns) {
-        //     // Reset the Pattern instance's currentStep
-        //     this._s.patterns[id].currentStep = 0;
-        // }
+        // Walk through the Pattern Array
+        for (const id in this._s.patterns) {
+            // Reset the Pattern instance's currentStep
+            this._s.patterns[id].currentStep = 0;
+        }
     }
 
     pause() {
 
-        console.log('pause');
-
-        // // Disable playback
-        // return this._s.isPlaying = false;
+        // Disable playback
+        return this._s.isPlaying = false;
     }
 }
 

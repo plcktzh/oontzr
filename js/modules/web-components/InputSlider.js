@@ -5,8 +5,6 @@ const ooInputSliderCss = document.createElement('template');
 ooInputSliderCss.innerHTML = `
 <style>
     :host {
-        /** background-color: var(--oo-color-gray-lightest); */
-        /** border-radius: var(--oo-border-radius); */
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -26,7 +24,6 @@ ooInputSliderCss.innerHTML = `
         display: flex;
         flex-direction: column;
         gap: var(--oo-margin-base);
-        /** padding: var(--oo-padding-base); */
         position: relative;
     }
 

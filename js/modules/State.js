@@ -117,7 +117,7 @@ class State {
 
         try {
             pattern.remove();
-            return (delete this.patterns[pattern]);
+            return (delete this.patterns[pattern.id]);
         } catch (e) {
             console.error(`Pattern could not be deleted. ${e}`);
             return false;

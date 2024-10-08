@@ -1,7 +1,8 @@
 {
     "event-types": {
         "dropdown-submit": "dropdown-submit",
-        "input-change": "input-change"
+        "input-change": "input-change",
+        "steps-change": "steps-change"
     },
     "pattern-types": {
         "cellular": {
@@ -208,6 +209,8 @@
             "select-pattern-type-label": "Choose a pattern type ...",
             "select-sample-label": "Select a sample ...",
             "tempo-label": "Tempo",
+            "button-play-label": "Play",
+            "button-pause-label": "Pause",
             "pattern-types": {
                 "euclidean": "Euclidean",
                 "cellular": "Cellular automaton",
@@ -234,6 +237,8 @@
             "select-pattern-type-label": "Wähle einen Pattern-Typ ...",
             "select-sample-label": "Wähle ein Sample ...",
             "tempo-label": "Tempo",
+            "button-play-label": "Abspielen",
+            "button-pause-label": "Pausieren",
             "pattern-types": {
                 "euclidean": "Euklidisch",
                 "cellular": "Zellulärer Automat",

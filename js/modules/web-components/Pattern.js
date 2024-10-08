@@ -82,7 +82,7 @@ class Pattern extends HTMLElement {
 
     static get observedAttributes() {
 
-        return ['id', 'data-expanded', 'data-oo-pattern-type', 'data-oo-pattern-length', 'data-oo-num-events', 'data-oo-pattern-offset', 'data-oo-do-randomize-velocities', 'data-oo-do-randomize', 'data-oo-num-seeds', 'data-oo-do-center-seeds', 'data-oo-wrap-around'];
+        return ['id', 'data-expanded', 'data-oo-pattern-type', 'data-oo-pattern-length', 'data-oo-num-events', 'data-oo-pattern-offset', 'data-oo-do-randomize-velocities', 'data-oo-do-randomize', 'data-oo-num-seeds', 'data-oo-do-center-seeds', 'data-oo-wrap-around', 'data-oo-step-current'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -108,11 +108,16 @@ class Pattern extends HTMLElement {
             case 'data-oo-wrap-around':
                 this.parameters[Helpers.getVariableName(name, App.DATA_ATTRIBUTE_PREFIX)] = ((newValue === 'true') ? true : false);
                 break;
+            case 'data-oo-step-current':
+                Helpers.nqs('oo-pattern-lane', this.shadowRoot).setAttribute('data-oo-step-current', newValue);
+                break;
         }
 
-        this.updateSteps({
-            ...this.parameters
-        });
+        if (name !== 'data-oo-step-current') {
+            this.updateSteps({
+                ...this.parameters
+            });
+        }
     }
 
     connectedCallback() {
@@ -323,44 +328,44 @@ class Pattern extends HTMLElement {
         });
     }
 
-    // /**
-    //  * @method getStep
-    //  * @param {Number} id The (optional) ID of the Step to be returned
-    //  * @returns Object
-    //  */
-    // getStep(id) {
+    /**
+     * @method getStep
+     * @param {Number} id The (optional) ID of the Step to be returned
+     * @returns Object
+     */
+    getStep(id) {
 
-    //     if (id) {
-    //         // The method was called with ID parameter, get this.steps[id]
-    //         try {
-    //             // If id is within bounds, return Object with index and Step
-    //             if (id > 0 && id < this.steps.length) return {
-    //                 index: id,
-    //                 step: this.steps[id]
-    //             };
+        if (id) {
+            // The method was called with ID parameter, get this.steps[id]
+            try {
+                // If id is within bounds, return Object with index and Step
+                if (id > 0 && id < this.steps.length) return {
+                    index: id,
+                    step: this.steps[id]
+                };
 
-    //             // ... or throw an error if the ID is out of bounds
-    //             throw new Error(`Step ${id} could not be found.`);
-    //         } catch (e) {
-    //             // ... and catch it to display an error message
-    //             console.error(e);
-    //         }
-    //     } else {
-    //         // The method was called without ID parameter
+                // ... or throw an error if the ID is out of bounds
+                throw new Error(`Step ${id} could not be found.`);
+            } catch (e) {
+                // ... and catch it to display an error message
+                console.error(e);
+            }
+        } else {
+            // The method was called without ID parameter
 
-    //         // Increase the currentStep property of Pattern instance
-    //         ++this.currentStep;
+            // Increase the currentStep property of Pattern instance
+            ++this.currentStep;
 
-    //         // Prevent currentStep from going out of bounds
-    //         if (this.currentStep >= this.steps.length) this.currentStep = 0;
+            // Prevent currentStep from going out of bounds
+            if (this.currentStep >= this.steps.length) this.currentStep = 0;
 
-    //         // Return Object with index and Step
-    //         return {
-    //             index: this.currentStep,
-    //             step: this.steps[this.currentStep]
-    //         };
-    //     }
-    // }
+            // Return Object with index and Step
+            return {
+                index: this.currentStep,
+                step: this.steps[this.currentStep]
+            };
+        }
+    }
 }
 
 window.customElements.define('oo-pattern', Pattern);

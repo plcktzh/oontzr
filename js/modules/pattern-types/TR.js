@@ -58,7 +58,9 @@ class TR extends PatternType {
 
             if (this.parent.steps[i]) {
                 steps_out.push(new Step(this.parent, {
-                    ...this.parent.steps[i]
+                    id: Helpers.getRandomId(App.PREFIXES.STEP),
+                    isActive: this.parent.steps[i].isActive,
+                    velocity: this.parent.steps[i].velocity
                 }));
             } else {
                 // Push a new empty Step to the steps_out Array

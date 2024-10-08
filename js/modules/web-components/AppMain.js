@@ -20,8 +20,10 @@ ooAppMainCss.innerHTML = `
 
 class AppMain extends HTMLElement {
 
-    constructor() {
+    constructor(parent) {
         super();
+
+        this.parent = parent;
 
         this.attachShadow({
             mode: 'open'
