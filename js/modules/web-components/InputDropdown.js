@@ -40,13 +40,19 @@ ooInputDropdownCss.innerHTML = `
         width: 100%;
     }
 
+    .container .dropdown-items {
+        max-height: 10rem;
+        overflow-y: auto;
+        scroll-snap-type: y mandatory;
+    }
+    
     :host([data-expanded="false"]) .dropdown-items {
         display: none;
     }
     
     :host([data-expanded="true"]) .dropdown-items {
         background-color: var(--oo-color-secondary-light);
-        box-shadow: inset 0 .75rem 1rem -1rem rgba(0, 0, 0, .5);
+        box-shadow: inset 0 .75rem 1rem -1rem rgba(0, 0, 0, .5), .25rem .25rem 1rem -.5rem rgba(0, 0, 0, 7.5);
         display: block;
         font-size: var(--oo-font-size-label);
     }
@@ -58,6 +64,7 @@ ooInputDropdownCss.innerHTML = `
         display: flex;
         justify-content: space-between;
         padding: var(--oo-padding-base) var(--oo-padding-medium);
+        scroll-snap-align: start end;
         transition: all var(--oo-duration-short) ease-in-out;
     }
     
