@@ -195,42 +195,182 @@
     },
     "samples-directory": "samples/",
     "samples": [{
-        "id": "dbi_bd",
-        "name": "DrumBrute Impact Bass Drum",
-        "filename": "dbi_bd.wav"
-    }, {
-        "id": "dbi_sd",
-        "name": "DrumBrute Impact Snare",
-        "filename": "dbi_sd.wav"
-    }, {
-        "id": "dbi_cp",
-        "name": "DrumBrute Impact Clap",
-        "filename": "dbi_cp.wav"
-    }, {
-        "id": "dbi_th",
-        "name": "DrumBrute Impact Tom High",
-        "filename": "dbi_th.wav"
-    }, {
-        "id": "dbi_tl",
-        "name": "DrumBrute Impact Tom Low",
-        "filename": "dbi_tl.wav"
-    }, {
-        "id": "dbi_rc",
-        "name": "DrumBrute Impact Ride Cymbal",
-        "filename": "dbi_rc.wav"
-    }, {
-        "id": "dbi_cb",
-        "name": "DrumBrute Impact Cowbell",
-        "filename": "dbi_cb.wav"
-    }, {
-        "id": "dbi_ch",
-        "name": "DrumBrute Impact Closed Hihat",
-        "filename": "dbi_ch.wav"
-    }, {
-        "id": "dbi_oh",
-        "name": "DrumBrute Impact Open Hihat",
-        "filename": "dbi_oh.wav"
-    }],
+            "id": "dbi_bd",
+            "name": "DrumBrute Impact Bass Drum",
+            "filename": "dbi_bd.wav"
+        }, {
+            "id": "dbi_sd",
+            "name": "DrumBrute Impact Snare",
+            "filename": "dbi_sd.wav"
+        }, {
+            "id": "dbi_cp",
+            "name": "DrumBrute Impact Clap",
+            "filename": "dbi_cp.wav"
+        }, {
+            "id": "dbi_th",
+            "name": "DrumBrute Impact Tom High",
+            "filename": "dbi_th.wav"
+        }, {
+            "id": "dbi_tl",
+            "name": "DrumBrute Impact Tom Low",
+            "filename": "dbi_tl.wav"
+        }, {
+            "id": "dbi_rc",
+            "name": "DrumBrute Impact Ride Cymbal",
+            "filename": "dbi_rc.wav"
+        }, {
+            "id": "dbi_cb",
+            "name": "DrumBrute Impact Cowbell",
+            "filename": "dbi_cb.wav"
+        }, {
+            "id": "dbi_ch",
+            "name": "DrumBrute Impact Closed Hihat",
+            "filename": "dbi_ch.wav"
+        }, {
+            "id": "dbi_oh",
+            "name": "DrumBrute Impact Open Hihat",
+            "filename": "dbi_oh.wav"
+        }, {
+            "id": "909_bd",
+            "name": "TR-909 Bass Drum",
+            "filename": "909_bd.wav"
+        }, {
+            "id": "909_rs",
+            "name": "TR-909 Rimshot",
+            "filename": "909_rs.wav"
+        }, {
+            "id": "909_sd",
+            "name": "TR-909 Snare",
+            "filename": "909_sd.wav"
+        }, {
+            "id": "909_cp",
+            "name": "TR-909 Clap",
+            "filename": "909_cp.wav"
+        }, {
+            "id": "909_tl",
+            "name": "TR-909 Tom Low",
+            "filename": "909_tl.wav"
+        }, {
+            "id": "909_tm",
+            "name": "TR-909 Tom Mid",
+            "filename": "909_tm.wav"
+        }, {
+            "id": "909_th",
+            "name": "TR-909 Tom High",
+            "filename": "909_th.wav"
+        }, {
+            "id": "909_ch",
+            "name": "TR-909 Closed Hihat",
+            "filename": "909_ch.wav"
+        }, {
+            "id": "909_oh",
+            "name": "TR-909 Open Hihat",
+            "filename": "909_oh.wav"
+        }, {
+            "id": "909_cc",
+            "name": "TR-909 Crash Cymbal",
+            "filename": "909_cc.wav"
+        }, {
+            "id": "909_rc",
+            "name": "TR-909 Ride Cymbal",
+            "filename": "909_rc.wav"
+        },
+        {
+            "id": "peak_bd",
+            "name": "Peak Bass Drum",
+            "filename": "peak_bd.wav"
+        },
+        {
+            "id": "peak_bass0",
+            "name": "Peak Bass #1",
+            "filename": "peak_bass0.wav"
+        },
+        {
+            "id": "peak_bass1",
+            "name": "Peak Bass #2",
+            "filename": "peak_bass1.wav"
+        },
+        {
+            "id": "peak_bass2",
+            "name": "Peak Bass #3",
+            "filename": "peak_bass2.wav"
+        },
+        {
+            "id": "peak_bass3",
+            "name": "Peak Bass #4",
+            "filename": "peak_bass3.wav"
+        },
+        {
+            "id": "peak_bass4",
+            "name": "Peak Bass #5",
+            "filename": "peak_bass4.wav"
+        },
+        {
+            "id": "peak_bass5",
+            "name": "Peak Bass #6",
+            "filename": "peak_bass5.wav"
+        },
+        {
+            "id": "peak_bass6",
+            "name": "Peak Bass #7",
+            "filename": "peak_bass6.wav"
+        },
+        {
+            "id": "peak_blip0",
+            "name": "Peak Blip #1",
+            "filename": "peak_blip0.wav"
+        },
+        {
+            "id": "peak_blip1",
+            "name": "Peak Blip #2",
+            "filename": "peak_blip1.wav"
+        },
+        {
+            "id": "peak_blip2",
+            "name": "Peak Blip #3",
+            "filename": "peak_blip2.wav"
+        },
+        {
+            "id": "peak_blip3",
+            "name": "Peak Blip #4",
+            "filename": "peak_blip3.wav"
+        },
+        {
+            "id": "peak_perc0",
+            "name": "Peak Percussion #1",
+            "filename": "peak_perc0.wav"
+        },
+        {
+            "id": "peak_perc1",
+            "name": "Peak Percussion #2",
+            "filename": "peak_perc1.wav"
+        },
+        {
+            "id": "peak_perc2",
+            "name": "Peak Percussion #3",
+            "filename": "peak_perc2.wav"
+        },
+        {
+            "id": "peak_perc3",
+            "name": "Peak Percussion #4",
+            "filename": "peak_perc3.wav"
+        },
+        {
+            "id": "peak_synth0",
+            "name": "Peak Synth #1",
+            "filename": "peak_synth0.wav"
+        },
+        {
+            "id": "peak_synth1",
+            "name": "Peak Synth #2",
+            "filename": "peak_synth1.wav"
+        },
+        {
+            "id": "peak_synth2",
+            "name": "Peak Synth #3",
+            "filename": "peak_synth2.wav"
+        }
+    ],
     "strings": {
         "en": {
             "button-add-pattern-label": "Add new pattern",
