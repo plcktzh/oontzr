@@ -257,7 +257,7 @@ class App extends HTMLElement {
         // Walk through the Pattern Array
         for (const id in this._s.patterns) {
             // Reset the Pattern instance's currentStep
-            this._s.patterns[id].currentStep = 0;
+            this._s.patterns[id].currentStep = -1;
         }
     }
 
