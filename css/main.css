@@ -1,5 +1,5 @@
 :root {
-    --oo-font-family-base: 'Arial', sans-serif;
+    --oo-font-family-base: 'Inter', system-ui;
     --oo-font-family-icon: 'Material Icons';
     --oo-font-size-base: 16px;
     --oo-font-size-text: 1.5rem;

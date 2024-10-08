@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/plcktzh/oontzr#readme",
   "dependencies": {
-    "@material-design-icons/font": "^0.14.13"
+    "@material-design-icons/font": "^0.14.13",
+    "inter-ui": "^4.0.2"
   }
 }
